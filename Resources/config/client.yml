@@ -1,0 +1,23 @@
+parameters:
+    bo_shurik_telegram_bot.client.class: BoShurik\TelegramBotBundle\Bot\Client
+
+    bo_shurik_telegram_bot.updates_command.class: BoShurik\TelegramBotBundle\UpdatesCommand
+    bo_shurik_telegram_bot.updates_command.name: "telegram:updates"
+
+    bo_shurik_telegram_bot.api.token:
+    bo_shurik_telegram_bot.api.tracker_token:
+
+services:
+    bo_shurik_telegram_bot.client:
+        class: "%bo_shurik_telegram_bot.client.class%"
+        arguments:
+            - "%bo_shurik_telegram_bot.api.token%"
+            - "%bo_shurik_telegram_bot.api.tracker_token%"
+
+    bo_shurik_telegram_bot.updates_command:
+        class: "%bo_shurik_telegram_bot.updates_command.class%"
+        arguments:
+            - "%bo_shurik_telegram_bot.updates_command.name%"
+            - "@bo_shurik_telegram_bot.client"
+        tags:
+            - { name: console.command }
