@@ -11,7 +11,7 @@
         "telegram-bot/api": "^2.0"
     },
     "autoload": {
-        "psr-4": { "BoShurik\\AdminBundle": "" }
+        "psr-4": { "BoShurik\\TelegramBotBundle": "" }
     },
     "extra": {
         "branch-alias": {
