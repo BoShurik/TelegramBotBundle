@@ -5,7 +5,7 @@
  * Time: 16:36
  */
 
-namespace BoShurik\TelegramBotBundle;
+namespace BoShurik\TelegramBotBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
