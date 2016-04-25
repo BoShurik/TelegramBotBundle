@@ -22,7 +22,7 @@ class HelpCommand implements CommandInterface
 
         $reply = '';
         foreach ($commands as $command) {
-            $reply = sprintf("/%s - %s \n", $command->getName(), $command->getDescription());
+            $reply .= sprintf("/%s - %s\n", $command->getName(), $command->getDescription());
         }
         $client->sendMessage($message->getChat()->getId(), $reply);
     }
