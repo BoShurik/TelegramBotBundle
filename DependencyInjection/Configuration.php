@@ -31,7 +31,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('api')->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('token')->isRequired()->end()
-                        ->scalarNode('tracker_token')->defaultNull()->end()
                     ->end()
                 ->end()
             ->end()

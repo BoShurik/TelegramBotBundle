@@ -8,7 +8,7 @@
 
         "symfony/framework-bundle": ">=2.7",
 
-        "telegram-bot/api": "^2.0"
+        "irazasyed/telegram-bot-sdk": "^2.0"
     },
     "autoload": {
         "psr-4": { "BoShurik\\TelegramBotBundle\\": "" }

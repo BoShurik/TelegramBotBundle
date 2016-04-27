@@ -12,22 +12,23 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use BoShurik\TelegramBotBundle\Bot\Client;
+use Telegram\Bot\Api;
 
 class UpdatesCommand extends Command
 {
     /**
-     * @var Client|\TelegramBot\Api\BotApi
+     * @var Api
      */
-    private $client;
+    private $api;
 
     /**
      * @inheritDoc
      */
-    public function __construct($name, Client $client)
+    public function __construct($name, Api $api)
     {
         parent::__construct($name);
 
-        $this->client = $client;
+        $this->api = $api;
     }
 
 
@@ -46,7 +47,6 @@ class UpdatesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $updates = $this->client->getUpdates();
-        $this->client->handle($updates);
+        $updates = $this->api->commandsHandler(false);
     }
 }

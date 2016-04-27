@@ -1,8 +1,0 @@
-parameters:
-    bo_shurik_telegram_bot.command.help.class: BoShurik\TelegramBotBundle\Bot\Command\HelpCommand
-
-services:
-    bo_shurik_telegram_bot.command.help:
-        class: "%bo_shurik_telegram_bot.command.help.class%"
-        tags:
-            - { name: bo_shurik_telegram_bot.command }
