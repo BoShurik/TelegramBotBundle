@@ -4,6 +4,9 @@ parameters:
     bo_shurik_telegram_bot.updates_command.class: BoShurik\TelegramBotBundle\Command\UpdatesCommand
     bo_shurik_telegram_bot.updates_command.name: "telegram:updates"
 
+    bo_shurik_telegram_bot.webhook_command.class: BoShurik\TelegramBotBundle\Command\WebhookCommand
+    bo_shurik_telegram_bot.webhook_command.name: "telegram:webhook"
+
     bo_shurik_telegram_bot.api.token:
     bo_shurik_telegram_bot.api.tracker_token:
 
@@ -17,6 +20,14 @@ services:
         class: "%bo_shurik_telegram_bot.updates_command.class%"
         arguments:
             - "%bo_shurik_telegram_bot.updates_command.name%"
+            - "@bo_shurik_telegram_bot.api"
+        tags:
+            - { name: console.command }
+
+    bo_shurik_telegram_bot.webhook_command:
+        class: "%bo_shurik_telegram_bot.webhook_command.class%"
+        arguments:
+            - "%bo_shurik_telegram_bot.webhook_command.name%"
             - "@bo_shurik_telegram_bot.api"
         tags:
             - { name: console.command }

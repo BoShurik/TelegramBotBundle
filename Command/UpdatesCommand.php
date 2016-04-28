@@ -11,7 +11,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use BoShurik\TelegramBotBundle\Bot\Client;
 use Telegram\Bot\Api;
 
 class UpdatesCommand extends Command
@@ -30,7 +29,6 @@ class UpdatesCommand extends Command
 
         $this->api = $api;
     }
-
 
     /**
      * @inheritDoc
