@@ -62,8 +62,8 @@ class WebhookCommand extends Command
 
         $response = $this->api->setWebhook($parameters);
 
-        if (!$response['ok']) {
-            throw new \RuntimeException(sprintf('%s: %s', $response['error_code'], $response['description']));
-        }
+//        if (!$response['ok']) {
+//            throw new \RuntimeException(sprintf('%s: %s', $response['error_code'], $response['description']));
+//        }
     }
 }
