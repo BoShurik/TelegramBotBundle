@@ -37,7 +37,7 @@ class WebhookCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('url', InputArgument::REQUIRED, 'Webhook url')
+            ->addArgument('url', InputArgument::OPTIONAL, 'Webhook url')
             ->addArgument('certificate', InputArgument::OPTIONAL, 'Path to public key certificate')
             ->setDescription('Set webhook')
         ;
