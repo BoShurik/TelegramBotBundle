@@ -48,8 +48,14 @@ class WebhookCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$url = $input->getArgument('url')){
+            $this->api->removeWebhook();
+
+            return;
+        }
+
         $parameters = array(
-            'url' => $input->getArgument('url'),
+            'url' => $url,
         );
 
         if ($certificate = $input->getArgument('certificate')) {
