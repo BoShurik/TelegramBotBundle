@@ -1,5 +1,7 @@
 parameters:
-    bo_shurik_telegram_bot.api.class: Telegram\Bot\Api
+    bo_shurik_telegram_bot.telegram.class: BoShurik\TelegramBotBundle\Telegram\Telegram
+
+    bo_shurik_telegram_bot.api.class: TelegramBot\Api\Client
 
     bo_shurik_telegram_bot.updates_command.class: BoShurik\TelegramBotBundle\Command\UpdatesCommand
     bo_shurik_telegram_bot.updates_command.name: "telegram:updates"
@@ -11,16 +13,23 @@ parameters:
     bo_shurik_telegram_bot.api.tracker_token:
 
 services:
+    bo_shurik_telegram_bot.telegram:
+        class: "%bo_shurik_telegram_bot.telegram.class%"
+        arguments:
+            - "@bo_shurik_telegram_bot.api"
+            - "@event_dispatcher"
+
     bo_shurik_telegram_bot.api:
         class: "%bo_shurik_telegram_bot.api.class%"
         arguments:
             - "%bo_shurik_telegram_bot.api.token%"
+            - "%bo_shurik_telegram_bot.api.tracker_token%"
 
     bo_shurik_telegram_bot.updates_command:
         class: "%bo_shurik_telegram_bot.updates_command.class%"
         arguments:
             - "%bo_shurik_telegram_bot.updates_command.name%"
-            - "@bo_shurik_telegram_bot.api"
+            - "@bo_shurik_telegram_bot.telegram"
         tags:
             - { name: console.command }
 

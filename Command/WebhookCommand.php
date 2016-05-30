@@ -12,19 +12,20 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Telegram\Bot\Api;
+use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Client;
 
 class WebhookCommand extends Command
 {
     /**
-     * @var Api
+     * @var Client|BotApi
      */
     private $api;
 
     /**
      * @inheritDoc
      */
-    public function __construct($name, Api $api)
+    public function __construct($name, Client $api)
     {
         parent::__construct($name);
 
@@ -49,27 +50,20 @@ class WebhookCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$url = $input->getArgument('url')){
-            $this->api->removeWebhook();
+            $this->api->setWebhook();
 
             return;
         }
 
-        $parameters = array(
-            'url' => $url,
-        );
-
+        $certificateFile = null;
         if ($certificate = $input->getArgument('certificate')) {
             if (!is_file($certificate) || !is_readable($certificate)) {
                 throw new \RuntimeException(sprintf('Can\'t read certificate file "%s"', $certificate));
             }
 
-            $parameters['certificate'] = $certificate;
+            $certificateFile = new \CURLFile($certificate);
         }
 
-        $response = $this->api->setWebhook($parameters);
-
-//        if (!$response['ok']) {
-//            throw new \RuntimeException(sprintf('%s: %s', $response['error_code'], $response['description']));
-//        }
+        $this->api->setWebhook($url, $certificateFile);
     }
 }

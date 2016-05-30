@@ -1,0 +1,15 @@
+parameters:
+    bo_shurik_telegram_bot.command_pool.class: BoShurik\TelegramBotBundle\Telegram\Command\CommandPool
+    bo_shurik_telegram_bot.command_listener.class: BoShurik\TelegramBotBundle\EventListener\CommandListener
+
+services:
+    bo_shurik_telegram_bot.command_pool:
+        class: "%bo_shurik_telegram_bot.command_pool.class%"
+
+    bo_shurik_telegram_bot.command_listener:
+        class: "%bo_shurik_telegram_bot.command_listener.class%"
+        arguments:
+            - "@bo_shurik_telegram_bot.api"
+            - "@bo_shurik_telegram_bot.command_pool"
+        tags:
+            - { name: kernel.event_listener, event: bo_shurik_telegram_bot.update, method: onUpdate }

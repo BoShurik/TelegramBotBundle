@@ -8,24 +8,31 @@
 namespace BoShurik\TelegramBotBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Types\Update;
 
 class WebhookController extends Controller
 {
     public function indexAction(Request $request)
     {
-        $updates = $this->getApi()->commandsHandler(true);
+        if ($data = BotApi::jsonValidate($request->getContent(), true)) {
+            $update = Update::fromResponse($data);
+            $this->getTelegram()->processUpdate($update);
+        } else {
+            throw new BadRequestHttpException('Empty data');
+        }
 
         return new Response();
     }
 
     /**
-     * @return \Telegram\Bot\Api
+     * @return \BoShurik\TelegramBotBundle\Telegram\Telegram
      */
-    private function getApi()
+    private function getTelegram()
     {
-        return $this->get('bo_shurik_telegram_bot.api');
+        return $this->get('bo_shurik_telegram_bot.telegram');
     }
 }

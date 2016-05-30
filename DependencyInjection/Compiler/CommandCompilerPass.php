@@ -18,7 +18,7 @@ class CommandCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $pool = $container->getDefinition('bo_shurik_telegram_bot.api');
+        $pool = $container->getDefinition('bo_shurik_telegram_bot.command_pool');
 
         foreach ($container->findTaggedServiceIds('bo_shurik_telegram_bot.command') as $id => $tags) {
             foreach ($tags as $tag) {
