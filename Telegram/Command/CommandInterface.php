@@ -9,11 +9,12 @@ namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
 use TelegramBot\Api\Client;
 use TelegramBot\Api\Types\Message;
+use TelegramBot\Api\BotApi;
 
 interface CommandInterface
 {
     /**
-     * @param Client $client
+     * @param Client|BotApi $client
      * @param Message $message
      * @return mixed
      */
