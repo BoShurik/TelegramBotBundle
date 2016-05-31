@@ -1,6 +1,8 @@
 TelegramBotBundle
 ===========
 
+Telegram bot bundle on top of ["telegram-bot/api"][1] library
+
 ## Installation
 
 #### Composer
@@ -36,6 +38,7 @@ BoShurikTelegramBotBundle:
 #### Adding commands
 
 Commands must implement `\BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface`
+
 There is `\BoShurik\TelegramBotBundle\Telegram\Command\AbstractCommand` you can start with
 
 To register command: add tag `bo_shurik_telegram_bot.command` to service definition
@@ -49,7 +52,7 @@ app.telegram.command:
 There is predefined `\BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand`. You need to register it:
 ``` yaml
 app.telegram.command.help:
-    class: "%app.telegram.command.help.class%"
+    class: BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand
     arguments:
         - "@bo_shurik_telegram_bot.command_pool"
     tags:
@@ -69,3 +72,5 @@ public function onUpdate(UpdateEvent $event)
     $message = $update->getMessage();
 }
 ```
+
+[1] https://github.com/TelegramBot/Api
