@@ -73,4 +73,4 @@ public function onUpdate(UpdateEvent $event)
 }
 ```
 
-[1] https://github.com/TelegramBot/Api
+[1]: https://github.com/TelegramBot/Api
