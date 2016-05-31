@@ -1,7 +1,7 @@
 TelegramBotBundle
 ===========
 
-Telegram bot bundle on top of ["telegram-bot/api"][1] library
+Telegram bot bundle on top of [`telegram-bot/api`][1] library
 
 ## Installation
 
@@ -34,6 +34,26 @@ BoShurikTelegramBotBundle:
     resource: "@BoShurikTelegramBotBundle/Resources/config/routing.yml"
     prefix: /_telegram/<some-secret>
 ```
+
+#### Configuration
+
+``` yaml
+bo_shurik_telegram_bot:
+    api:
+        token: "%telegram_bot_api_token%"
+    name: "%telegram_bot_name%"
+```
+
+## Usage
+
+#### API
+
+```php
+    /** @var TelegramBot\Api\Client|TelegramBot\Api\BotApi $api */
+    $api = $this->container->get('bo_shurik_telegram_bot.api');
+```
+
+For more info see [Usage][2] section in [`telegram-bot/api`][1] library
 
 #### Adding commands
 
@@ -74,3 +94,4 @@ public function onUpdate(UpdateEvent $event)
 ```
 
 [1]: https://github.com/TelegramBot/Api
+[2]: https://github.com/TelegramBot/Api#usage
