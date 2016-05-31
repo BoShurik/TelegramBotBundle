@@ -24,7 +24,10 @@ abstract class AbstractCommand implements CommandInterface
     /**
      * @return array|string[]
      */
-    abstract public function getAliases();
+    public function getAliases()
+    {
+        return array();
+    }
 
     /**
      * @inheritDoc
