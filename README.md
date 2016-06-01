@@ -55,6 +55,26 @@ bo_shurik_telegram_bot:
 
 For more info see [Usage][2] section in [`telegram-bot/api`][1] library
 
+#### Getting updates
+
+``` bash
+bin/console telegram:updates
+```
+
+#### Webhook
+
+##### Set
+
+``` bash
+bin/console telegram:webhook [<url>] [<path-to-certificate>]
+```
+
+##### Unset
+
+``` bash
+bin/console telegram:webhook
+```
+
 #### Adding commands
 
 Commands must implement `\BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface`
