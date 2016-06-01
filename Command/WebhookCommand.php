@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Symfony\Component\Console\Style\SymfonyStyle;
 use TelegramBot\Api\BotApi;
 
 class WebhookCommand extends Command
@@ -48,8 +49,12 @@ class WebhookCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
         if (!$url = $input->getArgument('url')){
             $this->api->setWebhook();
+
+            $io->success('Webhook has been unset');
 
             return;
         }
@@ -64,5 +69,7 @@ class WebhookCommand extends Command
         }
 
         $this->api->setWebhook($url, $certificateFile);
+
+        $io->success(sprintf('Webhook url "%s" has been unset', $url));
     }
 }
