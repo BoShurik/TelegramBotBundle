@@ -1,7 +1,7 @@
 parameters:
     bo_shurik_telegram_bot.telegram.class: BoShurik\TelegramBotBundle\Telegram\Telegram
 
-    bo_shurik_telegram_bot.api.class: TelegramBot\Api\Client
+    bo_shurik_telegram_bot.api.class: TelegramBot\Api\BotApi
 
     bo_shurik_telegram_bot.updates_command.class: BoShurik\TelegramBotBundle\Command\UpdatesCommand
     bo_shurik_telegram_bot.updates_command.name: "telegram:updates"

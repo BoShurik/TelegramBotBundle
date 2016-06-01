@@ -7,18 +7,17 @@
 
 namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
-use TelegramBot\Api\Client;
 use TelegramBot\Api\Types\Message;
 use TelegramBot\Api\BotApi;
 
 interface CommandInterface
 {
     /**
-     * @param Client|BotApi $client
+     * @param BotApi $api
      * @param Message $message
      * @return mixed
      */
-    public function execute(Client $client, Message $message);
+    public function execute(BotApi $api, Message $message);
 
     /**
      * @param Message $message

@@ -7,7 +7,7 @@
 
 namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
-use TelegramBot\Api\Client;
+use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Message;
 
 class HelpCommand extends AbstractCommand implements PublicCommandInterface
@@ -25,7 +25,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
     /**
      * @inheritDoc
      */
-    public function execute(Client $client, Message $message)
+    public function execute(BotApi $api, Message $message)
     {
         $commands = $this->commandPool->getCommands();
 
@@ -38,7 +38,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
             $reply .= sprintf("%s - %s\n", $command->getName(), $command->getDescription());
         }
 
-        $client->sendMessage($message->getChat()->getId(), $reply);
+        $api->sendMessage($message->getChat()->getId(), $reply);
     }
 
     /**

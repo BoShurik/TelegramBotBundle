@@ -11,13 +11,12 @@ use BoShurik\TelegramBotBundle\Event\Telegram\UpdateEvent;
 use BoShurik\TelegramBotBundle\Event\TelegramEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TelegramBot\Api\BotApi;
-use TelegramBot\Api\Client;
 use TelegramBot\Api\Types\Update;
 
 class Telegram
 {
     /**
-     * @var Client|BotApi
+     * @var BotApi
      */
     private $api;
 
@@ -26,7 +25,7 @@ class Telegram
      */
     private $eventDispatcher;
 
-    public function __construct(Client $api, EventDispatcherInterface $eventDispatcher)
+    public function __construct(BotApi $api, EventDispatcherInterface $eventDispatcher)
     {
         $this->api = $api;
         $this->eventDispatcher = $eventDispatcher;

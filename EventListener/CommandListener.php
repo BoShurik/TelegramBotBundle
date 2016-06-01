@@ -7,7 +7,7 @@
 
 namespace BoShurik\TelegramBotBundle\EventListener;
 
-use TelegramBot\Api\Client;
+use TelegramBot\Api\BotApi;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandPool;
 
 use BoShurik\TelegramBotBundle\Event\Telegram\UpdateEvent;
@@ -15,18 +15,18 @@ use BoShurik\TelegramBotBundle\Event\Telegram\UpdateEvent;
 class CommandListener
 {
     /**
-     * @var Client
+     * @var BotApi
      */
-    private $client;
+    private $api;
     
     /**
      * @var CommandPool
      */
     private $commandPool;
 
-    public function __construct(Client $client, CommandPool $commandPool)
+    public function __construct(BotApi $api, CommandPool $commandPool)
     {
-        $this->client = $client;
+        $this->api = $api;
         $this->commandPool = $commandPool;
     }
 
@@ -40,7 +40,7 @@ class CommandListener
                 continue;
             }
 
-            $command->execute($this->client, $event->getUpdate()->getMessage());
+            $command->execute($this->api, $event->getUpdate()->getMessage());
             $event->setProcessed();
 
             break;

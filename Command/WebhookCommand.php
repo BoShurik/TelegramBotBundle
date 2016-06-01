@@ -13,19 +13,18 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use TelegramBot\Api\BotApi;
-use TelegramBot\Api\Client;
 
 class WebhookCommand extends Command
 {
     /**
-     * @var Client|BotApi
+     * @var BotApi
      */
     private $api;
 
     /**
      * @inheritDoc
      */
-    public function __construct($name, Client $api)
+    public function __construct($name, BotApi $api)
     {
         parent::__construct($name);
 

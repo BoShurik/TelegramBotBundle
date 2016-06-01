@@ -49,7 +49,7 @@ bo_shurik_telegram_bot:
 #### API
 
 ```php
-    /** @var TelegramBot\Api\Client|TelegramBot\Api\BotApi $api */
+    /** @var TelegramBot\Api\BotApi $api */
     $api = $this->container->get('bo_shurik_telegram_bot.api');
 ```
 
