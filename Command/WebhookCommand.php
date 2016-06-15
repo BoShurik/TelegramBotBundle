@@ -70,6 +70,6 @@ class WebhookCommand extends Command
 
         $this->api->setWebhook($url, $certificateFile);
 
-        $io->success(sprintf('Webhook url "%s" has been unset', $url));
+        $io->success(sprintf('Webhook url "%s" has been set', $url));
     }
 }
