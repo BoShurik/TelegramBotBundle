@@ -17,9 +17,21 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
      */
     private $commandPool;
 
-    public function __construct(CommandPool $commandPool)
+    /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @var array
+     */
+    private $aliases;
+
+    public function __construct(CommandPool $commandPool, $description = 'Help', $aliases = array())
     {
         $this->commandPool = $commandPool;
+        $this->description = $description;
+        $this->aliases = $aliases;
     }
 
     /**
@@ -54,7 +66,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
      */
     public function getAliases()
     {
-        return array();
+        return $this->aliases;
     }
 
     /**
@@ -62,6 +74,6 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
      */
     public function getDescription()
     {
-        return 'Help';
+        return $this->description;
     }
 }
