@@ -36,11 +36,14 @@ class CommandListener
     public function onUpdate(UpdateEvent $event)
     {
         foreach ($this->commandPool->getCommands() as $command) {
-            if (!$command->isApplicable($event->getUpdate()->getMessage())) {
+            if (!$message = $event->getUpdate()->getMessage()) {
+                continue;
+            }
+            if (!$command->isApplicable($message)) {
                 continue;
             }
 
-            $command->execute($this->api, $event->getUpdate()->getMessage());
+            $command->execute($this->api, $message);
             $event->setProcessed();
 
             break;
