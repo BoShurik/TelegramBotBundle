@@ -61,6 +61,8 @@ For more info see [Usage][2] section in [`telegram-bot/api`][1] library
 bin/console telegram:updates
 ```
 
+For more information see [official documentation][3]
+
 #### Webhook
 
 ##### Set
@@ -74,6 +76,8 @@ bin/console telegram:webhook [<url>] [<path-to-certificate>]
 ``` bash
 bin/console telegram:webhook
 ```
+
+For more information see [official documentation][4]
 
 #### Adding commands
 
@@ -115,3 +119,5 @@ public function onUpdate(UpdateEvent $event)
 
 [1]: https://github.com/TelegramBot/Api
 [2]: https://github.com/TelegramBot/Api#usage
+[3]: https://core.telegram.org/bots/api#getupdates
+[4]: https://core.telegram.org/bots/api#setwebhook
