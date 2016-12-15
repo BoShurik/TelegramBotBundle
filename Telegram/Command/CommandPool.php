@@ -7,13 +7,17 @@
 
 namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
-
 class CommandPool
 {
     /**
      * @var CommandInterface[]
      */
     private $commands;
+
+    public function __construct()
+    {
+        $this->commands = array();
+    }
 
     /**
      * @param CommandInterface $command
