@@ -117,7 +117,10 @@ public function onUpdate(UpdateEvent $event)
 }
 ```
 
+## [Example][5]
+
 [1]: https://github.com/TelegramBot/Api
 [2]: https://github.com/TelegramBot/Api#usage
 [3]: https://core.telegram.org/bots/api#getupdates
 [4]: https://core.telegram.org/bots/api#setwebhook
+[5]: https://github.com/BoShurik/telegram-bot-example
