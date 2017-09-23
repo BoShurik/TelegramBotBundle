@@ -7,6 +7,8 @@
 
 namespace BoShurik\TelegramBotBundle\Controller;
 
+use BoShurik\TelegramBotBundle\Event\Telegram\WebhookEvent;
+use BoShurik\TelegramBotBundle\Event\TelegramEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +27,12 @@ class WebhookController extends Controller
             throw new BadRequestHttpException('Empty data');
         }
 
-        return new Response();
+        $event = $this->getEventDispatcher()->dispatch(
+            TelegramEvents::WEBHOOK,
+            new WebhookEvent($request, $update)
+        );
+
+        return $event->getResponse() ? $event->getResponse() : new Response();
     }
 
     /**
@@ -34,5 +41,13 @@ class WebhookController extends Controller
     private function getTelegram()
     {
         return $this->get('bo_shurik_telegram_bot.telegram');
+    }
+
+    /**
+     * @return object|\Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+     */
+    private function getEventDispatcher()
+    {
+        return $this->get('event_dispatcher');
     }
 }
