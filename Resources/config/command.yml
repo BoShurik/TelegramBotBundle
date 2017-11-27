@@ -3,6 +3,9 @@ parameters:
     bo_shurik_telegram_bot.command_listener.class: BoShurik\TelegramBotBundle\EventListener\CommandListener
 
 services:
+    BoShurik\TelegramBotBundle\Telegram\Command\CommandPool: '@bo_shurik_telegram_bot.command_pool'
+    BoShurik\TelegramBotBundle\EventListener\CommandListener: '@bo_shurik_telegram_bot.command_listener'
+
     bo_shurik_telegram_bot.command_pool:
         class: "%bo_shurik_telegram_bot.command_pool.class%"
 

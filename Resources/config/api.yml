@@ -13,6 +13,11 @@ parameters:
     bo_shurik_telegram_bot.api.tracker_token:
 
 services:
+    BoShurik\TelegramBotBundle\Telegram\Telegram: '@bo_shurik_telegram_bot.telegram'
+    TelegramBot\Api\BotApi: '@bo_shurik_telegram_bot.api'
+    BoShurik\TelegramBotBundle\Command\UpdatesCommand: '@bo_shurik_telegram_bot.updates_command'
+    BoShurik\TelegramBotBundle\Command\WebhookCommand: '@bo_shurik_telegram_bot.webhook_command'
+
     bo_shurik_telegram_bot.telegram:
         class: "%bo_shurik_telegram_bot.telegram.class%"
         arguments:
