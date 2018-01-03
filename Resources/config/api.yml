@@ -20,12 +20,14 @@ services:
 
     bo_shurik_telegram_bot.telegram:
         class: "%bo_shurik_telegram_bot.telegram.class%"
+        public: true
         arguments:
             - "@bo_shurik_telegram_bot.api"
             - "@event_dispatcher"
 
     bo_shurik_telegram_bot.api:
         class: "%bo_shurik_telegram_bot.api.class%"
+        public: true
         arguments:
             - "%bo_shurik_telegram_bot.api.token%"
             - "%bo_shurik_telegram_bot.api.tracker_token%"
