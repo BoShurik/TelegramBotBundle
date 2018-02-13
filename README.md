@@ -88,7 +88,7 @@ There is `\BoShurik\TelegramBotBundle\Telegram\Command\AbstractCommand` you can 
 To register command: add tag `bo_shurik_telegram_bot.command` to service definition
 ``` yaml
 app.telegram.command:
-    class: AppBundle/Telegram/Command/SomeCommand
+    class: AppBundle\Telegram\Command\SomeCommand
     tags:
         - { name: bo_shurik_telegram_bot.command }
 ```
