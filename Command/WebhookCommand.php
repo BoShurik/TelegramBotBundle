@@ -25,11 +25,12 @@ class WebhookCommand extends Command
     /**
      * @inheritDoc
      */
-    public function __construct($name, BotApi $api)
+    public function __construct($name, BotApi $api, $proxy = '')
     {
         parent::__construct($name);
 
         $this->api = $api;
+        $this->api->setProxy($proxy);
     }
 
     /**
