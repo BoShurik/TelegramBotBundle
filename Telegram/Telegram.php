@@ -25,9 +25,10 @@ class Telegram
      */
     private $eventDispatcher;
 
-    public function __construct(BotApi $api, EventDispatcherInterface $eventDispatcher)
+    public function __construct(BotApi $api, EventDispatcherInterface $eventDispatcher, $proxy = '')
     {
         $this->api = $api;
+        $this->api->setProxy($proxy);
         $this->eventDispatcher = $eventDispatcher;
     }
 

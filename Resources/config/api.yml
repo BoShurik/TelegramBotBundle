@@ -12,6 +12,8 @@ parameters:
     bo_shurik_telegram_bot.api.token:
     bo_shurik_telegram_bot.api.tracker_token:
 
+    bo_shurik_telegram_bot.api.proxy: ""
+
 services:
     BoShurik\TelegramBotBundle\Telegram\Telegram: '@bo_shurik_telegram_bot.telegram'
     TelegramBot\Api\BotApi: '@bo_shurik_telegram_bot.api'
@@ -24,6 +26,7 @@ services:
         arguments:
             - "@bo_shurik_telegram_bot.api"
             - "@event_dispatcher"
+            - "%bo_shurik_telegram_bot.api.proxy%"
 
     bo_shurik_telegram_bot.api:
         class: "%bo_shurik_telegram_bot.api.class%"
@@ -45,5 +48,6 @@ services:
         arguments:
             - "%bo_shurik_telegram_bot.webhook_command.name%"
             - "@bo_shurik_telegram_bot.api"
+            - "%bo_shurik_telegram_bot.api.proxy%"
         tags:
             - { name: console.command }

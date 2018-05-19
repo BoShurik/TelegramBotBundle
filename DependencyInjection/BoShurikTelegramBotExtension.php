@@ -35,5 +35,8 @@ class BoShurikTelegramBotExtension extends Extension
         $container->setParameter('bo_shurik_telegram_bot.api.token',            $config['api']['token']);
         $container->setParameter('bo_shurik_telegram_bot.api.tracker_token',    $config['api']['tracker_token']);
         $container->setParameter('bo_shurik_telegram_bot.name',                    $config['name']);
+
+        if (isset($config['api']['proxy']))
+            $container->setParameter('bo_shurik_telegram_bot.api.proxy',            $config['api']['proxy']);
     }
 }
