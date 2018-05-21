@@ -11,6 +11,7 @@ parameters:
 
     bo_shurik_telegram_bot.api.token:
     bo_shurik_telegram_bot.api.tracker_token:
+    bo_shurik_telegram_bot.api.proxy:
 
 services:
     BoShurik\TelegramBotBundle\Telegram\Telegram: '@bo_shurik_telegram_bot.telegram'
@@ -31,6 +32,8 @@ services:
         arguments:
             - "%bo_shurik_telegram_bot.api.token%"
             - "%bo_shurik_telegram_bot.api.tracker_token%"
+        calls:
+            - ["setProxy", ["%bo_shurik_telegram_bot.api.proxy%"]]
 
     bo_shurik_telegram_bot.updates_command:
         class: "%bo_shurik_telegram_bot.updates_command.class%"

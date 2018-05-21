@@ -32,6 +32,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('token')->isRequired()->end()
                         ->scalarNode('tracker_token')->defaultNull()->end()
+                        ->scalarNode('proxy')->defaultValue('')->end()
                     ->end()
                 ->end()
             ->end()
