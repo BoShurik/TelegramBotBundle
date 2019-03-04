@@ -56,7 +56,7 @@ abstract class AbstractCommand implements CommandInterface
      * @param string $name
      * @return bool
      */
-    private function matchCommandName($text, $name)
+    protected function matchCommandName($text, $name)
     {
         preg_match(self::REGEXP, $text, $matches);
 
