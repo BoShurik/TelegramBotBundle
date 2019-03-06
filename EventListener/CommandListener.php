@@ -1,8 +1,6 @@
 <?php
 /**
- * User: boshurik
- * Date: 30.05.16
- * Time: 18:03
+ * @author: boshurik, martcor
  */
 
 namespace BoShurik\TelegramBotBundle\EventListener;
@@ -36,14 +34,11 @@ class CommandListener
     public function onUpdate(UpdateEvent $event)
     {
         foreach ($this->commandPool->getCommands() as $command) {
-            if (!$message = $event->getUpdate()->getMessage()) {
-                continue;
-            }
-            if (!$command->isApplicable($message)) {
+            if (!$command->isApplicable($event->getUpdate())) {
                 continue;
             }
 
-            $command->execute($this->api, $message);
+            $command->execute($this->api, $event->getUpdate());
             $event->setProcessed();
 
             break;
