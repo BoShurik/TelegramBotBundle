@@ -1,14 +1,13 @@
 <?php
 /**
- * User: boshurik
- * Date: 25.04.16
- * Time: 14:05
+ * @author: boshurik, martcor
  */
 
 namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Message;
+use TelegramBot\Api\Types\Update;
 
 class HelpCommand extends AbstractCommand implements PublicCommandInterface
 {
@@ -37,7 +36,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
     /**
      * @inheritDoc
      */
-    public function execute(BotApi $api, Message $message)
+    public function execute(BotApi $api, Update $update)
     {
         $commands = $this->commandPool->getCommands();
 
@@ -50,7 +49,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
             $reply .= sprintf("%s - %s\n", $command->getName(), $command->getDescription());
         }
 
-        $api->sendMessage($message->getChat()->getId(), $reply);
+        $api->sendMessage($update->getMessage()->getChat()->getId(), $reply);
     }
 
     /**
