@@ -1,13 +1,11 @@
 <?php
 /**
- * User: boshurik
- * Date: 30.05.16
- * Time: 18:10
+ * @author: boshurik, martcor
  */
 
 namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
-use TelegramBot\Api\Types\Message;
+use TelegramBot\Api\Types\Update;
 
 abstract class AbstractCommand implements CommandInterface
 {
@@ -32,8 +30,10 @@ abstract class AbstractCommand implements CommandInterface
     /**
      * @inheritDoc
      */
-    public function isApplicable(Message $message)
+    public function isApplicable(Update $update)
     {
+        $message = $update->getMessage();
+
         if (is_null($message) || !strlen($message->getText())) {
             return false;
         }

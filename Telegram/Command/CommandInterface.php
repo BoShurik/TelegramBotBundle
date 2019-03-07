@@ -1,27 +1,25 @@
 <?php
 /**
- * User: boshurik
- * Date: 25.04.16
- * Time: 13:59
+ * @author: boshurik, martcor
  */
 
 namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
-use TelegramBot\Api\Types\Message;
 use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Types\Update;
 
 interface CommandInterface
 {
     /**
      * @param BotApi $api
-     * @param Message $message
+     * @param Update $update
      * @return mixed
      */
-    public function execute(BotApi $api, Message $message);
+    public function execute(BotApi $api, Update $update);
 
     /**
-     * @param Message $message
+     * @param Update $update
      * @return boolean
      */
-    public function isApplicable(Message $message);
+    public function isApplicable(Update $update);
 }
