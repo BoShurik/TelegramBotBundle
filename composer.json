@@ -3,6 +3,16 @@
     "license": "MIT",
     "type": "symfony-bundle",
     "description": "Telegram bot bundle",
+    "authors": [
+        {
+            "name": "Alexander Borisov",
+            "email": "boshurik@gmail.com"
+        },
+        {
+            "name": "Community",
+            "homepage": "https://github.com/BoShurik/TelegramBotBundle/graphs/contributors"
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
 
