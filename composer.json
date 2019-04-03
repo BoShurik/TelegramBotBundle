@@ -15,13 +15,13 @@
     ],
     "require": {
         "php": ">=5.5.9",
-
         "symfony/framework-bundle": "~2.7 || ~3.0 || ~4.0",
-
         "telegram-bot/api": "^2.3.10"
     },
     "autoload": {
-        "psr-4": { "BoShurik\\TelegramBotBundle\\": "" }
+        "psr-4": {
+            "BoShurik\\TelegramBotBundle\\": "src/"
+        }
     },
     "extra": {
         "branch-alias": {
