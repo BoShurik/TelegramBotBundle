@@ -13,15 +13,26 @@
             "homepage": "https://github.com/BoShurik/TelegramBotBundle/graphs/contributors"
         }
     ],
-    "require": {
-        "php": ">=5.5.9",
-        "symfony/framework-bundle": "~2.7 || ~3.0 || ~4.0",
-        "telegram-bot/api": "^2.3.10"
-    },
     "autoload": {
         "psr-4": {
             "BoShurik\\TelegramBotBundle\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BoShurik\\TelegramBotBundle\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.0",
+        "symfony/framework-bundle": "^3.4 || ^4.0",
+        "telegram-bot/api": "^2.3.10"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     },
     "extra": {
         "branch-alias": {
