@@ -12,7 +12,6 @@
 namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
 use TelegramBot\Api\BotApi;
-use TelegramBot\Api\Types\Message;
 use TelegramBot\Api\Types\Update;
 
 class HelpCommand extends AbstractCommand implements PublicCommandInterface
@@ -32,7 +31,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
      */
     private $aliases;
 
-    public function __construct(CommandPool $commandPool, $description = 'Help', $aliases = array())
+    public function __construct(CommandPool $commandPool, $description = 'Help', $aliases = [])
     {
         $this->commandPool = $commandPool;
         $this->description = $description;

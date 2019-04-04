@@ -30,7 +30,7 @@ abstract class AbstractCommand implements CommandInterface
      */
     public function getAliases()
     {
-        return array();
+        return [];
     }
 
     /**

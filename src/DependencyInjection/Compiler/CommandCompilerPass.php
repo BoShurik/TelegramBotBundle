@@ -26,9 +26,9 @@ class CommandCompilerPass implements CompilerPassInterface
 
         $commands = $this->findAndSortTaggedServices('boshurik_telegram_bot.command', $container);
         foreach ($commands as $command) {
-            $pool->addMethodCall('addCommand', array(
+            $pool->addMethodCall('addCommand', [
                 $command,
-            ));
+            ]);
         }
     }
 
@@ -41,7 +41,7 @@ class CommandCompilerPass implements CompilerPassInterface
      */
     private function findAndSortTaggedServices($tagName, ContainerBuilder $container)
     {
-        $services = array();
+        $services = [];
 
         foreach ($container->findTaggedServiceIds($tagName) as $serviceId => $tags) {
             foreach ($tags as $attributes) {

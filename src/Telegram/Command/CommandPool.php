@@ -20,7 +20,7 @@ class CommandPool
 
     public function __construct()
     {
-        $this->commands = array();
+        $this->commands = [];
     }
 
     /**
