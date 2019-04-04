@@ -35,6 +35,7 @@ class BoShurikTelegramBotExtension extends Extension
 
         $loader->load('api.yml');
         $loader->load('command.yml');
+        $loader->load('controller.yml');
 
         $container->setParameter('boshurik_telegram_bot.api.token', $config['api']['token']);
         $container->setParameter('boshurik_telegram_bot.api.tracker_token', $config['api']['tracker_token']);
