@@ -3,12 +3,6 @@ parameters:
 
     boshurik_telegram_bot.api.class: TelegramBot\Api\BotApi
 
-    boshurik_telegram_bot.updates_command.class: BoShurik\TelegramBotBundle\Command\UpdatesCommand
-    boshurik_telegram_bot.updates_command.name: "telegram:updates"
-
-    boshurik_telegram_bot.webhook_command.class: BoShurik\TelegramBotBundle\Command\WebhookCommand
-    boshurik_telegram_bot.webhook_command.name: "telegram:webhook"
-
     boshurik_telegram_bot.api.token:
     boshurik_telegram_bot.api.tracker_token:
     boshurik_telegram_bot.api.proxy:
@@ -16,8 +10,6 @@ parameters:
 services:
     BoShurik\TelegramBotBundle\Telegram\Telegram: '@boshurik_telegram_bot.telegram'
     TelegramBot\Api\BotApi: '@boshurik_telegram_bot.api'
-    BoShurik\TelegramBotBundle\Command\UpdatesCommand: '@boshurik_telegram_bot.updates_command'
-    BoShurik\TelegramBotBundle\Command\WebhookCommand: '@boshurik_telegram_bot.webhook_command'
 
     boshurik_telegram_bot.telegram:
         class: "%boshurik_telegram_bot.telegram.class%"
@@ -35,18 +27,20 @@ services:
         calls:
             - ["setProxy", ["%boshurik_telegram_bot.api.proxy%"]]
 
-    boshurik_telegram_bot.updates_command:
-        class: "%boshurik_telegram_bot.updates_command.class%"
+    BoShurik\TelegramBotBundle\Command\UpdatesCommand:
         arguments:
-            - "%boshurik_telegram_bot.updates_command.name%"
             - "@boshurik_telegram_bot.telegram"
         tags:
             - { name: console.command }
 
-    boshurik_telegram_bot.webhook_command:
-        class: "%boshurik_telegram_bot.webhook_command.class%"
+    BoShurik\TelegramBotBundle\Command\Webhook\SetCommand:
         arguments:
-            - "%boshurik_telegram_bot.webhook_command.name%"
+            - "@boshurik_telegram_bot.api"
+        tags:
+            - { name: console.command }
+
+    BoShurik\TelegramBotBundle\Command\Webhook\UnsetCommand:
+        arguments:
             - "@boshurik_telegram_bot.api"
         tags:
             - { name: console.command }

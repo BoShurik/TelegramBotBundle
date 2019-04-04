@@ -70,13 +70,13 @@ For more information see [official documentation][3]
 ##### Set
 
 ``` bash
-bin/console telegram:webhook [<url>] [<path-to-certificate>]
+bin/console telegram:webhook:set <url> [<path-to-certificate>]
 ```
 
 ##### Unset
 
 ``` bash
-bin/console telegram:webhook
+bin/console telegram:webhook:unset
 ```
 
 For more information see [official documentation][4]

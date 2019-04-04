@@ -9,29 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Command;
+namespace BoShurik\TelegramBotBundle\Command\Webhook;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use TelegramBot\Api\BotApi;
 
-use BoShurik\TelegramBotBundle\Telegram\Telegram;
-
-class UpdatesCommand extends Command
+class UnsetCommand extends Command
 {
     /**
-     * @var Telegram
+     * @var BotApi
      */
-    private $telegram;
+    private $api;
 
     /**
      * @inheritDoc
      */
-    public function __construct(Telegram $telegram)
+    public function __construct(BotApi $api)
     {
         parent::__construct(null);
 
-        $this->telegram = $telegram;
+        $this->api = $api;
     }
 
     /**
@@ -40,8 +40,8 @@ class UpdatesCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('telegram:updates')
-            ->setDescription('Get updates')
+            ->setName('telegram:webhook:unset')
+            ->setDescription('Unset webhook')
         ;
     }
 
@@ -50,6 +50,10 @@ class UpdatesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->telegram->processUpdates();
+        $io = new SymfonyStyle($input, $output);
+
+        $this->api->setWebhook();
+
+        $io->success('Webhook has been unset');
     }
 }

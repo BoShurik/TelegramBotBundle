@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Command;
+namespace BoShurik\TelegramBotBundle\Command\Webhook;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TelegramBot\Api\BotApi;
 
-class WebhookCommand extends Command
+class SetCommand extends Command
 {
     /**
      * @var BotApi
@@ -29,9 +29,9 @@ class WebhookCommand extends Command
     /**
      * @inheritDoc
      */
-    public function __construct($name, BotApi $api)
+    public function __construct(BotApi $api)
     {
-        parent::__construct($name);
+        parent::__construct(null);
 
         $this->api = $api;
     }
@@ -42,7 +42,8 @@ class WebhookCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('url', InputArgument::OPTIONAL, 'Webhook url')
+            ->setName('telegram:webhook:set')
+            ->addArgument('url', InputArgument::REQUIRED, 'Webhook url')
             ->addArgument('certificate', InputArgument::OPTIONAL, 'Path to public key certificate')
             ->setDescription('Set webhook')
         ;
