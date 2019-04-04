@@ -1,52 +1,52 @@
 parameters:
-    bo_shurik_telegram_bot.telegram.class: BoShurik\TelegramBotBundle\Telegram\Telegram
+    boshurik_telegram_bot.telegram.class: BoShurik\TelegramBotBundle\Telegram\Telegram
 
-    bo_shurik_telegram_bot.api.class: TelegramBot\Api\BotApi
+    boshurik_telegram_bot.api.class: TelegramBot\Api\BotApi
 
-    bo_shurik_telegram_bot.updates_command.class: BoShurik\TelegramBotBundle\Command\UpdatesCommand
-    bo_shurik_telegram_bot.updates_command.name: "telegram:updates"
+    boshurik_telegram_bot.updates_command.class: BoShurik\TelegramBotBundle\Command\UpdatesCommand
+    boshurik_telegram_bot.updates_command.name: "telegram:updates"
 
-    bo_shurik_telegram_bot.webhook_command.class: BoShurik\TelegramBotBundle\Command\WebhookCommand
-    bo_shurik_telegram_bot.webhook_command.name: "telegram:webhook"
+    boshurik_telegram_bot.webhook_command.class: BoShurik\TelegramBotBundle\Command\WebhookCommand
+    boshurik_telegram_bot.webhook_command.name: "telegram:webhook"
 
-    bo_shurik_telegram_bot.api.token:
-    bo_shurik_telegram_bot.api.tracker_token:
-    bo_shurik_telegram_bot.api.proxy:
+    boshurik_telegram_bot.api.token:
+    boshurik_telegram_bot.api.tracker_token:
+    boshurik_telegram_bot.api.proxy:
 
 services:
-    BoShurik\TelegramBotBundle\Telegram\Telegram: '@bo_shurik_telegram_bot.telegram'
-    TelegramBot\Api\BotApi: '@bo_shurik_telegram_bot.api'
-    BoShurik\TelegramBotBundle\Command\UpdatesCommand: '@bo_shurik_telegram_bot.updates_command'
-    BoShurik\TelegramBotBundle\Command\WebhookCommand: '@bo_shurik_telegram_bot.webhook_command'
+    BoShurik\TelegramBotBundle\Telegram\Telegram: '@boshurik_telegram_bot.telegram'
+    TelegramBot\Api\BotApi: '@boshurik_telegram_bot.api'
+    BoShurik\TelegramBotBundle\Command\UpdatesCommand: '@boshurik_telegram_bot.updates_command'
+    BoShurik\TelegramBotBundle\Command\WebhookCommand: '@boshurik_telegram_bot.webhook_command'
 
-    bo_shurik_telegram_bot.telegram:
-        class: "%bo_shurik_telegram_bot.telegram.class%"
+    boshurik_telegram_bot.telegram:
+        class: "%boshurik_telegram_bot.telegram.class%"
         public: true
         arguments:
-            - "@bo_shurik_telegram_bot.api"
+            - "@boshurik_telegram_bot.api"
             - "@event_dispatcher"
 
-    bo_shurik_telegram_bot.api:
-        class: "%bo_shurik_telegram_bot.api.class%"
+    boshurik_telegram_bot.api:
+        class: "%boshurik_telegram_bot.api.class%"
         public: true
         arguments:
-            - "%bo_shurik_telegram_bot.api.token%"
-            - "%bo_shurik_telegram_bot.api.tracker_token%"
+            - "%boshurik_telegram_bot.api.token%"
+            - "%boshurik_telegram_bot.api.tracker_token%"
         calls:
-            - ["setProxy", ["%bo_shurik_telegram_bot.api.proxy%"]]
+            - ["setProxy", ["%boshurik_telegram_bot.api.proxy%"]]
 
-    bo_shurik_telegram_bot.updates_command:
-        class: "%bo_shurik_telegram_bot.updates_command.class%"
+    boshurik_telegram_bot.updates_command:
+        class: "%boshurik_telegram_bot.updates_command.class%"
         arguments:
-            - "%bo_shurik_telegram_bot.updates_command.name%"
-            - "@bo_shurik_telegram_bot.telegram"
+            - "%boshurik_telegram_bot.updates_command.name%"
+            - "@boshurik_telegram_bot.telegram"
         tags:
             - { name: console.command }
 
-    bo_shurik_telegram_bot.webhook_command:
-        class: "%bo_shurik_telegram_bot.webhook_command.class%"
+    boshurik_telegram_bot.webhook_command:
+        class: "%boshurik_telegram_bot.webhook_command.class%"
         arguments:
-            - "%bo_shurik_telegram_bot.webhook_command.name%"
-            - "@bo_shurik_telegram_bot.api"
+            - "%boshurik_telegram_bot.webhook_command.name%"
+            - "@boshurik_telegram_bot.api"
         tags:
             - { name: console.command }

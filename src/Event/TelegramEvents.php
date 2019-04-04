@@ -13,6 +13,6 @@ namespace BoShurik\TelegramBotBundle\Event;
 
 final class TelegramEvents
 {
-    const UPDATE = 'bo_shurik_telegram_bot.update';
-    const WEBHOOK = 'bo_shurik_telegram_bot.webhook';
+    const UPDATE = 'boshurik_telegram_bot.update';
+    const WEBHOOK = 'boshurik_telegram_bot.webhook';
 }

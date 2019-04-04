@@ -39,7 +39,7 @@ BoShurikTelegramBotBundle:
 #### Configuration
 
 ``` yaml
-bo_shurik_telegram_bot:
+boshurik_telegram_bot:
     api:
         token: "%telegram_bot_api_token%"
         proxy: "socks5://127.0.0.1:8888"
@@ -52,7 +52,7 @@ bo_shurik_telegram_bot:
 
 ```php
     /** @var TelegramBot\Api\BotApi $api */
-    $api = $this->container->get('bo_shurik_telegram_bot.api');
+    $api = $this->container->get('boshurik_telegram_bot.api');
 ```
 
 For more info see [Usage][2] section in [`telegram-bot/api`][1] library
@@ -87,12 +87,12 @@ Commands must implement `\BoShurik\TelegramBotBundle\Telegram\Command\CommandInt
 
 There is `\BoShurik\TelegramBotBundle\Telegram\Command\AbstractCommand` you can start with
 
-To register command: add tag `bo_shurik_telegram_bot.command` to service definition
+To register command: add tag `boshurik_telegram_bot.command` to service definition
 ``` yaml
 app.telegram.command:
     class: AppBundle\Telegram\Command\SomeCommand
     tags:
-        - { name: bo_shurik_telegram_bot.command }
+        - { name: boshurik_telegram_bot.command }
 ```
 
 There is predefined `\BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand`. You need to register it:
@@ -100,9 +100,9 @@ There is predefined `\BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand`. 
 app.telegram.command.help:
     class: BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand
     arguments:
-        - "@bo_shurik_telegram_bot.command_pool"
+        - "@boshurik_telegram_bot.command_pool"
     tags:
-        - { name: bo_shurik_telegram_bot.command }
+        - { name: boshurik_telegram_bot.command }
 ```
 
 #### Events

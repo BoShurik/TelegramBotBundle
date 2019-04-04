@@ -11,6 +11,7 @@
 
 namespace BoShurik\TelegramBotBundle;
 
+use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -26,5 +27,17 @@ class BoShurikTelegramBotBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new CommandCompilerPass());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getContainerExtension()
+    {
+        if (null === $this->extension) {
+            $this->extension = new BoShurikTelegramBotExtension();
+        }
+
+        return $this->extension;
     }
 }

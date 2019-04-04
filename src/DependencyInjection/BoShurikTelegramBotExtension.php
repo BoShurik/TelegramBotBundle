@@ -36,9 +36,17 @@ class BoShurikTelegramBotExtension extends Extension
         $loader->load('api.yml');
         $loader->load('command.yml');
 
-        $container->setParameter('bo_shurik_telegram_bot.api.token', $config['api']['token']);
-        $container->setParameter('bo_shurik_telegram_bot.api.tracker_token', $config['api']['tracker_token']);
-        $container->setParameter('bo_shurik_telegram_bot.api.proxy', $config['api']['proxy']);
-        $container->setParameter('bo_shurik_telegram_bot.name', $config['name']);
+        $container->setParameter('boshurik_telegram_bot.api.token', $config['api']['token']);
+        $container->setParameter('boshurik_telegram_bot.api.tracker_token', $config['api']['tracker_token']);
+        $container->setParameter('boshurik_telegram_bot.api.proxy', $config['api']['proxy']);
+        $container->setParameter('boshurik_telegram_bot.name', $config['name']);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAlias()
+    {
+        return 'boshurik_telegram_bot';
     }
 }

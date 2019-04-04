@@ -44,7 +44,7 @@ class WebhookController extends Controller
      */
     private function getTelegram()
     {
-        return $this->get('bo_shurik_telegram_bot.telegram');
+        return $this->get('boshurik_telegram_bot.telegram');
     }
 
     /**

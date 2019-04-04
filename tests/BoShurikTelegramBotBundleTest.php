@@ -22,6 +22,6 @@ class BoShurikTelegramBotBundleTest extends TestCase
         $bundle = new BoShurikTelegramBotBundle();
 
         $this->assertInstanceOf(BoShurikTelegramBotExtension::class, $bundle->getContainerExtension());
-        $this->assertSame('bo_shurik_telegram_bot', $bundle->getContainerExtension()->getAlias());
+        $this->assertSame('boshurik_telegram_bot', $bundle->getContainerExtension()->getAlias());
     }
 }

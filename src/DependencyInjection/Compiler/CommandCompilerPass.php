@@ -22,9 +22,9 @@ class CommandCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $pool = $container->getDefinition('bo_shurik_telegram_bot.command_pool');
+        $pool = $container->getDefinition('boshurik_telegram_bot.command_pool');
 
-        $commands = $this->findAndSortTaggedServices('bo_shurik_telegram_bot.command', $container);
+        $commands = $this->findAndSortTaggedServices('boshurik_telegram_bot.command', $container);
         foreach ($commands as $command) {
             $pool->addMethodCall('addCommand', array(
                 $command,
