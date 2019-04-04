@@ -25,6 +25,8 @@
     },
     "require": {
         "php": "^7.0",
+        "ext-curl": "*",
+        "symfony/console": "^3.4 || ^4.0",
         "symfony/framework-bundle": "^3.4 || ^4.0",
         "telegram-bot/api": "^2.3.10"
     },
