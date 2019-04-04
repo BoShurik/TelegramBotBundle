@@ -12,11 +12,15 @@
 namespace BoShurik\TelegramBotBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 class CommandCompilerPass implements CompilerPassInterface
 {
+    const TAG = 'boshurik_telegram_bot.command';
+
+    use PriorityTaggedServiceTrait;
+
     /**
      * @inheritDoc
      */
@@ -24,37 +28,11 @@ class CommandCompilerPass implements CompilerPassInterface
     {
         $pool = $container->getDefinition('boshurik_telegram_bot.command_pool');
 
-        $commands = $this->findAndSortTaggedServices('boshurik_telegram_bot.command', $container);
+        $commands = $this->findAndSortTaggedServices(self::TAG, $container);
         foreach ($commands as $command) {
             $pool->addMethodCall('addCommand', [
                 $command,
             ]);
         }
-    }
-
-    /**
-     * From PriorityTaggedServiceTrait as we support symfony >= 2.7
-     *
-     * @param string $tagName
-     * @param ContainerBuilder $container
-     * @return array|mixed
-     */
-    private function findAndSortTaggedServices($tagName, ContainerBuilder $container)
-    {
-        $services = [];
-
-        foreach ($container->findTaggedServiceIds($tagName) as $serviceId => $tags) {
-            foreach ($tags as $attributes) {
-                $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
-                $services[$priority][] = new Reference($serviceId);
-            }
-        }
-
-        if ($services) {
-            krsort($services);
-            $services = call_user_func_array('array_merge', $services);
-        }
-
-        return $services;
     }
 }

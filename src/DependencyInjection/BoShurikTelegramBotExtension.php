@@ -11,6 +11,8 @@
 
 namespace BoShurik\TelegramBotBundle\DependencyInjection;
 
+use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
+use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -41,6 +43,11 @@ class BoShurikTelegramBotExtension extends Extension
         $container->setParameter('boshurik_telegram_bot.api.tracker_token', $config['api']['tracker_token']);
         $container->setParameter('boshurik_telegram_bot.api.proxy', $config['api']['proxy']);
         $container->setParameter('boshurik_telegram_bot.name', $config['name']);
+
+        $container
+            ->registerForAutoconfiguration(CommandInterface::class)
+            ->addTag(CommandCompilerPass::TAG)
+        ;
     }
 
     /**
