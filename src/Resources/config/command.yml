@@ -1,18 +1,17 @@
 parameters:
-    boshurik_telegram_bot.command_pool.class: BoShurik\TelegramBotBundle\Telegram\Command\CommandPool
     boshurik_telegram_bot.command_listener.class: BoShurik\TelegramBotBundle\EventListener\CommandListener
 
 services:
-    BoShurik\TelegramBotBundle\Telegram\Command\CommandPool: '@boshurik_telegram_bot.command_pool'
     BoShurik\TelegramBotBundle\EventListener\CommandListener: '@boshurik_telegram_bot.command_listener'
 
-    boshurik_telegram_bot.command_pool:
-        class: "%boshurik_telegram_bot.command_pool.class%"
+    BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry:
+        arguments:
+            - []
 
     boshurik_telegram_bot.command_listener:
         class: "%boshurik_telegram_bot.command_listener.class%"
         arguments:
             - "@boshurik_telegram_bot.api"
-            - "@boshurik_telegram_bot.command_pool"
+            - "@BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry"
         tags:
             - { name: kernel.event_listener, event: boshurik_telegram_bot.update, method: onUpdate }

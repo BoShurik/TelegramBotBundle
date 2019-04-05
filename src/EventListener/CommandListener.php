@@ -12,7 +12,7 @@
 namespace BoShurik\TelegramBotBundle\EventListener;
 
 use TelegramBot\Api\BotApi;
-use BoShurik\TelegramBotBundle\Telegram\Command\CommandPool;
+use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
 
 use BoShurik\TelegramBotBundle\Event\Telegram\UpdateEvent;
 
@@ -24,11 +24,11 @@ class CommandListener
     private $api;
     
     /**
-     * @var CommandPool
+     * @var CommandRegistry
      */
     private $commandPool;
 
-    public function __construct(BotApi $api, CommandPool $commandPool)
+    public function __construct(BotApi $api, CommandRegistry $commandPool)
     {
         $this->api = $api;
         $this->commandPool = $commandPool;

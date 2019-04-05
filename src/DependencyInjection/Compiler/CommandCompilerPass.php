@@ -11,9 +11,12 @@
 
 namespace BoShurik\TelegramBotBundle\DependencyInjection\Compiler;
 
+use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
+use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 class CommandCompilerPass implements CompilerPassInterface
 {
@@ -26,13 +29,23 @@ class CommandCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $pool = $container->getDefinition('boshurik_telegram_bot.command_pool');
+        $registry = $container->getDefinition(CommandRegistry::class);
 
         $commands = $this->findAndSortTaggedServices(self::TAG, $container);
         foreach ($commands as $command) {
-            $pool->addMethodCall('addCommand', [
-                $command,
-            ]);
+            $definition = $container->getDefinition($command);
+            $class = $definition->getClass();
+            $interfaces = class_implements($class);
+            if (!isset($interfaces[CommandInterface::class])) {
+                throw new LogicException(sprintf(
+                    'Can\'t apply tag "%s" to %s class. It must implement %s interface',
+                    self::TAG,
+                    $class,
+                    CommandInterface::class
+                ));
+            }
         }
+
+        $registry->setArgument(0, $commands);
     }
 }

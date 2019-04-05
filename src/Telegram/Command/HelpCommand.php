@@ -17,7 +17,7 @@ use TelegramBot\Api\Types\Update;
 class HelpCommand extends AbstractCommand implements PublicCommandInterface
 {
     /**
-     * @var CommandPool
+     * @var CommandRegistry
      */
     private $commandPool;
 
@@ -31,7 +31,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
      */
     private $aliases;
 
-    public function __construct(CommandPool $commandPool, $description = 'Help', $aliases = [])
+    public function __construct(CommandRegistry $commandPool, $description = 'Help', $aliases = [])
     {
         $this->commandPool = $commandPool;
         $this->description = $description;

@@ -11,24 +11,16 @@
 
 namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
-class CommandPool
+class CommandRegistry
 {
     /**
      * @var CommandInterface[]
      */
     private $commands;
 
-    public function __construct()
+    public function __construct($commands = [])
     {
-        $this->commands = [];
-    }
-
-    /**
-     * @param CommandInterface $command
-     */
-    public function addCommand(CommandInterface $command)
-    {
-        $this->commands[] = $command;
+        $this->commands = $commands;
     }
 
     /**
