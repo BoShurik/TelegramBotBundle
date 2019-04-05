@@ -1,0 +1,45 @@
+services:
+    TelegramBot\Api\BotApi:
+        arguments:
+            - '%boshurik_telegram_bot.api.token%'
+            - '%boshurik_telegram_bot.api.tracker_token%'
+        calls:
+            - ['setProxy', ['%boshurik_telegram_bot.api.proxy%']]
+
+    boshurik_telegram_bot.telegram:
+        arguments:
+            - '@TelegramBot\Api\BotApi'
+            - '@event_dispatcher'
+
+    boshurik_telegram_bot.command.registry: ~
+
+    boshurik_telegram_bot.command.listener:
+        arguments:
+            - '@TelegramBot\Api\BotApi'
+            - '@boshurik_telegram_bot.command.registry'
+        tags:
+            - { name: kernel.event_listener, event: boshurik_telegram_bot.update, method: onUpdate }
+
+    BoShurik\TelegramBotBundle\Controller\WebhookController:
+        public: true
+        arguments:
+            - '@boshurik_telegram_bot.telegram'
+            - '@event_dispatcher'
+
+    BoShurik\TelegramBotBundle\Command\UpdatesCommand:
+        arguments:
+            - '@boshurik_telegram_bot.telegram'
+        tags:
+            - { name: console.command }
+
+    BoShurik\TelegramBotBundle\Command\Webhook\SetCommand:
+        arguments:
+            - '@TelegramBot\Api\BotApi'
+        tags:
+            - { name: console.command }
+
+    BoShurik\TelegramBotBundle\Command\Webhook\UnsetCommand:
+        arguments:
+            - '@TelegramBot\Api\BotApi'
+        tags:
+            - { name: console.command }

@@ -45,7 +45,7 @@ class CommandCompilerPassTest extends TestCase
         $container->compile();
 
         /** @var CommandRegistry $registry */
-        $registry = $container->get(CommandRegistry::class);
+        $registry = $container->get('boshurik_telegram_bot.command.registry');
         $this->assertCount(3, $registry->getCommands());
         $this->assertContainsOnlyInstancesOf(CommandInterface::class, $registry->getCommands());
     }
@@ -66,20 +66,18 @@ class CommandCompilerPassTest extends TestCase
 
     public function testNoCircularException()
     {
-        $container = new ContainerBuilder();
-        $container->addCompilerPass(new CommandCompilerPass());
+        $container = $this->buildContainer();
 
-        $container->register(CommandRegistry::class)->setPublic(true);
         $container
             ->register(HelpCommand::class)
-            ->addArgument(new Reference(CommandRegistry::class))
+            ->addArgument(new Reference('boshurik_telegram_bot.command.registry'))
             ->addTag(CommandCompilerPass::TAG)
             ->setPublic(true)
         ;
 
         $container->compile();
 
-        $this->assertInstanceOf(CommandRegistry::class, $container->get(CommandRegistry::class));
+        $this->assertInstanceOf(CommandRegistry::class, $container->get('boshurik_telegram_bot.command.registry'));
         $this->assertInstanceOf(HelpCommand::class, $container->get(HelpCommand::class));
     }
 
@@ -91,7 +89,11 @@ class CommandCompilerPassTest extends TestCase
         $container = new ContainerBuilder();
         $container->addCompilerPass(new CommandCompilerPass());
 
-        $container->register(CommandRegistry::class)->setPublic(true);
+        $container
+            ->register('boshurik_telegram_bot.command.registry')
+            ->setClass(CommandRegistry::class)
+            ->setPublic(true)
+        ;
 
         return $container;
     }

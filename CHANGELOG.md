@@ -11,3 +11,4 @@ CHANGELOG
 * Split `bin/console telegram:webhook` command to `bin/console telegram:webhook:set` 
 and `bin/console telegram:webhook:unset`
 * Support autoconfigure for `BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface` interface
+* Remove `boshurik_telegram_bot.api` service alias. Use `TelegramBot\Api\BotApi` instead

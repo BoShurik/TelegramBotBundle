@@ -12,7 +12,6 @@
 namespace BoShurik\TelegramBotBundle\DependencyInjection\Compiler;
 
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
-use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,7 +28,7 @@ class CommandCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $registry = $container->getDefinition(CommandRegistry::class);
+        $registry = $container->getDefinition('boshurik_telegram_bot.command.registry');
 
         $commands = $this->findAndSortTaggedServices(self::TAG, $container);
         foreach ($commands as $command) {

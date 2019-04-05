@@ -51,8 +51,7 @@ boshurik_telegram_bot:
 #### API
 
 ```php
-    /** @var TelegramBot\Api\BotApi $api */
-    $api = $this->container->get('boshurik_telegram_bot.api');
+    $api = $this->container->get(TelegramBot\Api\BotApi::class);
 ```
 
 For more info see [Usage][2] section in [`telegram-bot/api`][1] library
