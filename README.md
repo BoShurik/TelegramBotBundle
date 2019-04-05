@@ -101,7 +101,7 @@ There is predefined `\BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand`. 
 app.telegram.command.help:
     class: BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand
     arguments:
-        - "@BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry"
+        - '@BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry'
     tags:
         - { name: boshurik_telegram_bot.command }
 ```
