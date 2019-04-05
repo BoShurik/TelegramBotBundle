@@ -18,9 +18,17 @@ class CommandRegistry
      */
     private $commands;
 
-    public function __construct($commands = [])
+    public function __construct()
     {
-        $this->commands = $commands;
+        $this->commands = [];
+    }
+
+    /**
+     * @param CommandInterface $command
+     */
+    public function addCommand(CommandInterface $command)
+    {
+        $this->commands[] = $command;
     }
 
     /**

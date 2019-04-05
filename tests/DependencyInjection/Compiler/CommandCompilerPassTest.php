@@ -14,12 +14,14 @@ namespace BoShurik\TelegramBotBundle\Tests\DependencyInjection\Compiler;
 use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
+use BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand;
 use BoShurik\TelegramBotBundle\Tests\Fixtures\FromAbstractCommand;
 use BoShurik\TelegramBotBundle\Tests\Fixtures\FromInterfaceCommand;
 use BoShurik\TelegramBotBundle\Tests\Fixtures\PublicCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
+use Symfony\Component\DependencyInjection\Reference;
 
 class CommandCompilerPassTest extends TestCase
 {
@@ -60,6 +62,25 @@ class CommandCompilerPassTest extends TestCase
         ;
 
         $container->compile();
+    }
+
+    public function testNoCircularException()
+    {
+        $container = new ContainerBuilder();
+        $container->addCompilerPass(new CommandCompilerPass());
+
+        $container->register(CommandRegistry::class)->setPublic(true);
+        $container
+            ->register(HelpCommand::class)
+            ->addArgument(new Reference(CommandRegistry::class))
+            ->addTag(CommandCompilerPass::TAG)
+            ->setPublic(true)
+        ;
+
+        $container->compile();
+
+        $this->assertInstanceOf(CommandRegistry::class, $container->get(CommandRegistry::class));
+        $this->assertInstanceOf(HelpCommand::class, $container->get(HelpCommand::class));
     }
 
     /**

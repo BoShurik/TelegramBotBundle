@@ -4,9 +4,7 @@ parameters:
 services:
     BoShurik\TelegramBotBundle\EventListener\CommandListener: '@boshurik_telegram_bot.command_listener'
 
-    BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry:
-        arguments:
-            - []
+    BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry: ~
 
     boshurik_telegram_bot.command_listener:
         class: "%boshurik_telegram_bot.command_listener.class%"

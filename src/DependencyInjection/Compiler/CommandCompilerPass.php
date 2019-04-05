@@ -44,8 +44,10 @@ class CommandCompilerPass implements CompilerPassInterface
                     CommandInterface::class
                 ));
             }
-        }
 
-        $registry->setArgument(0, $commands);
+            $registry->addMethodCall('addCommand', [
+                $command,
+            ]);
+        }
     }
 }
