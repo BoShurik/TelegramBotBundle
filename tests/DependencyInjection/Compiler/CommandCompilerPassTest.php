@@ -45,7 +45,7 @@ class CommandCompilerPassTest extends TestCase
         $container->compile();
 
         /** @var CommandRegistry $registry */
-        $registry = $container->get('boshurik_telegram_bot.command.registry');
+        $registry = $container->get(CommandRegistry::class);
         $this->assertCount(3, $registry->getCommands());
         $this->assertContainsOnlyInstancesOf(CommandInterface::class, $registry->getCommands());
     }
@@ -70,14 +70,14 @@ class CommandCompilerPassTest extends TestCase
 
         $container
             ->register(HelpCommand::class)
-            ->addArgument(new Reference('boshurik_telegram_bot.command.registry'))
+            ->addArgument(new Reference(CommandRegistry::class))
             ->addTag(CommandCompilerPass::TAG)
             ->setPublic(true)
         ;
 
         $container->compile();
 
-        $this->assertInstanceOf(CommandRegistry::class, $container->get('boshurik_telegram_bot.command.registry'));
+        $this->assertInstanceOf(CommandRegistry::class, $container->get(CommandRegistry::class));
         $this->assertInstanceOf(HelpCommand::class, $container->get(HelpCommand::class));
     }
 
@@ -90,8 +90,7 @@ class CommandCompilerPassTest extends TestCase
         $container->addCompilerPass(new CommandCompilerPass());
 
         $container
-            ->register('boshurik_telegram_bot.command.registry')
-            ->setClass(CommandRegistry::class)
+            ->register(CommandRegistry::class)
             ->setPublic(true)
         ;
 
