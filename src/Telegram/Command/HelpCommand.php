@@ -19,7 +19,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
     /**
      * @var CommandRegistry
      */
-    private $commandPool;
+    private $commandRegistry;
 
     /**
      * @var string
@@ -31,9 +31,9 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
      */
     private $aliases;
 
-    public function __construct(CommandRegistry $commandPool, $description = 'Help', $aliases = [])
+    public function __construct(CommandRegistry $commandRegistry, $description = 'Help', $aliases = [])
     {
-        $this->commandPool = $commandPool;
+        $this->commandRegistry = $commandRegistry;
         $this->description = $description;
         $this->aliases = $aliases;
     }
@@ -43,7 +43,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
      */
     public function execute(BotApi $api, Update $update)
     {
-        $commands = $this->commandPool->getCommands();
+        $commands = $this->commandRegistry->getCommands();
 
         $reply = '';
         foreach ($commands as $command) {
