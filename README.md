@@ -94,6 +94,8 @@ app.telegram.command:
         - { name: boshurik_telegram_bot.command }
 ```
 
+If you use `autoconfigure` tag will be added automatically
+
 There is predefined `\BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand`. You need to register it:
 ``` yaml
 app.telegram.command.help:
