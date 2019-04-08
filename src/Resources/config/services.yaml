@@ -7,6 +7,7 @@ services:
             - ['setProxy', ['%boshurik_telegram_bot.api.proxy%']]
 
     boshurik_telegram_bot.telegram:
+        class: BoShurik\TelegramBotBundle\Telegram\Telegram
         arguments:
             - '@TelegramBot\Api\BotApi'
             - '@event_dispatcher'
@@ -14,6 +15,7 @@ services:
     BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry: ~
 
     boshurik_telegram_bot.command.listener:
+        class: BoShurik\TelegramBotBundle\EventListener\CommandListener
         arguments:
             - '@TelegramBot\Api\BotApi'
             - '@BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry'
@@ -26,19 +28,23 @@ services:
             - '@boshurik_telegram_bot.telegram'
             - '@event_dispatcher'
 
-    BoShurik\TelegramBotBundle\Command\UpdatesCommand:
+    boshurik_telegram_bot.command.updates:
+        class: BoShurik\TelegramBotBundle\Command\UpdatesCommand
         arguments:
             - '@boshurik_telegram_bot.telegram'
         tags:
             - { name: console.command }
 
-    BoShurik\TelegramBotBundle\Command\Webhook\SetCommand:
+    boshurik_telegram_bot.command.webhook.set:
+        class: BoShurik\TelegramBotBundle\Command\Webhook\SetCommand
         arguments:
             - '@TelegramBot\Api\BotApi'
         tags:
             - { name: console.command }
 
-    BoShurik\TelegramBotBundle\Command\Webhook\UnsetCommand:
+
+    boshurik_telegram_bot.command.webhook.unset:
+        class: BoShurik\TelegramBotBundle\Command\Webhook\UnsetCommand
         arguments:
             - '@TelegramBot\Api\BotApi'
         tags:
