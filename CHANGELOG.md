@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-3.0.0 (2019-XX-XX)
+3.0.0 (2019-04-09)
 ------------------
 
 * Command system now works with `Update` object instead of `Message` (#14)
