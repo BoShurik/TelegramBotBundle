@@ -47,9 +47,11 @@ class WebhookController
      */
     public function indexAction(Request $request)
     {
-        if ($data = BotApi::jsonValidate($request->getContent(), true)) {
-            $update = Update::fromResponse($data);
-            $this->telegram->processUpdate($update);
+        if ($content = $request->getContent()) {
+            if ($data = BotApi::jsonValidate($content, true)) {
+                $update = Update::fromResponse($data);
+                $this->telegram->processUpdate($update);
+            }
         } else {
             throw new BadRequestHttpException('Empty data');
         }

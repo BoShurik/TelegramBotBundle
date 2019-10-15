@@ -26,6 +26,7 @@
     "require": {
         "php": "^7.0",
         "ext-curl": "*",
+        "ext-json": "*",
         "symfony/console": "^3.4 || ^4.0",
         "symfony/event-dispatcher": "^3.4 || ^4.0",
         "symfony/framework-bundle": "^3.4 || ^4.0",

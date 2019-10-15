@@ -68,4 +68,13 @@ class HelpCommandTest extends TestCase
 
         $helpCommand->execute($api, $update);
     }
+
+    public function testHelpCommandAliases()
+    {
+        /** @var CommandRegistry|MockObject $commandRegistry */
+        $commandRegistry = $this->createMock(CommandRegistry::class);
+        $helpCommand = new HelpCommand($commandRegistry, 'Help', ['alias']);
+
+        $this->assertSame(['alias'], $helpCommand->getAliases());
+    }
 }
