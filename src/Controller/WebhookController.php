@@ -55,8 +55,8 @@ class WebhookController
         }
 
         $event = $this->eventDispatcher->dispatch(
-            TelegramEvents::WEBHOOK,
-            new WebhookEvent($request, $update)
+            new WebhookEvent($request, $update),
+            TelegramEvents::WEBHOOK
         );
 
         return $event->getResponse() ? $event->getResponse() : new Response();
