@@ -105,6 +105,7 @@ app.telegram.command.help:
     tags:
         - { name: boshurik_telegram_bot.command }
 ```
+It displays commands which additionally implement `\BoShurik\TelegramBotBundle\Telegram\Command\PublicCommandInterface`
 
 #### Events
 
