@@ -43,7 +43,6 @@ boshurik_telegram_bot:
     api:
         token: "%telegram_bot_api_token%"
         proxy: "socks5://127.0.0.1:8888"
-    name: "%telegram_bot_name%"
 ```
 
 ## Usage

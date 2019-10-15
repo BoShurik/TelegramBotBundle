@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+3.1.0 (2019-XX-XX)
+------------------
+
+* Deprecate `boshurik_telegram_bot.name` as it is not used in the bundle. Inject bot name in your commands if needed.
+
 3.0.0 (2019-04-09)
 ------------------
 

@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('name')->isRequired()->end()
+                ->scalarNode('name')->defaultNull()->setDeprecated('The child node "%node%" at path "%path%" is deprecated. Bot name is not used in the bundle. Inject it directly to your command if needed')->end()
                 ->arrayNode('api')->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('token')->isRequired()->end()
