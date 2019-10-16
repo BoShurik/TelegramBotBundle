@@ -41,7 +41,7 @@ class TelegramTest extends TestCase
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->api = $this->createMock(BotApi::class);
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
