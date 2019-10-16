@@ -43,7 +43,7 @@ class WebhookControllerTest extends TestCase
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->telegram = $this->createMock(Telegram::class);
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);

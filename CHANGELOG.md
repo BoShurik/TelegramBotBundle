@@ -4,6 +4,9 @@ CHANGELOG
 3.1.0 (2019-XX-XX)
 ------------------
 
+* Drop support of php7.0
+* Drop support of php7.1
+* Add support of php7.4
 * Deprecate `boshurik_telegram_bot.name` as it is not used in the bundle. Inject bot name in your commands if needed.
 
 3.0.0 (2019-04-09)

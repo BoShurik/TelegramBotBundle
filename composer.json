@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "php": "^7.0",
+        "php": "^7.2",
         "ext-curl": "*",
         "ext-json": "*",
         "symfony/console": "^3.4 || ^4.0",
@@ -33,7 +33,7 @@
         "telegram-bot/api": "^2.3.10"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5"
+        "phpunit/phpunit": "^8.4"
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
