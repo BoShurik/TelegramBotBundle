@@ -4,6 +4,10 @@
 
 Telegram bot bundle on top of [`telegram-bot/api`][1] library
 
+## Examples
+
+See [example project][5]
+
 ## Installation
 
 #### Composer
@@ -119,8 +123,6 @@ public function onUpdate(UpdateEvent $event)
     $message = $update->getMessage();
 }
 ```
-
-## [Example][5]
 
 [1]: https://github.com/TelegramBot/Api
 [2]: https://github.com/TelegramBot/Api#usage
