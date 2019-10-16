@@ -16,6 +16,8 @@ See [example project][5]
 $ composer require boshurik/telegram-bot-bundle
 ```
 
+If you are using [symfony/flex][6] all you need is to set `TELEGRAM_BOT_TOKEN` environment variable
+
 #### Register the bundle
 
 ``` php
@@ -129,3 +131,4 @@ public function onUpdate(UpdateEvent $event)
 [3]: https://core.telegram.org/bots/api#getupdates
 [4]: https://core.telegram.org/bots/api#setwebhook
 [5]: https://github.com/BoShurik/telegram-bot-example
+[6]: https://flex.symfony.com
