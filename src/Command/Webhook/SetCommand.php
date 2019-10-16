@@ -56,14 +56,6 @@ class SetCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        if (!$url = $input->getArgument('url')){
-            $this->api->setWebhook();
-
-            $io->success('Webhook has been unset');
-
-            return;
-        }
-
         $certificateFile = null;
         if ($certificate = $input->getArgument('certificate')) {
             if (!is_file($certificate) || !is_readable($certificate)) {
@@ -73,7 +65,7 @@ class SetCommand extends Command
             $certificateFile = new \CURLFile($certificate);
         }
 
-        $this->api->setWebhook($url, $certificateFile);
+        $this->api->setWebhook($url = $input->getArgument('url'), $certificateFile);
 
         $io->success(sprintf('Webhook url "%s" has been set', $url));
     }
