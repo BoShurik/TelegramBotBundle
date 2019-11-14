@@ -12,8 +12,7 @@
 namespace BoShurik\TelegramBotBundle\Tests\Controller;
 
 use BoShurik\TelegramBotBundle\Controller\WebhookController;
-use BoShurik\TelegramBotBundle\Event\Telegram\WebhookEvent;
-use BoShurik\TelegramBotBundle\Event\TelegramEvents;
+use BoShurik\TelegramBotBundle\Event\WebhookEvent;
 use BoShurik\TelegramBotBundle\Telegram\Telegram;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -74,7 +73,7 @@ class WebhookControllerTest extends TestCase
         $this->eventDispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->with(TelegramEvents::WEBHOOK, $this->callback(function ($event) use ($request) {
+            ->with($this->callback(function ($event) use ($request) {
                 if (!$event instanceof WebhookEvent) {
                     return false;
                 }

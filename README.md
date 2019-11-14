@@ -114,7 +114,7 @@ It displays commands which additionally implement `\BoShurik\TelegramBotBundle\T
 
 #### Events
 
-For more complex application (e.g. conversations) you can listen for `TelegramEvents::UPDATE` event
+For more complex application (e.g. conversations) you can listen for `BoShurik\TelegramBotBundle\Event\UpdateEvent` event
 ``` php
 /**
  * @param UpdateEvent $event

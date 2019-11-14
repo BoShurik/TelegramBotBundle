@@ -11,7 +11,7 @@
 
 namespace BoShurik\TelegramBotBundle\Tests\EventListener;
 
-use BoShurik\TelegramBotBundle\Event\Telegram\UpdateEvent;
+use BoShurik\TelegramBotBundle\Event\UpdateEvent;
 use BoShurik\TelegramBotBundle\EventListener\CommandListener;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;

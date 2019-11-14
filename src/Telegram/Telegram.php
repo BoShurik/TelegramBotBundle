@@ -11,8 +11,7 @@
 
 namespace BoShurik\TelegramBotBundle\Telegram;
 
-use BoShurik\TelegramBotBundle\Event\Telegram\UpdateEvent;
-use BoShurik\TelegramBotBundle\Event\TelegramEvents;
+use BoShurik\TelegramBotBundle\Event\UpdateEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
@@ -59,6 +58,6 @@ class Telegram
     public function processUpdate($update)
     {
         $event = new UpdateEvent($update);
-        $this->eventDispatcher->dispatch(TelegramEvents::UPDATE, $event);
+        $this->eventDispatcher->dispatch($event);
     }
 }

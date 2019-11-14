@@ -13,7 +13,7 @@ namespace BoShurik\TelegramBotBundle\EventListener;
 
 use TelegramBot\Api\BotApi;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
-use BoShurik\TelegramBotBundle\Event\Telegram\UpdateEvent;
+use BoShurik\TelegramBotBundle\Event\UpdateEvent;
 
 class CommandListener
 {
