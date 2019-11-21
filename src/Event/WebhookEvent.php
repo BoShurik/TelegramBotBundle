@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Event\Telegram;
+namespace BoShurik\TelegramBotBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\Event;
 use TelegramBot\Api\Types\Update;
 
 class WebhookEvent extends Event

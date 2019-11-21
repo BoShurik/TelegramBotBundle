@@ -11,7 +11,7 @@
 
 namespace BoShurik\TelegramBotBundle\Tests\Event\Telegram;
 
-use BoShurik\TelegramBotBundle\Event\Telegram\WebhookEvent;
+use BoShurik\TelegramBotBundle\Event\WebhookEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

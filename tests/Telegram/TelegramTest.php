@@ -11,9 +11,8 @@
 
 namespace BoShurik\TelegramBotBundle\Tests\Telegram;
 
-use BoShurik\TelegramBotBundle\Event\Telegram\UpdateEvent;
-use BoShurik\TelegramBotBundle\Event\Telegram\WebhookEvent;
-use BoShurik\TelegramBotBundle\Event\TelegramEvents;
+use BoShurik\TelegramBotBundle\Event\UpdateEvent;
+use BoShurik\TelegramBotBundle\Event\WebhookEvent;
 use BoShurik\TelegramBotBundle\Telegram\Telegram;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -57,7 +56,7 @@ class TelegramTest extends TestCase
         $this->eventDispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->with(TelegramEvents::UPDATE, $this->callback(function ($event) use ($update) {
+            ->with($this->callback(function ($event) use ($update) {
                 if (!$event instanceof UpdateEvent) {
                     return false;
                 }
