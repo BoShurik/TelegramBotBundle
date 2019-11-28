@@ -68,5 +68,7 @@ class SetCommand extends Command
         $this->api->setWebhook($url = $input->getArgument('url'), $certificateFile);
 
         $io->success(sprintf('Webhook url "%s" has been set', $url));
+
+        return 0;
     }
 }

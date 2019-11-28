@@ -51,5 +51,7 @@ class UpdatesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->telegram->processUpdates();
+
+        return 0;
     }
 }

@@ -55,5 +55,7 @@ class UnsetCommand extends Command
         $this->api->setWebhook();
 
         $io->success('Webhook has been unset');
+
+        return 0;
     }
 }
