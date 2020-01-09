@@ -20,7 +20,7 @@ services:
             - '@TelegramBot\Api\BotApi'
             - '@BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry'
         tags:
-            - { name: kernel.event_listener, event: boshurik_telegram_bot.update, method: onUpdate }
+            - { name: kernel.event_subscriber }
 
     BoShurik\TelegramBotBundle\Controller\WebhookController:
         public: true
