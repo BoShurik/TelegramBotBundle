@@ -36,6 +36,9 @@
         "phpunit/phpunit": "^8.4",
         "symfony/security-guard": "^4.4 || ^5.0"
     },
+    "suggest": {
+        "symfony/security-guard": "Required to implement user authentication through Telegram"
+    },
     "scripts": {
         "test": "vendor/bin/phpunit"
     },

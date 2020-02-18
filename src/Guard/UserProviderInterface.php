@@ -6,5 +6,5 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface UserProviderInterface
 {
-    public function loadUserByTelegramId(string $telegramId): ?UserInterface;
+    public function loadUserByTelegramId(array $credentials): ?UserInterface;
 }

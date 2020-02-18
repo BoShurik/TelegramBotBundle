@@ -65,14 +65,7 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
      */
     final public function getCredentials(Request $request)
     {
-        $credentials = $request->query->all();
-
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $credentials['username'] ?? null
-        );
-
-        return $credentials;
+        return $request->query->all();
     }
 
     /**
@@ -82,7 +75,7 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
     {
         $this->validate($credentials);
 
-        return $this->userProvider->loadUserByTelegramId($credentials['id']);
+        return $this->userProvider->loadUserByTelegramId($credentials);
     }
 
     /**
