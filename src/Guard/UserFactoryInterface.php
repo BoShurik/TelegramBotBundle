@@ -4,7 +4,7 @@ namespace BoShurik\TelegramBotBundle\Guard;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface UserProviderInterface
+interface UserFactoryInterface
 {
-    public function loadUserByTelegramId(array $credentials): ?UserInterface;
+    public function createFromTelegram(array $data): UserInterface;
 }

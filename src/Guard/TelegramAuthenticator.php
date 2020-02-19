@@ -2,13 +2,11 @@
 
 namespace BoShurik\TelegramBotBundle\Guard;
 
-use BoShurik\TelegramBotBundle\Guard\UserProviderInterface as BoShurikUserProviderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
@@ -32,7 +30,7 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
     private $secret;
 
     /**
-     * @var BoShurikUserProviderInterface
+     * @var UserLoaderInterface|UserFactoryInterface
      */
     private $userProvider;
 
@@ -41,7 +39,7 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
      */
     private $urlGenerator;
 
-    public function __construct(BoShurikUserProviderInterface $userProvider, UrlGeneratorInterface $urlGenerator, string $telegramBotToken)
+    public function __construct(UserLoaderInterface $userProvider, UrlGeneratorInterface $urlGenerator, string $telegramBotToken)
     {
         $this->userProvider = $userProvider;
         $this->urlGenerator = $urlGenerator;
@@ -75,7 +73,13 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
     {
         $this->validate($credentials);
 
-        return $this->userProvider->loadUserByTelegramId($credentials);
+        $user = $this->userProvider->loadByTelegramId($credentials['id']);
+
+        if (!$user && $this->userProvider instanceof UserFactoryInterface) {
+            return $this->userProvider->createFromTelegram($credentials);
+        }
+
+        return $user;
     }
 
     /**
@@ -129,6 +133,6 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
 
     protected function getLoginUrl(): string
     {
-        return $this->urlGenerator->generate('login');
+        throw new \LogicException('Override this function if you don\'t have other authentication mechanisms in order to redirect users');
     }
 }
