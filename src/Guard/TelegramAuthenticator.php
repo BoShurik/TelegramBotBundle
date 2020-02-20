@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
@@ -16,18 +15,10 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private const REQUIRED_FIELDS = [
-        'id',
-        'first_name',
-        'last_name',
-        'auth_date',
-        'hash',
-    ];
-
     /**
-     * @var string
+     * @var TelegramLoginValidator
      */
-    private $secret;
+    private $validator;
 
     /**
      * @var UserLoaderInterface|UserFactoryInterface
@@ -39,11 +30,11 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
      */
     private $urlGenerator;
 
-    public function __construct(UserLoaderInterface $userProvider, UrlGeneratorInterface $urlGenerator, string $telegramBotToken)
+    public function __construct(TelegramLoginValidator $validator, UserLoaderInterface $userProvider, UrlGeneratorInterface $urlGenerator)
     {
+        $this->validator = $validator;
         $this->userProvider = $userProvider;
         $this->urlGenerator = $urlGenerator;
-        $this->secret = hash('sha256', $telegramBotToken, true);
     }
 
     /**
@@ -52,10 +43,8 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
     public function supports(Request $request)
     {
         $route = $request->attributes->get('_route');
-        $data = $request->query->all();
 
-        return $route === '_telegram_login'
-            && array_intersect(self::REQUIRED_FIELDS, array_keys($data)) === self::REQUIRED_FIELDS;
+        return $route === '_telegram_login';
     }
 
     /**
@@ -71,7 +60,7 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $this->validate($credentials);
+        $this->validator->validate($credentials);
 
         $user = $this->userProvider->loadByTelegramId($credentials['id']);
 
@@ -80,34 +69,6 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         return $user;
-    }
-
-    /**
-     * Check the data integrity.
-     */
-    final protected function validate(array $data)
-    {
-        // Check for data expiration
-        // This is optional, but recommended step ;)
-        if ((time() - $data['auth_date']) > 3600) {
-            throw new CustomUserMessageAuthenticationException('Login data expired');
-        }
-
-        $hash = $data['hash'];
-        unset($data['hash']);
-
-        ksort($data);
-        $data_check_string = implode("\n", array_map(
-            function ($key, $value) { return "$key=$value"; },
-            array_keys($data),
-            $data
-        ));
-
-        // Check for data integrity
-        $hmac = hash_hmac('sha256', $data_check_string, $this->secret);
-        if ($hmac !== $hash) {
-            throw new CustomUserMessageAuthenticationException('Invalid data checksum');
-        }
     }
 
     /**
