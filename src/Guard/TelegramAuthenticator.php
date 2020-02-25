@@ -116,6 +116,6 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
             throw new \LogicException('`login_route` parameter si required if you don\'t use other authentication mechanisms in order to redirect users to a login page');
         }
 
-        return new RedirectResponse($this->urlGenerator->generate($this->loginRoute));
+        return $this->urlGenerator->generate($this->loginRoute);
     }
 }
