@@ -30,11 +30,29 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
      */
     private $urlGenerator;
 
-    public function __construct(TelegramLoginValidator $validator, UserLoaderInterface $userProvider, UrlGeneratorInterface $urlGenerator)
+    /**
+     * @var string
+     */
+    private $guardRoute;
+
+    /**
+     * @var string|null
+     */
+    private $loginRoute;
+
+    /**
+     * @var string
+     */
+    private $defaultTargetRoute;
+
+    public function __construct(TelegramLoginValidator $validator, UserLoaderInterface $userProvider, UrlGeneratorInterface $urlGenerator, string $guardRoute, string $defaultTargetRoute, string $loginRoute = null)
     {
         $this->validator = $validator;
         $this->userProvider = $userProvider;
         $this->urlGenerator = $urlGenerator;
+        $this->guardRoute = $guardRoute;
+        $this->loginRoute = $loginRoute;
+        $this->defaultTargetRoute = $defaultTargetRoute;
     }
 
     /**
@@ -44,7 +62,7 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
     {
         $route = $request->attributes->get('_route');
 
-        return $route === '_telegram_login';
+        return $route === $this->guardRoute;
     }
 
     /**
@@ -89,11 +107,15 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('user_profile'));
+        return new RedirectResponse($this->urlGenerator->generate($this->defaultTargetRoute));
     }
 
     protected function getLoginUrl(): string
     {
-        throw new \LogicException('Override this function if you don\'t have other authentication mechanisms in order to redirect users');
+        if (!$this->loginRoute) {
+            throw new \LogicException('`login_route` parameter si required if you don\'t use other authentication mechanisms in order to redirect users to a login page');
+        }
+
+        return new RedirectResponse($this->urlGenerator->generate($this->loginRoute));
     }
 }

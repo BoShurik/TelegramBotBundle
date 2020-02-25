@@ -4,7 +4,7 @@ namespace BoShurik\TelegramBotBundle\Guard;
 
 use BoShurik\TelegramBotBundle\Exception\AuthenticationException;
 
-final class TelegramLoginValidator
+class TelegramLoginValidator
 {
     private const EXPIRING_TIMEOUT = 3600;
 

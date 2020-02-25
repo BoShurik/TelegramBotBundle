@@ -12,11 +12,16 @@
 namespace BoShurik\TelegramBotBundle\DependencyInjection;
 
 use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
+use BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator;
+use BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator;
+use BoShurik\TelegramBotBundle\Guard\UserLoaderInterface;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -45,6 +50,27 @@ class BoShurikTelegramBotExtension extends Extension
             ->registerForAutoconfiguration(CommandInterface::class)
             ->addTag(CommandCompilerPass::TAG)
         ;
+
+        if ($config['guard']['enabled']) {
+            $this->configureAuthenticator($container, $config['guard']);
+        }
+    }
+
+    private function configureAuthenticator(ContainerBuilder $container, array $configs)
+    {
+        $container->autowire(UserLoaderInterface::class);
+        $container->autowire(UrlGeneratorInterface::class);
+        $container->autowire(TelegramLoginValidator::class);
+
+        $container->addDefinitions([
+            TelegramAuthenticator::class => new Definition(TelegramAuthenticator::class, [
+                $container->findDefinition(TelegramLoginValidator::class),
+                $container->findDefinition(UserLoaderInterface::class),
+                $container->findDefinition(UrlGeneratorInterface::class),
+                $configs['guard_route'],
+                $configs['default_target_route'],
+            ])
+        ]);
     }
 
     /**

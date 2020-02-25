@@ -38,6 +38,13 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('proxy')->defaultValue('')->end()
                     ->end()
                 ->end()
+                ->arrayNode('guard')->canBeEnabled()
+                    ->children()
+                        ->scalarNode('login_route')->cannotBeEmpty()->end()
+                        ->scalarNode('default_target_route')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('guard_route')->isRequired()->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

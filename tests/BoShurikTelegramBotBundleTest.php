@@ -14,12 +14,22 @@ namespace BoShurik\TelegramBotBundle\Tests;
 use BoShurik\TelegramBotBundle\BoShurikTelegramBotBundle;
 use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
 use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
+use BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator;
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class BoShurikTelegramBotBundleTest extends TestCase
+class BoShurikTelegramBotBundleTest extends AbstractExtensionTestCase
 {
+    protected function getContainerExtensions(): array
+    {
+        return array(
+            new BoShurikTelegramBotExtension()
+        );
+    }
+
     public function testGetContainerExtension()
     {
         $bundle = new BoShurikTelegramBotBundle();
@@ -43,5 +53,33 @@ class BoShurikTelegramBotBundleTest extends TestCase
         ;
 
         $bundle->build($builder);
+    }
+
+    public function testNoAuthenticatorServiceIfGuardIsDisabled()
+    {
+        $this->load([
+            // Minimal config
+            'api' => [
+                'token' => 'my secret token',
+            ]
+        ]);
+
+        $this->assertContainerBuilderNotHasService(TelegramAuthenticator::class);
+    }
+
+    public function testAuthenticatorServiceIsDefined()
+    {
+        $this->load([
+            // Minimal config
+            'api' => [
+                'token' => 'my secret token',
+            ],
+            'guard' => [
+                'default_target_route' => 'default_target_route',
+                'guard_route' => 'guard_route'
+            ]
+        ]);
+
+        $this->assertContainerBuilderHasService(TelegramAuthenticator::class);
     }
 }

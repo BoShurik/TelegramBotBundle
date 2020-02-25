@@ -33,9 +33,11 @@
         "telegram-bot/api": "^2.3.10"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^8.0",
         "symfony/security-guard": "^4.4 || ^5.0",
-        "php-mock/php-mock-phpunit": "^2.6"
+        "php-mock/php-mock-phpunit": "^2.6",
+        "matthiasnoback/symfony-config-test": "^4.1",
+        "matthiasnoback/symfony-dependency-injection-test": "^4.1"
     },
     "suggest": {
         "symfony/security-guard": "Required to implement user authentication through Telegram"
