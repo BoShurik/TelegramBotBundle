@@ -12,10 +12,10 @@
 namespace BoShurik\TelegramBotBundle;
 
 use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
+use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
+use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\GuardCompilerPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
 
 class BoShurikTelegramBotBundle extends Bundle
 {
@@ -27,6 +27,7 @@ class BoShurikTelegramBotBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new CommandCompilerPass());
+        $container->addCompilerPass(new GuardCompilerPass($this->getContainerExtension()));
     }
 
     /**

@@ -42,7 +42,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('login_route')->cannotBeEmpty()->end()
                         ->scalarNode('default_target_route')->isRequired()->cannotBeEmpty()->end()
-                        ->scalarNode('guard_route')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('guard_route')->defaultValue('_telegram_login')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
             ->end()

@@ -41,7 +41,6 @@ class ConfigurationTest extends TestCase
             [[
                 'guard' => [
                     'default_target_route' => 'default_target_route',
-                    'guard_route' => 'guard_route'
                 ]
             ]]
         );

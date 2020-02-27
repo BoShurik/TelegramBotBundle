@@ -14,22 +14,13 @@ namespace BoShurik\TelegramBotBundle\Tests;
 use BoShurik\TelegramBotBundle\BoShurikTelegramBotBundle;
 use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
 use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
-use BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator;
-use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\GuardCompilerPass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class BoShurikTelegramBotBundleTest extends AbstractExtensionTestCase
+class BoShurikTelegramBotBundleTest extends TestCase
 {
-    protected function getContainerExtensions(): array
-    {
-        return array(
-            new BoShurikTelegramBotExtension()
-        );
-    }
-
     public function testGetContainerExtension()
     {
         $bundle = new BoShurikTelegramBotBundle();
@@ -45,41 +36,22 @@ class BoShurikTelegramBotBundleTest extends AbstractExtensionTestCase
         /** @var ContainerBuilder|MockObject $builder */
         $builder = $this->createMock(ContainerBuilder::class);
         $builder
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('addCompilerPass')
-            ->with($this->callback(function($pass) {
-                return $pass instanceof CommandCompilerPass;
-            }));
+            ->withConsecutive(
+                [
+                    $this->callback(function($pass) {
+                        return $pass instanceof CommandCompilerPass;
+                    })
+                ],
+                [
+                    $this->callback(function($pass) {
+                        return $pass instanceof GuardCompilerPass;
+                    })
+                ]
+            )
         ;
 
         $bundle->build($builder);
-    }
-
-    public function testNoAuthenticatorServiceIfGuardIsDisabled()
-    {
-        $this->load([
-            // Minimal config
-            'api' => [
-                'token' => 'my secret token',
-            ]
-        ]);
-
-        $this->assertContainerBuilderNotHasService(TelegramAuthenticator::class);
-    }
-
-    public function testAuthenticatorServiceIsDefined()
-    {
-        $this->load([
-            // Minimal config
-            'api' => [
-                'token' => 'my secret token',
-            ],
-            'guard' => [
-                'default_target_route' => 'default_target_route',
-                'guard_route' => 'guard_route'
-            ]
-        ]);
-
-        $this->assertContainerBuilderHasService(TelegramAuthenticator::class);
     }
 }
