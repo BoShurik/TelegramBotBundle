@@ -14,6 +14,8 @@ namespace BoShurik\TelegramBotBundle\Tests\Guard;
 use BoShurik\TelegramBotBundle\Exception\AuthenticationException;
 use BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator;
 use BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator;
+use BoShurik\TelegramBotBundle\Guard\UserFactoryInterface;
+use BoShurik\TelegramBotBundle\Guard\UserLoaderInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -31,19 +33,21 @@ class TelegramAuthenticatorTest extends TestCase
 
     private $auth;
     private $urlGenerator;
-    private $userProvider;
+    private $userFactory;
+    private $userLoader;
     private $validator;
 
     public function setUp(): void
     {
         $this->validator = $this->createMock(TelegramLoginValidator::class);
-        $this->userProvider = $this->createMock(UserLoaderAndFactoryInterface::class);
+        $this->userFactory = $this->createMock(UserFactoryInterface::class);
+        $this->userLoader = $this->createMock(UserLoaderInterface::class);
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $guardRoute = self::GUARD_ROUTE_NAME;
         $defaultTargetRoute = self::TARGET_ROUTE_NAME;
         $loginRoute = self::LOGIN_ROUTE_NAME;
 
-        $this->auth = new TelegramAuthenticator($this->validator, $this->userProvider, $this->urlGenerator, $guardRoute, $defaultTargetRoute, $loginRoute);
+        $this->auth = new TelegramAuthenticator($this->validator, $this->userFactory, $this->userLoader, $this->urlGenerator, $guardRoute, $defaultTargetRoute, $loginRoute);
     }
 
     public function testSupportGuardRoute()
@@ -147,7 +151,7 @@ class TelegramAuthenticatorTest extends TestCase
     {
         $credentials = ['id' => 0];
 
-        $this->userProvider
+        $this->userLoader
             ->expects($this->once())
             ->method('loadByTelegramId')
             ->with(0)
@@ -163,7 +167,7 @@ class TelegramAuthenticatorTest extends TestCase
     {
         $credentials = ['id' => 0];
 
-        $this->userProvider
+        $this->userLoader
             ->expects($this->once())
             ->method('loadByTelegramId')
             ->with(0)

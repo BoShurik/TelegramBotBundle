@@ -14,6 +14,7 @@ namespace BoShurik\TelegramBotBundle\DependencyInjection\Compiler;
 use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
 use BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator;
 use BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator;
+use BoShurik\TelegramBotBundle\Guard\UserFactoryInterface;
 use BoShurik\TelegramBotBundle\Guard\UserLoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -53,6 +54,7 @@ class GuardCompilerPass implements CompilerPassInterface
 
         $container->setDefinition(TelegramAuthenticator::class, new Definition(TelegramAuthenticator::class, [
                 $container->findDefinition(TelegramLoginValidator::class),
+                $container->hasDefinition(UserFactoryInterface::class) ? $container->findDefinition(UserFactoryInterface::class) : null,
                 $container->findDefinition(UserLoaderInterface::class),
                 $container->findDefinition(UrlGeneratorInterface::class),
                 $configs['guard_route'],

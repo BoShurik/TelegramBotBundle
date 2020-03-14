@@ -21,9 +21,14 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
     private $validator;
 
     /**
-     * @var UserLoaderInterface|UserFactoryInterface
+     * @var null|UserFactoryInterface
      */
-    private $userProvider;
+    private $userFactory;
+
+    /**
+     * @var UserLoaderInterface
+     */
+    private $userLoader;
 
     /**
      * @var UrlGeneratorInterface
@@ -45,10 +50,11 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
      */
     private $defaultTargetRoute;
 
-    public function __construct(TelegramLoginValidator $validator, UserLoaderInterface $userProvider, UrlGeneratorInterface $urlGenerator, string $guardRoute, string $defaultTargetRoute, string $loginRoute = null)
+    public function __construct(TelegramLoginValidator $validator, ?UserFactoryInterface $userFactory, UserLoaderInterface $userLoader, UrlGeneratorInterface $urlGenerator, string $guardRoute, string $defaultTargetRoute, string $loginRoute = null)
     {
         $this->validator = $validator;
-        $this->userProvider = $userProvider;
+        $this->userFactory = $userFactory;
+        $this->userLoader = $userLoader;
         $this->urlGenerator = $urlGenerator;
         $this->guardRoute = $guardRoute;
         $this->loginRoute = $loginRoute;
@@ -80,10 +86,10 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
     {
         $this->validator->validate($credentials);
 
-        $user = $this->userProvider->loadByTelegramId($credentials['id']);
+        $user = $this->userLoader->loadByTelegramId($credentials['id']);
 
-        if (!$user && $this->userProvider instanceof UserFactoryInterface) {
-            return $this->userProvider->createFromTelegram($credentials);
+        if (!$user && $this->userFactory) {
+            return $this->userFactory->createFromTelegram($credentials);
         }
 
         return $user;
