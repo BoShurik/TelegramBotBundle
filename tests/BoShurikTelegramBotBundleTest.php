@@ -14,7 +14,6 @@ namespace BoShurik\TelegramBotBundle\Tests;
 use BoShurik\TelegramBotBundle\BoShurikTelegramBotBundle;
 use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
 use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
-use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\GuardCompilerPass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,20 +32,15 @@ class BoShurikTelegramBotBundleTest extends TestCase
     {
         $bundle = new BoShurikTelegramBotBundle();
 
-        /** @var ContainerBuilder|MockObject $builder */
+        /** @var ContainerBuilder&MockObject $builder */
         $builder = $this->createMock(ContainerBuilder::class);
         $builder
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(1))
             ->method('addCompilerPass')
             ->withConsecutive(
                 [
                     $this->callback(function($pass) {
                         return $pass instanceof CommandCompilerPass;
-                    })
-                ],
-                [
-                    $this->callback(function($pass) {
-                        return $pass instanceof GuardCompilerPass;
                     })
                 ]
             )

@@ -1,0 +1,15 @@
+services:
+    BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator:
+        arguments:
+            - '@BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator'
+            - '@BoShurik\TelegramBotBundle\Guard\UserLoaderInterface'
+            - '@?BoShurik\TelegramBotBundle\Guard\UserFactoryInterface'
+            - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            - '%boshurik_telegram_bot.guard.guard_route%'
+            - '%boshurik_telegram_bot.guard.default_target_route%'
+            - '%boshurik_telegram_bot.guard.login_route%'
+
+    BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator:
+        arguments:
+            - '%boshurik_telegram_bot.api.token%'
+

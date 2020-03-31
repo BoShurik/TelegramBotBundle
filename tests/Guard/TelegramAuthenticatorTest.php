@@ -47,7 +47,7 @@ class TelegramAuthenticatorTest extends TestCase
         $defaultTargetRoute = self::TARGET_ROUTE_NAME;
         $loginRoute = self::LOGIN_ROUTE_NAME;
 
-        $this->auth = new TelegramAuthenticator($this->validator, $this->userFactory, $this->userLoader, $this->urlGenerator, $guardRoute, $defaultTargetRoute, $loginRoute);
+        $this->auth = new TelegramAuthenticator($this->validator, $this->userLoader, $this->userFactory, $this->urlGenerator, $guardRoute, $defaultTargetRoute, $loginRoute);
     }
 
     public function testSupportGuardRoute()

@@ -28,35 +28,33 @@ use Symfony\Component\DependencyInjection\Loader;
 class BoShurikTelegramBotExtension extends Extension
 {
     /**
-     * @var array
-     */
-    private $config = [];
-
-    /**
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $this->config = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yaml');
 
-        $container->setParameter('boshurik_telegram_bot.api.token', $this->config['api']['token']);
-        $container->setParameter('boshurik_telegram_bot.api.tracker_token', $this->config['api']['tracker_token']);
-        $container->setParameter('boshurik_telegram_bot.api.proxy', $this->config['api']['proxy']);
+        $container->setParameter('boshurik_telegram_bot.api.token', $config['api']['token']);
+        $container->setParameter('boshurik_telegram_bot.api.tracker_token', $config['api']['tracker_token']);
+        $container->setParameter('boshurik_telegram_bot.api.proxy', $config['api']['proxy']);
 
         $container
             ->registerForAutoconfiguration(CommandInterface::class)
             ->addTag(CommandCompilerPass::TAG)
         ;
-    }
 
-    public function getConfig()
-    {
-        return $this->config;
+        if ($config['guard']['enabled']) {
+            $loader->load('guard.yaml');
+
+            $container->setParameter('boshurik_telegram_bot.guard.guard_route', $config['guard']['guard_route']);
+            $container->setParameter('boshurik_telegram_bot.guard.default_target_route', $config['guard']['default_target_route']);
+            $container->setParameter('boshurik_telegram_bot.guard.login_route', $config['guard']['login_route'] ?? null);
+        }
     }
 
     /**

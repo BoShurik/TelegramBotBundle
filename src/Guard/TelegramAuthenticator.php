@@ -21,14 +21,14 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
     private $validator;
 
     /**
-     * @var null|UserFactoryInterface
-     */
-    private $userFactory;
-
-    /**
      * @var UserLoaderInterface
      */
     private $userLoader;
+
+    /**
+     * @var null|UserFactoryInterface
+     */
+    private $userFactory;
 
     /**
      * @var UrlGeneratorInterface
@@ -50,11 +50,11 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
      */
     private $defaultTargetRoute;
 
-    public function __construct(TelegramLoginValidator $validator, ?UserFactoryInterface $userFactory, UserLoaderInterface $userLoader, UrlGeneratorInterface $urlGenerator, string $guardRoute, string $defaultTargetRoute, string $loginRoute = null)
+    public function __construct(TelegramLoginValidator $validator, UserLoaderInterface $userLoader, ?UserFactoryInterface $userFactory, UrlGeneratorInterface $urlGenerator, string $guardRoute, string $defaultTargetRoute, string $loginRoute = null)
     {
         $this->validator = $validator;
-        $this->userFactory = $userFactory;
         $this->userLoader = $userLoader;
+        $this->userFactory = $userFactory;
         $this->urlGenerator = $urlGenerator;
         $this->guardRoute = $guardRoute;
         $this->loginRoute = $loginRoute;
