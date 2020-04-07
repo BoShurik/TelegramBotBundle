@@ -2,3 +2,6 @@ _telegram_bot_webhook:
     path: /
     defaults:
         _controller: BoShurik\TelegramBotBundle\Controller\WebhookController:indexAction
+
+_telegram_login:
+    path: /login

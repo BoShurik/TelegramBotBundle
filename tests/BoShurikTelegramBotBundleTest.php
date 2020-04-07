@@ -32,14 +32,18 @@ class BoShurikTelegramBotBundleTest extends TestCase
     {
         $bundle = new BoShurikTelegramBotBundle();
 
-        /** @var ContainerBuilder|MockObject $builder */
+        /** @var ContainerBuilder&MockObject $builder */
         $builder = $this->createMock(ContainerBuilder::class);
         $builder
-            ->expects($this->once())
+            ->expects($this->exactly(1))
             ->method('addCompilerPass')
-            ->with($this->callback(function($pass) {
-                return $pass instanceof CommandCompilerPass;
-            }));
+            ->withConsecutive(
+                [
+                    $this->callback(function($pass) {
+                        return $pass instanceof CommandCompilerPass;
+                    })
+                ]
+            )
         ;
 
         $bundle->build($builder);

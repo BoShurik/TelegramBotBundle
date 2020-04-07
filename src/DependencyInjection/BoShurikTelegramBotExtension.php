@@ -13,8 +13,10 @@ namespace BoShurik\TelegramBotBundle\DependencyInjection;
 
 use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -45,6 +47,14 @@ class BoShurikTelegramBotExtension extends Extension
             ->registerForAutoconfiguration(CommandInterface::class)
             ->addTag(CommandCompilerPass::TAG)
         ;
+
+        if ($config['guard']['enabled']) {
+            $loader->load('guard.yaml');
+
+            $container->setParameter('boshurik_telegram_bot.guard.guard_route', $config['guard']['guard_route']);
+            $container->setParameter('boshurik_telegram_bot.guard.default_target_route', $config['guard']['default_target_route']);
+            $container->setParameter('boshurik_telegram_bot.guard.login_route', $config['guard']['login_route'] ?? null);
+        }
     }
 
     /**
