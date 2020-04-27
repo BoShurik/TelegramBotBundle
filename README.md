@@ -126,6 +126,13 @@ public function onUpdate(UpdateEvent $event)
 }
 ```
 
+## Login with Telegram
+
+This bundle supports login through Telegram Api
+
+If you want allow your Bot's users to login without requiring them to register again
+follow these [instructions](LOGIN_WITH_TELEGRAM.md).
+
 [1]: https://github.com/TelegramBot/Api
 [2]: https://github.com/TelegramBot/Api#usage
 [3]: https://core.telegram.org/bots/api#getupdates
