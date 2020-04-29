@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\EventListener;
+namespace BoShurik\TelegramBotBundle\EventListener;
 
 use BoShurik\TelegramBotBundle\Event\UpdateEvent;
 use BoShurik\TelegramBotBundle\EventListener\CommandListener;
@@ -76,7 +76,9 @@ class CommandListenerTest extends TestCase
             ->method('getCommands')
             ->willReturn([
                 new class implements CommandInterface {
-                    public function execute(BotApi $api, Update $update) {}
+                    public function execute(BotApi $api, Update $update)
+                    {
+                    }
                     public function isApplicable(Update $update)
                     {
                         return false;
@@ -102,7 +104,9 @@ class CommandListenerTest extends TestCase
             ->method('getCommands')
             ->willReturn([
                 new class implements CommandInterface {
-                    public function execute(BotApi $api, Update $update) {}
+                    public function execute(BotApi $api, Update $update)
+                    {
+                    }
                     public function isApplicable(Update $update)
                     {
                         return true;

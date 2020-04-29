@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Controller;
+namespace BoShurik\TelegramBotBundle\Controller;
 
 use BoShurik\TelegramBotBundle\Controller\WebhookController;
 use BoShurik\TelegramBotBundle\Event\WebhookEvent;
@@ -65,7 +65,7 @@ class WebhookControllerTest extends TestCase
         $this->telegram
             ->expects($this->once())
             ->method('processUpdate')
-            ->with($this->callback(function($update){
+            ->with($this->callback(function ($update) {
                 return $update instanceof Update;
             }))
         ;

@@ -6,5 +6,4 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 
 class AuthenticationException extends CustomUserMessageAuthenticationException
 {
-
 }

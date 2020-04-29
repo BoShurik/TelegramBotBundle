@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\DependencyInjection\Compiler;
+namespace BoShurik\TelegramBotBundle\DependencyInjection\Compiler;
 
-use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
 use BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand;
-use BoShurik\TelegramBotBundle\Tests\Fixtures\FromAbstractCommand;
-use BoShurik\TelegramBotBundle\Tests\Fixtures\FromInterfaceCommand;
-use BoShurik\TelegramBotBundle\Tests\Fixtures\PublicCommand;
+use BoShurik\TelegramBotBundle\Fixtures\FromAbstractCommand;
+use BoShurik\TelegramBotBundle\Fixtures\FromInterfaceCommand;
+use BoShurik\TelegramBotBundle\Fixtures\PublicCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;

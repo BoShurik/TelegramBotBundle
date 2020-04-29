@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Telegram;
+namespace BoShurik\TelegramBotBundle\Telegram;
 
 use BoShurik\TelegramBotBundle\Event\UpdateEvent;
 use BoShurik\TelegramBotBundle\Event\WebhookEvent;

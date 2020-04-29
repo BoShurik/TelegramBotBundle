@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Telegram\Command;
+namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
-use BoShurik\TelegramBotBundle\Tests\Fixtures\AliasCommand;
-use BoShurik\TelegramBotBundle\Tests\Fixtures\FromAbstractCommand;
+use BoShurik\TelegramBotBundle\Fixtures\AliasCommand;
+use BoShurik\TelegramBotBundle\Fixtures\FromAbstractCommand;
 use PHPUnit\Framework\TestCase;
 use TelegramBot\Api\Types\Update;
 

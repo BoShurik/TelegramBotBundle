@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests;
+namespace BoShurik\TelegramBotBundle;
 
 use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;

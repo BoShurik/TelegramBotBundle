@@ -9,13 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Telegram\Command;
+namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
-use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
-use BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand;
-use BoShurik\TelegramBotBundle\Tests\Fixtures\FromAbstractCommand;
-use BoShurik\TelegramBotBundle\Tests\Fixtures\FromInterfaceCommand;
-use BoShurik\TelegramBotBundle\Tests\Fixtures\PublicCommand;
+use BoShurik\TelegramBotBundle\Fixtures\FromAbstractCommand;
+use BoShurik\TelegramBotBundle\Fixtures\FromInterfaceCommand;
+use BoShurik\TelegramBotBundle\Fixtures\PublicCommand;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use TelegramBot\Api\BotApi;
@@ -52,7 +50,8 @@ class HelpCommandTest extends TestCase
                 false,
                 null,
                 null,
-                false)
+                false
+            )
         ;
         $update = Update::fromResponse([
             'update_id' => 1,

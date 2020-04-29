@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Fixtures;
+namespace BoShurik\TelegramBotBundle\Fixtures;
 
 use BoShurik\TelegramBotBundle\Telegram\Command\AbstractCommand;
 use TelegramBot\Api\BotApi;
@@ -30,6 +30,5 @@ class FromAbstractCommand extends AbstractCommand
      */
     public function execute(BotApi $api, Update $update)
     {
-
     }
 }

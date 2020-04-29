@@ -1,6 +1,6 @@
 <?php
 
-namespace BoShurik\TelegramBotBundle\Tests\DependencyInjection;
+namespace BoShurik\TelegramBotBundle\DependencyInjection;
 
 use BoShurik\TelegramBotBundle\DependencyInjection\Configuration;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;

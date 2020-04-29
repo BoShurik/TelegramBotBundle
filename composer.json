@@ -20,7 +20,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "BoShurik\\TelegramBotBundle\\Tests\\": "tests/"
+            "BoShurik\\TelegramBotBundle\\": "tests/"
         }
     },
     "require": {

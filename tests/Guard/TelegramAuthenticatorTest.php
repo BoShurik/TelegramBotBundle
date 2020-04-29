@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Guard;
+namespace BoShurik\TelegramBotBundle\Guard;
 
 use BoShurik\TelegramBotBundle\Exception\AuthenticationException;
 use BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator;
@@ -52,11 +52,11 @@ class TelegramAuthenticatorTest extends TestCase
 
     public function testSupportGuardRoute()
     {
-        $request = new Request([],[],['_route' => 'whatever']);
+        $request = new Request([], [], ['_route' => 'whatever']);
 
         $this->assertFalse($this->auth->supports($request), sprintf('Should not support `%s` route', $request->attributes->get('_route')));
 
-        $request = new Request([],[],['_route' => self::GUARD_ROUTE_NAME]);
+        $request = new Request([], [], ['_route' => self::GUARD_ROUTE_NAME]);
 
         $this->assertTrue($this->auth->supports($request), sprintf('Should support `%s` route', $request->attributes->get('_route')));
     }

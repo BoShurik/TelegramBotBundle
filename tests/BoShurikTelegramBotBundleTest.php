@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests;
+namespace BoShurik\TelegramBotBundle;
 
-use BoShurik\TelegramBotBundle\BoShurikTelegramBotBundle;
 use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
 use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -39,7 +38,7 @@ class BoShurikTelegramBotBundleTest extends TestCase
             ->method('addCompilerPass')
             ->withConsecutive(
                 [
-                    $this->callback(function($pass) {
+                    $this->callback(function ($pass) {
                         return $pass instanceof CommandCompilerPass;
                     })
                 ]

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Fixtures;
+namespace BoShurik\TelegramBotBundle\Fixtures;
 
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
 use TelegramBot\Api\BotApi;
@@ -22,7 +22,6 @@ class FromInterfaceCommand implements CommandInterface
      */
     public function execute(BotApi $api, Update $update)
     {
-
     }
 
     /**

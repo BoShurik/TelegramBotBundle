@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Guard;
+namespace BoShurik\TelegramBotBundle\Guard;
 
 use BoShurik\TelegramBotBundle\Exception\AuthenticationException;
 use BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator;

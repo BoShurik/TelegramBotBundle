@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Event\Telegram;
+namespace BoShurik\TelegramBotBundle\Event\Telegram;
 
 use BoShurik\TelegramBotBundle\Event\WebhookEvent;
 use PHPUnit\Framework\TestCase;
@@ -33,6 +33,6 @@ class WebhookEventTest extends TestCase
         $event = new WebhookEvent($request = new Request(), $update = Update::fromResponse(['update_id' => 1]));
         $event->setResponse($response = new Response());
 
-        $this->assertSame($response,$event->getResponse());
+        $this->assertSame($response, $event->getResponse());
     }
 }
