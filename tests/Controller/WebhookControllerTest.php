@@ -49,23 +49,23 @@ class WebhookControllerTest extends TestCase
         $this->controller = new WebhookController($this->telegram, $this->eventDispatcher);
     }
 
-    public function testEmptyData()
+    public function testEmptyData(): void
     {
         $this->expectException(BadRequestHttpException::class);
 
         $this->controller->indexAction(new Request());
     }
 
-    public function testDefaultResponse()
+    public function testDefaultResponse(): void
     {
         $request = $this->createRequest(json_encode([
-            'update_id' => 'update_id',
+            'update_id' => 0,
         ]));
 
         $this->telegram
             ->expects($this->once())
             ->method('processUpdate')
-            ->with($this->callback(function($update){
+            ->with($this->callback(function ($update) {
                 return $update instanceof Update;
             }))
         ;
@@ -83,7 +83,9 @@ class WebhookControllerTest extends TestCase
 
                 return $event->getUpdate() instanceof Update;
             }))
-            ->willReturn($this->createMock(WebhookEvent::class))
+            ->willReturnCallback(function (WebhookEvent $event) {
+                return $event;
+            })
         ;
 
         $response = $this->controller->indexAction($request);
@@ -92,30 +94,37 @@ class WebhookControllerTest extends TestCase
         $this->assertSame('', $response->getContent());
     }
 
-    public function testEventResponse()
+    public function testEventResponse(): void
     {
         $request = $this->createRequest(json_encode([
-            'update_id' => 'update_id',
+            'update_id' => 0,
         ]));
 
-        $eventResponse = new Response('custom');
-
-        $event = $this->createMock(WebhookEvent::class);
-        $event
-            ->expects($this->any())
-            ->method('getResponse')
-            ->willReturn($eventResponse)
-        ;
+        $expectedResponse = new Response();
 
         $this->eventDispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->willReturn($event)
+            ->with($this->callback(function ($event) use ($request) {
+                if (!$event instanceof WebhookEvent) {
+                    return false;
+                }
+                if ($event->getRequest() !== $request) {
+                    return false;
+                }
+
+                return $event->getUpdate()->getUpdateId() === 0;
+            }))
+            ->willReturnCallback(function (WebhookEvent $event) use ($expectedResponse) {
+                $event->setResponse($expectedResponse);
+
+                return $event;
+            })
         ;
 
         $response = $this->controller->indexAction($request);
 
-        $this->assertSame($eventResponse, $response);
+        $this->assertSame($expectedResponse, $response);
     }
 
     private function createRequest(string $content): Request

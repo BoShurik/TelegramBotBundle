@@ -18,21 +18,21 @@ use TelegramBot\Api\Types\Update;
 
 class AbstractCommandTest extends TestCase
 {
-    public function testIsApplicable()
+    public function testIsApplicable(): void
     {
         $command = new FromAbstractCommand();
 
         $this->assertTrue($command->isApplicable($this->createUpdate('/bar')));
     }
 
-    public function testNotIsApplicable()
+    public function testNotIsApplicable(): void
     {
         $command = new FromAbstractCommand();
 
         $this->assertFalse($command->isApplicable($this->createUpdate('/foo')));
     }
 
-    public function testIsApplicableWithNoMessage()
+    public function testIsApplicableWithNoMessage(): void
     {
         $command = new FromAbstractCommand();
 
@@ -43,7 +43,7 @@ class AbstractCommandTest extends TestCase
         $this->assertFalse($command->isApplicable($update));
     }
 
-    public function testAliasIsApplicable()
+    public function testAliasIsApplicable(): void
     {
         $command = new AliasCommand();
 
@@ -53,10 +53,9 @@ class AbstractCommandTest extends TestCase
     }
 
     /**
-     * @param string $text
      * @return bool|Update
      */
-    private function createUpdate($text)
+    private function createUpdate(string $text)
     {
         return Update::fromResponse([
             'update_id' => 1,

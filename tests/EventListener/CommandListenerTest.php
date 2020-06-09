@@ -48,7 +48,7 @@ class CommandListenerTest extends TestCase
         $this->listener = new CommandListener($this->api, $this->commandRegistry);
     }
 
-    public function testNotProcessedWhenNoCommands()
+    public function testNotProcessedWhenNoCommands(): void
     {
         /** @var Update $update */
         $update = $this->createMock(Update::class);
@@ -66,7 +66,7 @@ class CommandListenerTest extends TestCase
         $this->assertFalse($event->isProcessed());
     }
 
-    public function testNotProcessedWhenCommandsIsNotApplicable()
+    public function testNotProcessedWhenCommandsIsNotApplicable(): void
     {
         /** @var Update $update */
         $update = $this->createMock(Update::class);
@@ -75,13 +75,16 @@ class CommandListenerTest extends TestCase
             ->expects($this->any())
             ->method('getCommands')
             ->willReturn([
-                new class implements CommandInterface {
-                    public function execute(BotApi $api, Update $update) {}
+                new class() implements CommandInterface {
+                    public function execute(BotApi $api, Update $update)
+                    {
+                    }
+
                     public function isApplicable(Update $update)
                     {
                         return false;
                     }
-                }
+                },
             ])
         ;
 
@@ -92,7 +95,7 @@ class CommandListenerTest extends TestCase
         $this->assertFalse($event->isProcessed());
     }
 
-    public function testProcessed()
+    public function testProcessed(): void
     {
         /** @var Update $update */
         $update = $this->createMock(Update::class);
@@ -101,13 +104,16 @@ class CommandListenerTest extends TestCase
             ->expects($this->any())
             ->method('getCommands')
             ->willReturn([
-                new class implements CommandInterface {
-                    public function execute(BotApi $api, Update $update) {}
+                new class() implements CommandInterface {
+                    public function execute(BotApi $api, Update $update)
+                    {
+                    }
+
                     public function isApplicable(Update $update)
                     {
                         return true;
                     }
-                }
+                },
             ])
         ;
 

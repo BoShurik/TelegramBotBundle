@@ -19,7 +19,7 @@ use TelegramBot\Api\Types\Update;
 
 class WebhookEventTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $event = new WebhookEvent($request = new Request(), $update = Update::fromResponse(['update_id' => 1]));
 
@@ -28,11 +28,11 @@ class WebhookEventTest extends TestCase
         $this->assertNull($event->getResponse());
     }
 
-    public function testRequest()
+    public function testRequest(): void
     {
         $event = new WebhookEvent($request = new Request(), $update = Update::fromResponse(['update_id' => 1]));
         $event->setResponse($response = new Response());
 
-        $this->assertSame($response,$event->getResponse());
+        $this->assertSame($response, $event->getResponse());
     }
 }

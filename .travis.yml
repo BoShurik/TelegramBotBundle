@@ -5,8 +5,10 @@ matrix:
         - php: 7.2
           env: deps=low
         - php: 7.3
-        - php: 7.4snapshot
+        - php: 7.4
 
 before_script:
     - composer install -n
     - if [ "deps" = "low" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
+
+script: composer checks

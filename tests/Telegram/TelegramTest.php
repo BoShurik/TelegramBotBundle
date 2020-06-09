@@ -12,7 +12,6 @@
 namespace BoShurik\TelegramBotBundle\Tests\Telegram;
 
 use BoShurik\TelegramBotBundle\Event\UpdateEvent;
-use BoShurik\TelegramBotBundle\Event\WebhookEvent;
 use BoShurik\TelegramBotBundle\Telegram\Telegram;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -48,7 +47,7 @@ class TelegramTest extends TestCase
         $this->telegram = new Telegram($this->api, $this->eventDispatcher);
     }
 
-    public function testProcessUpdate()
+    public function testProcessUpdate(): void
     {
         /** @var Update $update */
         $update = $this->createMock(Update::class);
@@ -63,13 +62,13 @@ class TelegramTest extends TestCase
 
                 return $event->getUpdate() === $update;
             }))
-            ->willReturn($this->createMock(WebhookEvent::class))
+            ->willReturnArgument(0)
         ;
 
         $this->telegram->processUpdate($update);
     }
 
-    public function testProcessNoUpdates()
+    public function testProcessNoUpdates(): void
     {
         $this->api
             ->expects($this->once())
@@ -80,7 +79,7 @@ class TelegramTest extends TestCase
         $this->telegram->processUpdates();
     }
 
-    public function testProcessUpdates()
+    public function testProcessUpdates(): void
     {
         $this->api
             ->expects($this->exactly(2))

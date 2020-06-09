@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
 
-class Telegram
+/*final*/ class Telegram
 {
     /**
      * @var BotApi
@@ -34,10 +34,7 @@ class Telegram
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @return void
-     */
-    public function processUpdates()
+    public function processUpdates(): void
     {
         $updates = $this->api->getUpdates();
 
@@ -52,10 +49,7 @@ class Telegram
         }
     }
 
-    /**
-     * @param Update $update
-     */
-    public function processUpdate($update)
+    public function processUpdate(Update $update)
     {
         $event = new UpdateEvent($update);
         $this->eventDispatcher->dispatch($event);

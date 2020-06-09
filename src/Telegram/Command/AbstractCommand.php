@@ -18,7 +18,7 @@ abstract class AbstractCommand implements CommandInterface
     /**
      * RegExp for bot commands
      */
-    const REGEXP = '/^([^\s@]+)(@\S+)?\s?(.*)$/';
+    public const REGEXP = '/^([^\s@]+)(@\S+)?\s?(.*)$/';
 
     /**
      * @return string
@@ -40,7 +40,7 @@ abstract class AbstractCommand implements CommandInterface
     {
         $message = $update->getMessage();
 
-        if (is_null($message) || !strlen($message->getText())) {
+        if (null === $message || !\strlen($message->getText())) {
             return false;
         }
 
@@ -60,6 +60,7 @@ abstract class AbstractCommand implements CommandInterface
     /**
      * @param string $text
      * @param string $name
+     *
      * @return bool
      */
     protected function matchCommandName($text, $name)

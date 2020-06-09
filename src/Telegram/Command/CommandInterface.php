@@ -17,15 +17,12 @@ use TelegramBot\Api\Types\Update;
 interface CommandInterface
 {
     /**
-     * @param BotApi $api
-     * @param Update $update
-     * @return mixed
+     * @return void
      */
     public function execute(BotApi $api, Update $update);
 
     /**
-     * @param Update $update
-     * @return boolean
+     * @return bool
      */
     public function isApplicable(Update $update);
 }

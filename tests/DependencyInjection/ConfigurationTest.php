@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the BoShurikTelegramBotBundle.
+ *
+ * (c) Alexander Borisov <boshurik@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BoShurik\TelegramBotBundle\Tests\DependencyInjection;
 
 use BoShurik\TelegramBotBundle\DependencyInjection\Configuration;
@@ -19,7 +28,7 @@ class ConfigurationTest extends TestCase
     {
         $this->assertConfigurationIsValid(
             [
-                [] // no values at all
+                [], // no values at all
             ]
         );
     }
@@ -29,8 +38,8 @@ class ConfigurationTest extends TestCase
         $this->assertConfigurationIsValid(
             [[
                 'api' => [
-                    'token' => 'your secret token'
-                ]
+                    'token' => 'your secret token',
+                ],
             ]]
         );
     }
@@ -42,7 +51,7 @@ class ConfigurationTest extends TestCase
                 'guard' => [
                     'guard_route' => 'guard_route',
                     'default_target_route' => 'default_target_route',
-                ]
+                ],
             ]]
         );
     }
@@ -54,8 +63,8 @@ class ConfigurationTest extends TestCase
                 'guard' => [
                     'login_route' => 'login_route',
                     'default_target_route' => 'default_target_route',
-                    'guard_route' => 'guard_route'
-                ]
+                    'guard_route' => 'guard_route',
+                ],
             ]]
         );
     }

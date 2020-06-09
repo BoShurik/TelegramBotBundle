@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+4.1.0 (XXXX-XX-XX)
+* Add "Login with Telegram" feature (@bigfoot90)
+
 4.0.0 (2019-11-21)
 ------------------
 

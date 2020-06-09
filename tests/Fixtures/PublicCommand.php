@@ -31,7 +31,6 @@ class PublicCommand extends AbstractCommand implements PublicCommandInterface
      */
     public function execute(BotApi $api, Update $update)
     {
-
     }
 
     /**

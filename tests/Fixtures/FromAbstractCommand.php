@@ -30,6 +30,5 @@ class FromAbstractCommand extends AbstractCommand
      */
     public function execute(BotApi $api, Update $update)
     {
-
     }
 }

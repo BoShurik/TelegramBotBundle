@@ -23,7 +23,7 @@ use TelegramBot\Api\Types\Update;
 
 class HelpCommandTest extends TestCase
 {
-    public function testHelpCommandOutput()
+    public function testHelpCommandOutput(): void
     {
         /** @var CommandRegistry|MockObject $commandRegistry */
         $commandRegistry = $this->createMock(CommandRegistry::class);
@@ -36,7 +36,7 @@ class HelpCommandTest extends TestCase
                 new FromAbstractCommand(),
                 new FromInterfaceCommand(),
                 new PublicCommand(),
-                $helpCommand
+                $helpCommand,
             ])
         ;
 
@@ -63,13 +63,13 @@ class HelpCommandTest extends TestCase
                     'id' => 4,
                     'type' => 5,
                 ],
-            ]
+            ],
         ]);
 
         $helpCommand->execute($api, $update);
     }
 
-    public function testHelpCommandAliases()
+    public function testHelpCommandAliases(): void
     {
         /** @var CommandRegistry|MockObject $commandRegistry */
         $commandRegistry = $this->createMock(CommandRegistry::class);

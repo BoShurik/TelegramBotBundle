@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
 use TelegramBot\Api\Types\Update;
 
-class WebhookEvent extends Event
+final class WebhookEvent extends Event
 {
     /**
      * @var Request
@@ -56,7 +56,7 @@ class WebhookEvent extends Event
     }
 
     /**
-     * @return null|Response
+     * @return Response|null
      */
     public function getResponse()
     {
@@ -64,7 +64,7 @@ class WebhookEvent extends Event
     }
 
     /**
-     * @param null|Response $response
+     * @param Response|null $response
      */
     public function setResponse($response)
     {

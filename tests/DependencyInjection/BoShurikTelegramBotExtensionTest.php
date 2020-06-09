@@ -9,18 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests;
+namespace BoShurik\TelegramBotBundle\Tests\DependencyInjection;
 
 use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
+use BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator;
+use BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use Symfony\Component\DependencyInjection\Definition;
+use TelegramBot\Api\BotApi;
 
 class BoShurikTelegramBotExtensionTest extends AbstractExtensionTestCase
 {
     protected function getContainerExtensions(): array
     {
         return [
-            new BoShurikTelegramBotExtension()
+            new BoShurikTelegramBotExtension(),
         ];
     }
 
@@ -29,27 +31,27 @@ class BoShurikTelegramBotExtensionTest extends AbstractExtensionTestCase
         return [
             'api' => [
                 'token' => 'secret',
-            ]
+            ],
         ];
     }
 
-    public function testContainerBuildsWithMinimalConfiguration()
+    public function testContainerBuildsWithMinimalConfiguration(): void
     {
         $this->load();
 
-        $this->assertContainerBuilderHasService(\TelegramBot\Api\BotApi::class);
+        $this->assertContainerBuilderHasService(BotApi::class);
     }
 
-    public function testAuthenticatorIsConfigured()
+    public function testAuthenticatorIsConfigured(): void
     {
         $this->load([
             'guard' => [
                 'guard_route' => 'guard_route',
                 'default_target_route' => 'reaserved_area',
-            ]
+            ],
         ]);
 
-        $this->assertContainerBuilderHasService(\BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator::class);
-        $this->assertContainerBuilderHasService(\BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator::class);
+        $this->assertContainerBuilderHasService(TelegramLoginValidator::class);
+        $this->assertContainerBuilderHasService(TelegramAuthenticator::class);
     }
 }

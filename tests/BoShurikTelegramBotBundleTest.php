@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class BoShurikTelegramBotBundleTest extends TestCase
 {
-    public function testGetContainerExtension()
+    public function testGetContainerExtension(): void
     {
         $bundle = new BoShurikTelegramBotBundle();
 
@@ -28,7 +28,7 @@ class BoShurikTelegramBotBundleTest extends TestCase
         $this->assertSame('boshurik_telegram_bot', $bundle->getContainerExtension()->getAlias());
     }
 
-    public function testAddCompilerPass()
+    public function testAddCompilerPass(): void
     {
         $bundle = new BoShurikTelegramBotBundle();
 
@@ -39,9 +39,9 @@ class BoShurikTelegramBotBundleTest extends TestCase
             ->method('addCompilerPass')
             ->withConsecutive(
                 [
-                    $this->callback(function($pass) {
+                    $this->callback(function ($pass) {
                         return $pass instanceof CommandCompilerPass;
-                    })
+                    }),
                 ]
             )
         ;

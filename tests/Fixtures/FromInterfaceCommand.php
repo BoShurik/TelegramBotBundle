@@ -22,7 +22,6 @@ class FromInterfaceCommand implements CommandInterface
      */
     public function execute(BotApi $api, Update $update)
     {
-
     }
 
     /**

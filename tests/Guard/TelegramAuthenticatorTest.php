@@ -50,18 +50,18 @@ class TelegramAuthenticatorTest extends TestCase
         $this->auth = new TelegramAuthenticator($this->validator, $this->userLoader, $this->userFactory, $this->urlGenerator, $guardRoute, $defaultTargetRoute, $loginRoute);
     }
 
-    public function testSupportGuardRoute()
+    public function testSupportGuardRoute(): void
     {
-        $request = new Request([],[],['_route' => 'whatever']);
+        $request = new Request([], [], ['_route' => 'whatever']);
 
         $this->assertFalse($this->auth->supports($request), sprintf('Should not support `%s` route', $request->attributes->get('_route')));
 
-        $request = new Request([],[],['_route' => self::GUARD_ROUTE_NAME]);
+        $request = new Request([], [], ['_route' => self::GUARD_ROUTE_NAME]);
 
         $this->assertTrue($this->auth->supports($request), sprintf('Should support `%s` route', $request->attributes->get('_route')));
     }
 
-    public function testCheckCredentialsReturnTrue()
+    public function testCheckCredentialsReturnTrue(): void
     {
         $credentials = 'Can be any value';
         $user = $this->createMock(UserInterface::class);
@@ -69,7 +69,7 @@ class TelegramAuthenticatorTest extends TestCase
         $this->assertTrue($this->auth->checkCredentials($credentials, $user), 'Should EVER return TRUE because real validation was done in another step');
     }
 
-    public function testGetCredentials()
+    public function testGetCredentials(): void
     {
         $credentials = ['id' => 0, 'username' => 'someone', 'auth' => 'a secret token'];
         $request = new Request($credentials);
@@ -77,7 +77,7 @@ class TelegramAuthenticatorTest extends TestCase
         $this->assertSame($credentials, $this->auth->getCredentials($request));
     }
 
-    public function testGetLoginUrl()
+    public function testGetLoginUrl(): void
     {
         $this->urlGenerator
             ->expects($this->once())
@@ -92,7 +92,7 @@ class TelegramAuthenticatorTest extends TestCase
         $this->assertSame('/login', $response->getTargetUrl(), 'User should be redirected to the login page');
     }
 
-    public function testAuthenticationFailure()
+    public function testAuthenticationFailure(): void
     {
         $this->urlGenerator
             ->expects($this->once())
@@ -111,7 +111,7 @@ class TelegramAuthenticatorTest extends TestCase
         $this->assertSame($authenticationException, $request->getSession()->get('_security.last_error'), 'Session should contain the last authentication exception');
     }
 
-    public function testAuthenticationSuccess()
+    public function testAuthenticationSuccess(): void
     {
         $this->urlGenerator
             ->expects($this->once())
@@ -130,7 +130,7 @@ class TelegramAuthenticatorTest extends TestCase
         $this->assertSame('/reserved', $response->getTargetUrl(), 'User should be redirected to the reserved area page');
     }
 
-    public function testCredentialsAreValidated()
+    public function testCredentialsAreValidated(): void
     {
         $credentials = ['Invalid credentials'];
 
@@ -147,7 +147,7 @@ class TelegramAuthenticatorTest extends TestCase
         $this->auth->getUser($credentials, $uselessSymfonyUserProvider);
     }
 
-    public function testAuthenticatedUserWasLoaded()
+    public function testAuthenticatedUserWasLoaded(): void
     {
         $credentials = ['id' => 0];
 
@@ -163,7 +163,7 @@ class TelegramAuthenticatorTest extends TestCase
         $this->assertSame($dummyUser, $authenticatedUser);
     }
 
-    public function testNewUserWasCreatedIfNotFoundByLoader()
+    public function testNewUserWasCreatedIfNotFoundByLoader(): void
     {
         $credentials = ['id' => 0];
 

@@ -22,7 +22,7 @@ class TelegramLoginValidatorTest extends TestCase
 
     private const TOKEN = 'TOKEN';
 
-    public function testThrowExceptionOnMissingData()
+    public function testThrowExceptionOnMissingData(): void
     {
         $validator = new TelegramLoginValidator(self::TOKEN);
 
@@ -32,7 +32,7 @@ class TelegramLoginValidatorTest extends TestCase
         $validator->validate([]);
     }
 
-    public function testThrowExceptionOnExpiredData()
+    public function testThrowExceptionOnExpiredData(): void
     {
         $validator = new TelegramLoginValidator(self::TOKEN);
 
@@ -43,7 +43,7 @@ class TelegramLoginValidatorTest extends TestCase
             'id' => 0,
             'first_name' => 'fake',
             'last_name' => 'user',
-            'auth_date' => time() -3600 -1,
+            'auth_date' => time() - 3600 - 1,
             'hash' => '',
         ]);
     }
@@ -51,7 +51,7 @@ class TelegramLoginValidatorTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testThrowExceptionOnInvalidChecksum()
+    public function testThrowExceptionOnInvalidChecksum(): void
     {
         $validator = new TelegramLoginValidator(self::TOKEN);
 
@@ -74,7 +74,7 @@ class TelegramLoginValidatorTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testValidData()
+    public function testValidData(): void
     {
         $validator = new TelegramLoginValidator(self::TOKEN);
 

@@ -14,7 +14,7 @@ namespace BoShurik\TelegramBotBundle\Event;
 use Symfony\Contracts\EventDispatcher\Event;
 use TelegramBot\Api\Types\Update;
 
-class UpdateEvent extends Event
+final class UpdateEvent extends Event
 {
     /**
      * @var Update
@@ -22,7 +22,7 @@ class UpdateEvent extends Event
     private $update;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $processed;
 
@@ -41,7 +41,7 @@ class UpdateEvent extends Event
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isProcessed()
     {

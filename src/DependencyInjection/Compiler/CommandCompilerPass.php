@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 class CommandCompilerPass implements CompilerPassInterface
 {
-    const TAG = 'boshurik_telegram_bot.command';
+    public const TAG = 'boshurik_telegram_bot.command';
 
     use PriorityTaggedServiceTrait;
 
@@ -33,16 +33,13 @@ class CommandCompilerPass implements CompilerPassInterface
 
         $commands = $this->findAndSortTaggedServices(self::TAG, $container);
         foreach ($commands as $command) {
-            $definition = $container->getDefinition($command);
-            $class = $definition->getClass();
+            $definition = $container->getDefinition((string) $command);
+            if (!$class = $definition->getClass()) {
+                throw new LogicException(sprintf('Unknown class for service "%s"', (string) $command));
+            }
             $interfaces = class_implements($class);
             if (!isset($interfaces[CommandInterface::class])) {
-                throw new LogicException(sprintf(
-                    'Can\'t apply tag "%s" to %s class. It must implement %s interface',
-                    self::TAG,
-                    $class,
-                    CommandInterface::class
-                ));
+                throw new LogicException(sprintf('Can\'t apply tag "%s" to %s class. It must implement %s interface', self::TAG, $class, CommandInterface::class));
             }
 
             $registry->addMethodCall('addCommand', [

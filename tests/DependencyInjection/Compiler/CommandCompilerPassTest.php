@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class CommandCompilerPassTest extends TestCase
 {
-    public function testRegisterCommand()
+    public function testRegisterCommand(): void
     {
         $container = $container = $this->buildContainer();
 
@@ -50,7 +50,7 @@ class CommandCompilerPassTest extends TestCase
         $this->assertContainsOnlyInstancesOf(CommandInterface::class, $registry->getCommands());
     }
 
-    public function testWrongInterfaceForTag()
+    public function testWrongInterfaceForTag(): void
     {
         $this->expectException(LogicException::class);
 
@@ -64,7 +64,7 @@ class CommandCompilerPassTest extends TestCase
         $container->compile();
     }
 
-    public function testNoCircularException()
+    public function testNoCircularException(): void
     {
         $container = $this->buildContainer();
 
@@ -81,9 +81,6 @@ class CommandCompilerPassTest extends TestCase
         $this->assertInstanceOf(HelpCommand::class, $container->get(HelpCommand::class));
     }
 
-    /**
-     * @return ContainerBuilder
-     */
     private function buildContainer(): ContainerBuilder
     {
         $container = new ContainerBuilder();

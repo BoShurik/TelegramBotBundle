@@ -41,6 +41,5 @@ class AliasCommand extends AbstractCommand
      */
     public function execute(BotApi $api, Update $update)
     {
-
     }
 }

@@ -23,9 +23,6 @@ class CommandRegistry
         $this->commands = [];
     }
 
-    /**
-     * @param CommandInterface $command
-     */
     public function addCommand(CommandInterface $command)
     {
         $this->commands[] = $command;
