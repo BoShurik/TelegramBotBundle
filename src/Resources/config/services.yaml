@@ -27,6 +27,7 @@ services:
         arguments:
             - '@boshurik_telegram_bot.telegram'
             - '@event_dispatcher'
+            - '@?messenger.default_bus'
 
     boshurik_telegram_bot.command.updates:
         class: BoShurik\TelegramBotBundle\Command\UpdatesCommand
@@ -55,3 +56,10 @@ services:
             - '@TelegramBot\Api\BotApi'
         tags:
             - { name: console.command }
+
+    boshurik_telegram_bot.messenger.handler:
+        class: BoShurik\TelegramBotBundle\Messenger\MessageHandler
+        arguments:
+            - '@boshurik_telegram_bot.telegram'
+        tags:
+            - { name: 'messenger.message_handler' }

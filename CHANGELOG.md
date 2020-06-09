@@ -6,6 +6,7 @@ CHANGELOG
 
 * Add "Login with Telegram" feature (@bigfoot90)
 * Add `telegram:webhook:info` command
+* Add `symfony/messenger` support
 
 4.0.0 (2019-11-21)
 ------------------

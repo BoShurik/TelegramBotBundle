@@ -85,6 +85,25 @@ bin/console telegram:webhook:unset
 
 For more information see [official documentation][4]
 
+#### Async command processing
+
+To improve performance, you can leverage [Messenger][7] to process webhooks later via a Messenger transport.
+
+```bash
+composer req symfony/messenger
+```
+
+```yaml
+# config/packages/messenger.yaml
+framework:
+    messenger:
+        transports:
+            async: "%env(MESSENGER_TRANSPORT_DSN)%"
+
+        routing:
+            'BoShurik\TelegramBotBundle\Messenger\TelegramMessage': async
+```
+
 #### Adding commands
 
 Commands must implement `\BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface`
@@ -139,3 +158,4 @@ follow these [instructions](LOGIN_WITH_TELEGRAM.md).
 [4]: https://core.telegram.org/bots/api#setwebhook
 [5]: https://github.com/BoShurik/telegram-bot-example
 [6]: https://flex.symfony.com
+[7]: https://symfony.com/doc/current/messenger.html

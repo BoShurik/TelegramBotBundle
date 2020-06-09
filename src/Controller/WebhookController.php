@@ -12,11 +12,13 @@
 namespace BoShurik\TelegramBotBundle\Controller;
 
 use BoShurik\TelegramBotBundle\Event\WebhookEvent;
+use BoShurik\TelegramBotBundle\Messenger\TelegramMessage;
 use BoShurik\TelegramBotBundle\Telegram\Telegram;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
 
@@ -32,10 +34,16 @@ class WebhookController
      */
     private $eventDispatcher;
 
-    public function __construct(Telegram $telegram, EventDispatcherInterface $eventDispatcher)
+    /**
+     * @var MessageBusInterface|null
+     */
+    private $bus;
+
+    public function __construct(Telegram $telegram, EventDispatcherInterface $eventDispatcher, ?MessageBusInterface $bus = null)
     {
         $this->telegram = $telegram;
         $this->eventDispatcher = $eventDispatcher;
+        $this->bus = $bus;
     }
 
     public function indexAction(Request $request): Response
@@ -43,7 +51,11 @@ class WebhookController
         if ($content = $request->getContent()) {
             if ($data = BotApi::jsonValidate($content, true)) {
                 $update = Update::fromResponse($data);
-                $this->telegram->processUpdate($update);
+                if ($this->bus === null) {
+                    $this->telegram->processUpdate($update);
+                } else {
+                    $this->bus->dispatch(new TelegramMessage($update));
+                }
             }
         }
 

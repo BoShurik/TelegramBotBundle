@@ -36,17 +36,19 @@
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpunit/phpunit": "^8.0",
         "symfony/security-guard": "^4.4 || ^5.0",
+        "symfony/messenger": "^4.4 || ^5.0",
         "php-mock/php-mock-phpunit": "^2.6",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "vimeo/psalm": "^3.10",
         "psalm/plugin-symfony": "^1.2"
     },
     "suggest": {
-        "symfony/security-guard": "Required to implement user authentication through Telegram"
+        "symfony/security-guard": "Required to implement user authentication through Telegram",
+        "symfony/messenger": "Required to handle messages with queues"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always",
-        "coverage": "bin/phpunit --coverage-html build/coverage",
+        "coverage": "vendor/bin/phpunit --coverage-html build/coverage",
         "cs-check": "vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --ansi --dry-run",
         "cs-fix": "vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --ansi",
         "psalm": "vendor/bin/psalm",
