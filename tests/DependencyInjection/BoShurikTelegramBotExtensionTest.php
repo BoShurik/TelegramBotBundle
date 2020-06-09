@@ -44,6 +44,7 @@ class BoShurikTelegramBotExtensionTest extends AbstractExtensionTestCase
     {
         $this->load([
             'guard' => [
+                'guard_route' => 'guard_route',
                 'default_target_route' => 'reaserved_area',
             ]
         ]);

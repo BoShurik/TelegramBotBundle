@@ -16,10 +16,9 @@ boshurik_telegram_bot:
   # ...
   guard:
     default_target_route: user_profile  # redirect after login success
-    guard_route: _telegram_login        # dafaults to path /_telegram/<a_secret_token>/login
+    guard_route: _telegram_login        # guard route
     login_route: your_login_route       # optional, if login fails user will be redirected there
 ```
-
 
 ## Generate login widget
 

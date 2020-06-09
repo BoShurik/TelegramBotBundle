@@ -40,6 +40,7 @@ class ConfigurationTest extends TestCase
         $this->assertConfigurationIsValid(
             [[
                 'guard' => [
+                    'guard_route' => 'guard_route',
                     'default_target_route' => 'default_target_route',
                 ]
             ]]
