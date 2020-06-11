@@ -5,6 +5,7 @@ CHANGELOG
 ------------------
 
 * Add "Login with Telegram" feature (@bigfoot90)
+* Add `telegram:webhook:info` command
 
 4.0.0 (2019-11-21)
 ------------------

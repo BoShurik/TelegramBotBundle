@@ -42,9 +42,15 @@ services:
         tags:
             - { name: console.command }
 
-
     boshurik_telegram_bot.command.webhook.unset:
         class: BoShurik\TelegramBotBundle\Command\Webhook\UnsetCommand
+        arguments:
+            - '@TelegramBot\Api\BotApi'
+        tags:
+            - { name: console.command }
+
+    boshurik_telegram_bot.command.webhook.info:
+        class: BoShurik\TelegramBotBundle\Command\Webhook\InfoCommand
         arguments:
             - '@TelegramBot\Api\BotApi'
         tags:
