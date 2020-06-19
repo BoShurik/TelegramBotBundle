@@ -39,7 +39,9 @@ security:
       pattern: ^/_telegram/<a_secret_token>$
       security: false
     main:
-      guard: BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator
+      guard: 
+        authenticators:
+          - BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator
       # ...
 ```
 
@@ -118,3 +120,11 @@ services:
   BoShurik\TelegramBotBundle\Guard\UserLoaderInterface: '@App\Security\UserProvider'
   BoShurik\TelegramBotBundle\Guard\UserFactoryInterface: '@App\Security\UserProvider'
 ```
+
+## Bot
+
+Set domain in @BotFather for your bot with `/setdomain` command
+
+## Widget
+
+Place widget obtained from [https://core.telegram.org/widgets/login](https://core.telegram.org/widgets/login) on your site

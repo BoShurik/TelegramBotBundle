@@ -128,7 +128,7 @@ class TelegramAuthenticator extends AbstractFormLoginAuthenticator
     protected function getLoginUrl(): string
     {
         if (!$this->loginRoute) {
-            throw new \LogicException('`login_route` parameter si required if you don\'t use other authentication mechanisms in order to redirect users to a login page');
+            throw new \LogicException('`login_route` parameter is required if you don\'t use other authentication mechanisms in order to redirect users to a login page');
         }
 
         return $this->urlGenerator->generate($this->loginRoute);

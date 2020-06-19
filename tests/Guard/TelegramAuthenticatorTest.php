@@ -92,6 +92,13 @@ class TelegramAuthenticatorTest extends TestCase
         $this->assertSame('/login', $response->getTargetUrl(), 'User should be redirected to the login page');
     }
 
+    public function testGetLoginUrlWithEmptyRoute(): void
+    {
+        $this->expectException(\LogicException::class);
+        $auth = new TelegramAuthenticator($this->validator, $this->userLoader, $this->userFactory, $this->urlGenerator, self::GUARD_ROUTE_NAME, self::TARGET_ROUTE_NAME);
+        $auth->start(new Request());
+    }
+
     public function testAuthenticationFailure(): void
     {
         $this->urlGenerator
@@ -128,6 +135,24 @@ class TelegramAuthenticatorTest extends TestCase
         $response = $this->auth->onAuthenticationSuccess($request, $token, $firewallName);
         $this->assertSame(302, $response->getStatusCode(), 'Should be 302 redirect');
         $this->assertSame('/reserved', $response->getTargetUrl(), 'User should be redirected to the reserved area page');
+    }
+
+    public function testAuthenticationSuccessTargetPath(): void
+    {
+        $this->urlGenerator
+            ->expects($this->never())
+            ->method('generate');
+
+        $request = new Request();
+        $request->setSession($session = new Session(new MockArraySessionStorage()));
+        $session->set('_security.main.target_path', '/from-session');
+
+        $token = $this->createMock(TokenInterface::class);
+        $firewallName = 'main';
+
+        $response = $this->auth->onAuthenticationSuccess($request, $token, $firewallName);
+        $this->assertSame(302, $response->getStatusCode(), 'Should be 302 redirect');
+        $this->assertSame('/from-session', $response->getTargetUrl(), 'User should be redirected to url retrived from session');
     }
 
     public function testCredentialsAreValidated(): void
