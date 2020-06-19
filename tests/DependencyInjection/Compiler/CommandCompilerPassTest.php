@@ -81,6 +81,20 @@ class CommandCompilerPassTest extends TestCase
         $this->assertInstanceOf(HelpCommand::class, $container->get(HelpCommand::class));
     }
 
+    public function testUnknownClass(): void
+    {
+        $this->expectException(LogicException::class);
+
+        $container = $container = $this->buildContainer();
+
+        $container
+            ->register('foo')
+            ->addTag(CommandCompilerPass::TAG)
+        ;
+
+        $container->compile();
+    }
+
     private function buildContainer(): ContainerBuilder
     {
         $container = new ContainerBuilder();

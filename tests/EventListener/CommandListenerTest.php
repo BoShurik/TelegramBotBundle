@@ -48,6 +48,11 @@ class CommandListenerTest extends TestCase
         $this->listener = new CommandListener($this->api, $this->commandRegistry);
     }
 
+    public function testSubscribedEvents(): void
+    {
+        $this->assertTrue(isset(CommandListener::getSubscribedEvents()[UpdateEvent::class]));
+    }
+
     public function testNotProcessedWhenNoCommands(): void
     {
         /** @var Update $update */
