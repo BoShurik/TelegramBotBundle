@@ -1,0 +1,13 @@
+boshurik_telegram_bot:
+    api:
+        token: token
+
+framework:
+    test: true
+
+services:
+    _defaults:
+        public: true
+
+    test.TelegramBot\Api\BotApi: '@TelegramBot\Api\BotApi'
+    test.boshurik_telegram_bot.telegram : '@boshurik_telegram_bot.telegram'

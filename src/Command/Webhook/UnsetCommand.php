@@ -52,7 +52,7 @@ class UnsetCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $this->api->setWebhook();
+        $this->api->deleteWebhook();
 
         $io->success('Webhook has been unset');
 

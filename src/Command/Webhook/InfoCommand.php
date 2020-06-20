@@ -79,7 +79,7 @@ class InfoCommand extends Command
         ];
         $values[] = [
             'last error date',
-            $info->getLastErrorDate() ?? '-',
+            $info->getLastErrorDate() ? date('Y-m-d H:i:s', $info->getLastErrorDate()) : '-',
         ];
         $values[] = [
             'last error message',
