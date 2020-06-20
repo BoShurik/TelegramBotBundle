@@ -40,6 +40,8 @@ class InfoCommandTest extends KernelTestCase
 
         $application = new Application($kernel);
 
+        date_default_timezone_set('UTC');
+
         $command = $application->find('telegram:webhook:info');
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
@@ -49,7 +51,7 @@ class InfoCommandTest extends KernelTestCase
         $this->assertStringContainsString('url                    https://google.com', $output);
         $this->assertStringContainsString('custom certificate     yes', $output);
         $this->assertStringContainsString('pending update count   10', $output);
-        $this->assertStringContainsString('last error date        2020-06-20 14:54:10', $output);
+        $this->assertStringContainsString('last error date        2020-06-20 11:54:10', $output);
         $this->assertStringContainsString('last error message     Oops', $output);
         $this->assertStringContainsString('max connections        10', $output);
         $this->assertStringContainsString('allowed updates        foo, bar', $output);
