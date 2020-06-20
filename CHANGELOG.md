@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-4.1.0 (XXXX-XX-XX)
+4.1.0 (2020-06-20)
 ------------------
 
 * Add "Login with Telegram" feature (@bigfoot90)
