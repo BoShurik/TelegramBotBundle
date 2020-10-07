@@ -50,6 +50,7 @@ class TelegramLoginValidatorTest extends TestCase
 
     /**
      * @runInSeparateProcess
+     * @preserveGlobalState disabled
      */
     public function testThrowExceptionOnInvalidChecksum(): void
     {
@@ -73,6 +74,7 @@ class TelegramLoginValidatorTest extends TestCase
 
     /**
      * @runInSeparateProcess
+     * @preserveGlobalState disabled
      */
     public function testValidData(): void
     {

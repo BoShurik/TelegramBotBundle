@@ -4,6 +4,7 @@ boshurik_telegram_bot:
 
 framework:
     test: true
+    secret: 'secret'
 
 services:
     _defaults:

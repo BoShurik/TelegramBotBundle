@@ -9,6 +9,6 @@ matrix:
 
 before_script:
     - composer install -n
-    - if [ "deps" = "low" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
+    - if [ $deps = "low" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
 
 script: composer checks
