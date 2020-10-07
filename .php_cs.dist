@@ -14,9 +14,7 @@ $finder = \PhpCsFixer\Finder::create()
         'src',
         'tests',
     ])
-    ->name([
-        '*.php',
-    ])
+    ->name('*.php')
 ;
 
 return PhpCsFixer\Config::create()
