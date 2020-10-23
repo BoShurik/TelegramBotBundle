@@ -19,8 +19,6 @@ class TelegramLoginValidator
 
     private const REQUIRED_FIELDS = [
         'id',
-        'first_name',
-        'last_name',
         'auth_date',
         'hash',
     ];

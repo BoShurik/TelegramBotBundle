@@ -94,4 +94,23 @@ class TelegramLoginValidatorTest extends TestCase
 
         $this->assertTrue(true, 'No exception was thrown on valid data');
     }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testPartialyPresentValidData(): void
+    {
+        $validator = new TelegramLoginValidator(self::TOKEN);
+
+        // Mock `time()` function
+        $time = $this->getFunctionMock('BoShurik\TelegramBotBundle\Guard', 'time');
+        $time->expects($this->once())->willReturn(0);
+
+        $validator->validate([
+            'id' => 0,
+            'auth_date' => 0,
+            'hash' => '68da7dc17d76484d189c16716db2abdabc8c8ae8d20e6690853ac7800b7e8204',
+        ]);
+    }
 }
