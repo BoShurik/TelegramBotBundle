@@ -13,13 +13,10 @@ namespace BoShurik\TelegramBotBundle\Tests\Guard;
 
 use BoShurik\TelegramBotBundle\Exception\AuthenticationException;
 use BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator;
-use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
 
 class TelegramLoginValidatorTest extends TestCase
 {
-    use PHPMock;
-
     private const TOKEN = 'TOKEN';
 
     public function testThrowExceptionOnMissingData(): void
@@ -48,10 +45,6 @@ class TelegramLoginValidatorTest extends TestCase
         ]);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testThrowExceptionOnInvalidChecksum(): void
     {
         $validator = new TelegramLoginValidator(self::TOKEN);
@@ -59,58 +52,40 @@ class TelegramLoginValidatorTest extends TestCase
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('checksum');
 
-        // Mock `time()` function
-        $time = $this->getFunctionMock('BoShurik\TelegramBotBundle\Guard', 'time');
-        $time->expects($this->once())->willReturn(0);
-
         $validator->validate([
             'id' => 0,
             'first_name' => 'fake',
             'last_name' => 'user',
-            'auth_date' => 0,
+            'auth_date' => time(),
             'hash' => '201645a6b1d55352f38460a4a8ce683f7975cf92d1c8a3c9cc2bd89290bd7103',
         ]);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testValidData(): void
     {
         $validator = new TelegramLoginValidator(self::TOKEN);
-
-        // Mock `time()` function
-        $time = $this->getFunctionMock('BoShurik\TelegramBotBundle\Guard', 'time');
-        $time->expects($this->once())->willReturn(0);
 
         $validator->validate([
             'id' => 0,
             'first_name' => 'fake',
             'last_name' => 'user',
-            'auth_date' => 0,
-            'hash' => 'c3a3c6d429c94b91e2ebc6519769cc77c6bd918e54f1433fee55e1912962c206',
+            'auth_date' => \PHP_INT_MAX,
+            'hash' => '30519422ea1be3c44127f25160e32856d1c43a41b61cbe57463ba5b024103be7',
         ]);
 
         $this->assertTrue(true, 'No exception was thrown on valid data');
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testPartialyPresentValidData(): void
+    public function testPartiallyPresentValidData(): void
     {
         $validator = new TelegramLoginValidator(self::TOKEN);
 
-        // Mock `time()` function
-        $time = $this->getFunctionMock('BoShurik\TelegramBotBundle\Guard', 'time');
-        $time->expects($this->once())->willReturn(0);
-
         $validator->validate([
             'id' => 0,
-            'auth_date' => 0,
-            'hash' => '68da7dc17d76484d189c16716db2abdabc8c8ae8d20e6690853ac7800b7e8204',
+            'auth_date' => \PHP_INT_MAX,
+            'hash' => '169389480c74ccd2e8950c9e4d40c45858b17937dd00b165310684577e0d58c6',
         ]);
+
+        $this->assertTrue(true, 'No exception was thrown on valid data');
     }
 }

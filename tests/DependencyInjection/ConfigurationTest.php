@@ -12,60 +12,106 @@
 namespace BoShurik\TelegramBotBundle\Tests\DependencyInjection;
 
 use BoShurik\TelegramBotBundle\DependencyInjection\Configuration;
-use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
-    use ConfigurationTestCaseTrait;
-
-    protected function getConfiguration(): Configuration
+    /**
+     * @dataProvider configurationDataProvider
+     */
+    public function testConfiguration(array $configs, ?array $expected)
     {
-        return new Configuration();
+        if ($expected === null) {
+            $this->expectException(InvalidConfigurationException::class);
+        }
+
+        $processor = new Processor();
+        $result = $processor->processConfiguration(new Configuration(), [$configs]);
+
+        if ($expected !== null) {
+            $this->assertSame($expected, $result);
+        }
     }
 
-    public function testMinimalConfiguration(): void
+    public function configurationDataProvider()
     {
-        $this->assertConfigurationIsValid(
-            [
-                [], // no values at all
-            ]
-        );
-    }
-
-    public function testMinimalApiConfiguration(): void
-    {
-        $this->assertConfigurationIsValid(
-            [[
-                'api' => [
-                    'token' => 'your secret token',
-                ],
-            ]]
-        );
-    }
-
-    public function testMinimalGuardConfiguration(): void
-    {
-        $this->assertConfigurationIsValid(
-            [[
-                'guard' => [
-                    'guard_route' => 'guard_route',
-                    'default_target_route' => 'default_target_route',
-                ],
-            ]]
-        );
-    }
-
-    public function testFullGuardConfiguration(): void
-    {
-        $this->assertConfigurationIsValid(
-            [[
-                'guard' => [
-                    'login_route' => 'login_route',
-                    'default_target_route' => 'default_target_route',
-                    'guard_route' => 'guard_route',
-                ],
-            ]]
-        );
+        yield [[], null];
+        yield [[
+            'api' => [
+                'token' => 'your secret token',
+            ],
+        ], [
+            'api' => [
+                'token' => 'your secret token',
+                'tracker_token' => null,
+                'proxy' => '',
+            ],
+            'guard' => [
+                'enabled' => false,
+                'login_route' => null,
+            ],
+        ]];
+        yield [[
+            'api' => [
+                'token' => 'your secret token',
+                'tracker_token' => 'tracker_token',
+                'proxy' => 'proxy',
+            ],
+        ], [
+            'api' => [
+                'token' => 'your secret token',
+                'tracker_token' => 'tracker_token',
+                'proxy' => 'proxy',
+            ],
+            'guard' => [
+                'enabled' => false,
+                'login_route' => null,
+            ],
+        ]];
+        yield [[
+            'api' => [
+                'token' => 'your secret token',
+            ],
+            'guard' => [
+                'guard_route' => 'guard_route',
+                'default_target_route' => 'default_target_route',
+            ],
+        ], [
+            'api' => [
+                'token' => 'your secret token',
+                'tracker_token' => null,
+                'proxy' => '',
+            ],
+            'guard' => [
+                'guard_route' => 'guard_route',
+                'default_target_route' => 'default_target_route',
+                'enabled' => true,
+                'login_route' => null,
+            ],
+        ]];
+        yield [[
+            'api' => [
+                'token' => 'your secret token',
+            ],
+            'guard' => [
+                'login_route' => 'login_route',
+                'default_target_route' => 'default_target_route',
+                'guard_route' => 'guard_route',
+            ],
+        ], [
+            'api' => [
+                'token' => 'your secret token',
+                'tracker_token' => null,
+                'proxy' => '',
+            ],
+            'guard' => [
+                'login_route' => 'login_route',
+                'default_target_route' => 'default_target_route',
+                'guard_route' => 'guard_route',
+                'enabled' => true,
+            ],
+        ]];
     }
 }
