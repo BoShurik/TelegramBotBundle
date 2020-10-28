@@ -34,7 +34,7 @@ class Configuration implements ConfigurationInterface
         /** @psalm-suppress all */
         $rootNode
             ->children()
-                ->arrayNode('api')->addDefaultsIfNotSet()
+                ->arrayNode('api')->isRequired()
                     ->children()
                         ->scalarNode('token')->isRequired()->end()
                         ->scalarNode('tracker_token')->defaultNull()->end()
@@ -43,7 +43,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('guard')->canBeEnabled()
                     ->children()
-                        ->scalarNode('login_route')->cannotBeEmpty()->end()
+                        ->scalarNode('login_route')->defaultNull()->cannotBeEmpty()->end()
                         ->scalarNode('default_target_route')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('guard_route')->isRequired()->cannotBeEmpty()->end()
                     ->end()
