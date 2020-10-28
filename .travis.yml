@@ -3,12 +3,18 @@ language: php
 matrix:
     include:
         - php: 7.2
-          env: deps=low
+          env: COMPOSER_PARAMETERS="--prefer-lowest"
         - php: 7.3
         - php: 7.4
+        - php: nightly
+    allow_failures:
+        - php: nightly
 
 before_script:
-    - composer install -n
-    - if [ $deps = "low" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
+    - if [[ $TRAVIS_PHP_VERSION = "nightly" ]]; then composer remove friendsofphp/php-cs-fixer --no-interaction --dev --no-update; fi;
+    - composer update --prefer-stable --no-interaction $COMPOSER_PARAMETERS
 
-script: composer checks
+script:
+    - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; then vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --ansi --dry-run; fi;
+    - vendor/bin/psalm
+    - vendor/bin/phpunit --colors=always
