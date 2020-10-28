@@ -27,6 +27,8 @@ class ConfigurationTest extends TestCase
             $this->expectException(InvalidConfigurationException::class);
         }
 
+
+
         $processor = new Processor();
         $result = $processor->processConfiguration(new Configuration(), [$configs]);
 
