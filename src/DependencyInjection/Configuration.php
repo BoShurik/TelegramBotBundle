@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('api')->isRequired()
                     ->children()
                         ->scalarNode('token')->isRequired()->end()
-                        ->scalarNode('tracker_token')->defaultNull()->end()
+                        ->scalarNode('tracker_token')->defaultNull()->setDeprecated('boshurik/telegram-bot-bundle', '4.2')->end()
                         ->scalarNode('proxy')->defaultValue('')->end()
                     ->end()
                 ->end()
