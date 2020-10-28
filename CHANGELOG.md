@@ -4,6 +4,7 @@ CHANGELOG
 4.2.0 (XXXX-XX-XX)
 ------------------
 
+* Add support of php8
 * Add callback query support for `AbstractCommand`
 * Add `AbstractCommand::getCommandParameters()` method
 
