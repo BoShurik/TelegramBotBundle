@@ -53,7 +53,7 @@ class WebhookControllerTest extends TestCase
     private $controllerWithBus;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function setUp(): void
     {

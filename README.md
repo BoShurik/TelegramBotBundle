@@ -1,7 +1,5 @@
 # TelegramBotBundle
 
-[![Build Status](https://travis-ci.com/BoShurik/TelegramBotBundle.svg?branch=master)](https://travis-ci.com/BoShurik/TelegramBotBundle)
-
 Telegram bot bundle on top of [`telegram-bot/api`][1] library
 
 ## Examples

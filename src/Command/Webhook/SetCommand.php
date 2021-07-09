@@ -26,7 +26,7 @@ class SetCommand extends Command
     private $api;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct(BotApi $api)
     {
@@ -36,7 +36,7 @@ class SetCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -49,7 +49,7 @@ class SetCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

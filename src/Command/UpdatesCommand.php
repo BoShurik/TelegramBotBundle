@@ -24,7 +24,7 @@ class UpdatesCommand extends Command
     private $telegram;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct(Telegram $telegram)
     {
@@ -34,7 +34,7 @@ class UpdatesCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -45,7 +45,7 @@ class UpdatesCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

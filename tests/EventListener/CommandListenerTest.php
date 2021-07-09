@@ -38,7 +38,7 @@ class CommandListenerTest extends TestCase
     private $listener;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function setUp(): void
     {

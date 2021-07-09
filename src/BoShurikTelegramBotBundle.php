@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class BoShurikTelegramBotBundle extends Bundle
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function build(ContainerBuilder $container)
     {
@@ -29,7 +29,7 @@ class BoShurikTelegramBotBundle extends Bundle
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getContainerExtension()
     {

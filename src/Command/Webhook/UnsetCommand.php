@@ -25,7 +25,7 @@ class UnsetCommand extends Command
     private $api;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct(BotApi $api)
     {
@@ -35,7 +35,7 @@ class UnsetCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -46,7 +46,7 @@ class UnsetCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -38,7 +38,7 @@ abstract class AbstractCommand implements CommandInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function isApplicable(Update $update)
     {

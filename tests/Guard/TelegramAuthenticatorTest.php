@@ -37,7 +37,7 @@ class TelegramAuthenticatorTest extends TestCase
     private $userLoader;
     private $validator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->validator = $this->createMock(TelegramLoginValidator::class);
         $this->userFactory = $this->createMock(UserFactoryInterface::class);

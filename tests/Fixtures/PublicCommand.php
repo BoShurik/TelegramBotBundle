@@ -19,7 +19,7 @@ use TelegramBot\Api\Types\Update;
 class PublicCommand extends AbstractCommand implements PublicCommandInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -27,14 +27,14 @@ class PublicCommand extends AbstractCommand implements PublicCommandInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function execute(BotApi $api, Update $update)
     {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getDescription()
     {

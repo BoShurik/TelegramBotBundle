@@ -35,7 +35,7 @@ class InfoCommand extends Command
     private $api;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct(BotApi $api)
     {
@@ -45,7 +45,7 @@ class InfoCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -56,7 +56,7 @@ class InfoCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

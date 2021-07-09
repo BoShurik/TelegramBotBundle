@@ -39,7 +39,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function execute(BotApi $api, Update $update)
     {
@@ -58,7 +58,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -66,7 +66,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getAliases()
     {
@@ -74,7 +74,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getDescription()
     {

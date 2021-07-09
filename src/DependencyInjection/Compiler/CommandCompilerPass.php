@@ -20,12 +20,11 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 class CommandCompilerPass implements CompilerPassInterface
 {
+    use PriorityTaggedServiceTrait;
     public const TAG = 'boshurik_telegram_bot.command';
 
-    use PriorityTaggedServiceTrait;
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function process(ContainerBuilder $container)
     {
