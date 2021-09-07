@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-4.2.0 (XXXX-XX-XX)
+4.2.0 (2021-09-07)
 ------------------
 
 * Add support of php8
