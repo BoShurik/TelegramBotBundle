@@ -11,10 +11,10 @@
 
 namespace BoShurik\TelegramBotBundle\Tests\DependencyInjection;
 
+use BoShurik\TelegramBotBundle\Authenticator\TelegramAuthenticator;
+use BoShurik\TelegramBotBundle\Authenticator\TelegramLoginValidator;
 use BoShurik\TelegramBotBundle\Controller\WebhookController;
 use BoShurik\TelegramBotBundle\DependencyInjection\BoShurikTelegramBotExtension;
-use BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator;
-use BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use TelegramBot\Api\BotApi;
@@ -31,7 +31,7 @@ class BoShurikTelegramBotExtensionTest extends TestCase
                 'api' => [
                     'token' => 'secret',
                 ],
-                'guard' => [
+                'authenticator' => [
                     'guard_route' => 'guard_route',
                     'default_target_route' => 'reaserved_area',
                 ],

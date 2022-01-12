@@ -18,25 +18,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdatesCommand extends Command
 {
-    /**
-     * @var Telegram
-     */
-    private $telegram;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __construct(Telegram $telegram)
+    public function __construct(private Telegram $telegram)
     {
-        parent::__construct(null);
-
-        $this->telegram = $telegram;
+        parent::__construct();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('telegram:updates')
@@ -44,10 +31,7 @@ class UpdatesCommand extends Command
         ;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->telegram->processUpdates();
 

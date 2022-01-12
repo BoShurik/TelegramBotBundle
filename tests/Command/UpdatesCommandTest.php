@@ -22,7 +22,7 @@ class UpdatesCommandTest extends KernelTestCase
     {
         $kernel = static::bootKernel();
 
-        self::$container->set('test.boshurik_telegram_bot.telegram', $telegram = $this->createMock(Telegram::class));
+        self::getContainer()->set('test.boshurik_telegram_bot.telegram', $telegram = $this->createMock(Telegram::class));
         $telegram
             ->expects($this->once())
             ->method('processUpdates');

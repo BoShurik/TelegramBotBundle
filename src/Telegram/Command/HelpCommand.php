@@ -16,32 +16,14 @@ use TelegramBot\Api\Types\Update;
 
 class HelpCommand extends AbstractCommand implements PublicCommandInterface
 {
-    /**
-     * @var CommandRegistry
-     */
-    private $commandRegistry;
-
-    /**
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @var array
-     */
-    private $aliases;
-
-    public function __construct(CommandRegistry $commandRegistry, $description = 'Help', $aliases = [])
-    {
-        $this->commandRegistry = $commandRegistry;
-        $this->description = $description;
-        $this->aliases = $aliases;
+    public function __construct(
+        private CommandRegistry $commandRegistry,
+        private string $description = 'Help',
+        private array $aliases = []
+    ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(BotApi $api, Update $update)
+    public function execute(BotApi $api, Update $update): void
     {
         $commands = $this->commandRegistry->getCommands();
 
@@ -57,26 +39,17 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
         $api->sendMessage($update->getMessage()->getChat()->getId(), $reply);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return '/help';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getAliases()
+    public function getAliases(): array
     {
         return $this->aliases;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }

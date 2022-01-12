@@ -22,7 +22,7 @@ class UnsetCommandTest extends KernelTestCase
     {
         $kernel = static::bootKernel();
 
-        self::$container->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
+        self::getContainer()->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
         $botApi
             ->expects($this->once())
             ->method('deleteWebhook');

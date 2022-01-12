@@ -17,18 +17,12 @@ use TelegramBot\Api\Types\Update;
 
 class FromAbstractCommand extends AbstractCommand
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return '/bar';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(BotApi $api, Update $update)
+    public function execute(BotApi $api, Update $update): void
     {
     }
 }

@@ -32,7 +32,7 @@ class InfoCommandTest extends KernelTestCase
         $info->setMaxConnections(10);
         $info->setAllowedUpdates(['foo', 'bar']);
 
-        self::$container->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
+        self::getContainer()->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
         $botApi
             ->expects($this->once())
             ->method('getWebhookInfo')

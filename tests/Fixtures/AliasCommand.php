@@ -17,18 +17,12 @@ use TelegramBot\Api\Types\Update;
 
 class AliasCommand extends AbstractCommand
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return '/alias';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getAliases()
+    public function getAliases(): array
     {
         return [
             'alias',
@@ -36,10 +30,7 @@ class AliasCommand extends AbstractCommand
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(BotApi $api, Update $update)
+    public function execute(BotApi $api, Update $update): void
     {
     }
 }

@@ -18,55 +18,29 @@ use TelegramBot\Api\Types\Update;
 
 final class WebhookEvent extends Event
 {
-    /**
-     * @var Request
-     */
-    private $request;
+    private ?Response $response;
 
-    /**
-     * @var Update
-     */
-    private $update;
-
-    /**
-     * @var Response|null
-     */
-    private $response;
-
-    public function __construct(Request $request, Update $update)
+    public function __construct(private Request $request, private Update $update)
     {
-        $this->request = $request;
-        $this->update = $update;
+        $this->response = null;
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * @return Update
-     */
-    public function getUpdate()
+    public function getUpdate(): Update
     {
         return $this->update;
     }
 
-    /**
-     * @return Response|null
-     */
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         return $this->response;
     }
 
-    /**
-     * @param Response|null $response
-     */
-    public function setResponse($response)
+    public function setResponse(?Response $response): void
     {
         $this->response = $response;
     }

@@ -25,9 +25,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class BoShurikTelegramBotExtension extends Extension
 {
-    /**
-     * {@inheritDoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
@@ -38,7 +35,6 @@ class BoShurikTelegramBotExtension extends Extension
         $loader->load('services.yaml');
 
         $container->setParameter('boshurik_telegram_bot.api.token', $config['api']['token']);
-        $container->setParameter('boshurik_telegram_bot.api.tracker_token', $config['api']['tracker_token']);
         $container->setParameter('boshurik_telegram_bot.api.proxy', $config['api']['proxy']);
 
         $container
@@ -46,19 +42,16 @@ class BoShurikTelegramBotExtension extends Extension
             ->addTag(CommandCompilerPass::TAG)
         ;
 
-        if ($config['guard']['enabled']) {
-            $loader->load('guard.yaml');
+        if ($config['authenticator']['enabled']) {
+            $loader->load('authenticator.yaml');
 
-            $container->setParameter('boshurik_telegram_bot.guard.guard_route', $config['guard']['guard_route']);
-            $container->setParameter('boshurik_telegram_bot.guard.default_target_route', $config['guard']['default_target_route']);
-            $container->setParameter('boshurik_telegram_bot.guard.login_route', $config['guard']['login_route'] ?? null);
+            $container->setParameter('boshurik_telegram_bot.guard.guard_route', $config['authenticator']['guard_route']);
+            $container->setParameter('boshurik_telegram_bot.guard.default_target_route', $config['authenticator']['default_target_route']);
+            $container->setParameter('boshurik_telegram_bot.guard.login_route', $config['authenticator']['login_route'] ?? null);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'boshurik_telegram_bot';
     }

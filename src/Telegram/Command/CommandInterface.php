@@ -16,13 +16,7 @@ use TelegramBot\Api\Types\Update;
 
 interface CommandInterface
 {
-    /**
-     * @return void
-     */
-    public function execute(BotApi $api, Update $update);
+    public function execute(BotApi $api, Update $update): void;
 
-    /**
-     * @return bool
-     */
-    public function isApplicable(Update $update);
+    public function isApplicable(Update $update): bool;
 }

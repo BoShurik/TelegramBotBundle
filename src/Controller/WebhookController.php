@@ -24,26 +24,11 @@ use TelegramBot\Api\Types\Update;
 
 class WebhookController
 {
-    /**
-     * @var Telegram
-     */
-    private $telegram;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var MessageBusInterface|null
-     */
-    private $bus;
-
-    public function __construct(Telegram $telegram, EventDispatcherInterface $eventDispatcher, ?MessageBusInterface $bus = null)
-    {
-        $this->telegram = $telegram;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->bus = $bus;
+    public function __construct(
+        private Telegram $telegram,
+        private EventDispatcherInterface $eventDispatcher,
+        private ?MessageBusInterface $bus = null
+    ) {
     }
 
     public function indexAction(Request $request): Response

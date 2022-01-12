@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Tests\Guard;
+namespace BoShurik\TelegramBotBundle\Tests\Authenticator;
 
+use BoShurik\TelegramBotBundle\Authenticator\TelegramLoginValidator;
 use BoShurik\TelegramBotBundle\Exception\AuthenticationException;
-use BoShurik\TelegramBotBundle\Guard\TelegramLoginValidator;
 use PHPUnit\Framework\TestCase;
 
 class TelegramLoginValidatorTest extends TestCase

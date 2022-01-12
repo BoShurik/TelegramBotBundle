@@ -18,26 +18,17 @@ use TelegramBot\Api\Types\Update;
 
 class PublicCommand extends AbstractCommand implements PublicCommandInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return '/public';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(BotApi $api, Update $update)
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Public command';
+    }
+
+    public function execute(BotApi $api, Update $update): void
+    {
     }
 }

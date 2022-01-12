@@ -18,27 +18,15 @@ use TelegramBot\Api\BotApi;
 
 final class CommandListener implements EventSubscriberInterface
 {
-    /**
-     * @var BotApi
-     */
-    private $api;
-
-    /**
-     * @var CommandRegistry
-     */
-    private $commandRegistry;
-
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UpdateEvent::class => 'onUpdate',
         ];
     }
 
-    public function __construct(BotApi $api, CommandRegistry $commandRegistry)
+    public function __construct(private BotApi $api, private CommandRegistry $commandRegistry)
     {
-        $this->api = $api;
-        $this->commandRegistry = $commandRegistry;
     }
 
     public function onUpdate(UpdateEvent $event): void

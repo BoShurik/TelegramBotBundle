@@ -45,10 +45,9 @@ class ConfigurationTest extends TestCase
         ], [
             'api' => [
                 'token' => 'your secret token',
-                'tracker_token' => null,
                 'proxy' => '',
             ],
-            'guard' => [
+            'authenticator' => [
                 'enabled' => false,
                 'login_route' => null,
             ],
@@ -56,16 +55,14 @@ class ConfigurationTest extends TestCase
         yield [[
             'api' => [
                 'token' => 'your secret token',
-                'tracker_token' => 'tracker_token',
                 'proxy' => 'proxy',
             ],
         ], [
             'api' => [
                 'token' => 'your secret token',
-                'tracker_token' => 'tracker_token',
                 'proxy' => 'proxy',
             ],
-            'guard' => [
+            'authenticator' => [
                 'enabled' => false,
                 'login_route' => null,
             ],
@@ -74,17 +71,16 @@ class ConfigurationTest extends TestCase
             'api' => [
                 'token' => 'your secret token',
             ],
-            'guard' => [
+            'authenticator' => [
                 'guard_route' => 'guard_route',
                 'default_target_route' => 'default_target_route',
             ],
         ], [
             'api' => [
                 'token' => 'your secret token',
-                'tracker_token' => null,
                 'proxy' => '',
             ],
-            'guard' => [
+            'authenticator' => [
                 'guard_route' => 'guard_route',
                 'default_target_route' => 'default_target_route',
                 'enabled' => true,
@@ -95,7 +91,7 @@ class ConfigurationTest extends TestCase
             'api' => [
                 'token' => 'your secret token',
             ],
-            'guard' => [
+            'authenticator' => [
                 'login_route' => 'login_route',
                 'default_target_route' => 'default_target_route',
                 'guard_route' => 'guard_route',
@@ -103,10 +99,9 @@ class ConfigurationTest extends TestCase
         ], [
             'api' => [
                 'token' => 'your secret token',
-                'tracker_token' => null,
                 'proxy' => '',
             ],
-            'guard' => [
+            'authenticator' => [
                 'login_route' => 'login_route',
                 'default_target_route' => 'default_target_route',
                 'guard_route' => 'guard_route',

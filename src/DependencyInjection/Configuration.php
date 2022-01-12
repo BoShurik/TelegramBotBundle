@@ -22,10 +22,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('boshurik_telegram_bot');
         /** @var ArrayNodeDefinition $rootNode */
@@ -37,11 +34,10 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('api')->isRequired()
                     ->children()
                         ->scalarNode('token')->isRequired()->end()
-                        ->scalarNode('tracker_token')->defaultNull()->setDeprecated('boshurik/telegram-bot-bundle', '4.2')->end()
                         ->scalarNode('proxy')->defaultValue('')->end()
                     ->end()
                 ->end()
-                ->arrayNode('guard')->canBeEnabled()
+                ->arrayNode('authenticator')->canBeEnabled()
                     ->children()
                         ->scalarNode('login_route')->defaultNull()->cannotBeEmpty()->end()
                         ->scalarNode('default_target_route')->isRequired()->cannotBeEmpty()->end()

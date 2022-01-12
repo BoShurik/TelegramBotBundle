@@ -13,13 +13,7 @@ namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
 interface PublicCommandInterface extends CommandInterface
 {
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 
-    /**
-     * @return string
-     */
-    public function getDescription();
+    public function getDescription(): string;
 }

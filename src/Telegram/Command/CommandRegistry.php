@@ -16,7 +16,7 @@ class CommandRegistry
     /**
      * @var CommandInterface[]
      */
-    private $commands;
+    private array $commands;
 
     public function __construct()
     {
@@ -31,7 +31,7 @@ class CommandRegistry
     /**
      * @return CommandInterface[]
      */
-    public function getCommands()
+    public function getCommands(): array
     {
         return $this->commands;
     }

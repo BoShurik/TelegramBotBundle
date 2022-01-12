@@ -52,7 +52,8 @@ class HelpCommandTest extends TestCase
                 false,
                 null,
                 null,
-                false)
+                false
+            )
         ;
         $update = Update::fromResponse([
             'update_id' => 1,

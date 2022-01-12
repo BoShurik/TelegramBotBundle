@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Guard;
+namespace BoShurik\TelegramBotBundle\Authenticator;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 

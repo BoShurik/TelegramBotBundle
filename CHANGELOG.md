@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+5.0.0 (YYYY-MM-DD)
+------------------
+
+* Drop php < 8
+* Add Symfony 6 support
+* Drop Symfony < 5.4
+* Remove deprecated `tracker_token` parameter
+* Rename `guard` parameter to `authenticator`
+* Update authenticator to use new Symfony security system
+
 4.2.0 (2021-09-07)
 ------------------
 
