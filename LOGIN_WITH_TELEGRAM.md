@@ -14,7 +14,7 @@ Next enable the Telegram Authenticator:
 ```yaml
 boshurik_telegram_bot:
   # ...
-  guard:
+  authentication:
     default_target_route: user_profile  # redirect after login success
     guard_route: _telegram_login        # guard route
     login_route: your_login_route       # optional, if login fails user will be redirected there
@@ -39,9 +39,8 @@ security:
       pattern: ^/_telegram/<a_secret_token>$
       security: false
     main:
-      guard: 
-        authenticators:
-          - BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator
+      custom_authenticators:
+        - BoShurik\TelegramBotBundle\Authenticator\TelegramAuthenticator
       # ...
 ```
 
@@ -52,11 +51,10 @@ security:
   firewalls:
     # ...
     main:
-      guard:
-        authenticators:
-          - App\Security\LoginFormAuthenticator
-          - BoShurik\TelegramBotBundle\Guard\TelegramAuthenticator
-        entry_point: App\Security\LoginFormAuthenticator
+      custom_authenticators:
+        - App\Security\LoginFormAuthenticator
+        - BoShurik\TelegramBotBundle\Authenticator\TelegramAuthenticator
+      entry_point: App\Security\LoginFormAuthenticator
       # ...
 ```
 
@@ -65,14 +63,15 @@ security:
 Authenticator should return an `Symfony\Component\Security\Core\User\UserInterface` instance
 
 **UserProvider.php**
+
 ```php
 <?php
 
 namespace App\Security;
 
 use App\Models\Entity\User;
-use BoShurik\TelegramBotBundle\Guard\UserFactoryInterface;
-use BoShurik\TelegramBotBundle\Guard\UserLoaderInterface;
+use BoShurik\TelegramBotBundle\Authenticator\UserFactoryInterface;
+use BoShurik\TelegramBotBundle\Authenticator\UserLoaderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -117,8 +116,8 @@ class UserProvider implements UserLoaderInterface, UserFactoryInterface
 **config/services.yaml**
 ```yaml
 services:
-  BoShurik\TelegramBotBundle\Guard\UserLoaderInterface: '@App\Security\UserProvider'
-  BoShurik\TelegramBotBundle\Guard\UserFactoryInterface: '@App\Security\UserProvider'
+  BoShurik\TelegramBotBundle\Authenticator\UserLoaderInterface: '@App\Security\UserProvider'
+  BoShurik\TelegramBotBundle\Authenticator\UserFactoryInterface: '@App\Security\UserProvider'
 ```
 
 ## Bot

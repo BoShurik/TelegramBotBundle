@@ -16,42 +16,24 @@ use TelegramBot\Api\Types\Update;
 
 final class UpdateEvent extends Event
 {
-    /**
-     * @var Update
-     */
-    private $update;
+    private bool $processed;
 
-    /**
-     * @var bool
-     */
-    private $processed;
-
-    public function __construct(Update $update)
+    public function __construct(private Update $update)
     {
-        $this->update = $update;
         $this->processed = false;
     }
 
-    /**
-     * @return Update
-     */
-    public function getUpdate()
+    public function getUpdate(): Update
     {
         return $this->update;
     }
 
-    /**
-     * @return bool
-     */
-    public function isProcessed()
+    public function isProcessed(): bool
     {
         return $this->processed;
     }
 
-    /**
-     * @return void
-     */
-    public function setProcessed()
+    public function setProcessed(): void
     {
         $this->processed = true;
     }

@@ -19,35 +19,12 @@ use TelegramBot\Api\BotApi;
 
 class InfoCommand extends Command
 {
-    private const ITEMS = [
-        'getUrl',
-        'hasCustomCertificate',
-        'getPendingUpdateCount',
-        'getLastErrorDate',
-        'getLastErrorMessage',
-        'getMaxConnections',
-        'getAllowedUpdates',
-    ];
-
-    /**
-     * @var BotApi
-     */
-    private $api;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __construct(BotApi $api)
+    public function __construct(private BotApi $api)
     {
-        parent::__construct(null);
-
-        $this->api = $api;
+        parent::__construct();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('telegram:webhook:info')
@@ -55,10 +32,7 @@ class InfoCommand extends Command
         ;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 

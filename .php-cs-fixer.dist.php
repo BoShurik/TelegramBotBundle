@@ -17,7 +17,7 @@ $finder = \PhpCsFixer\Finder::create()
     ->name('*.php')
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setFinder($finder)
     ->setRules([
         '@PSR2' => true,
@@ -47,12 +47,11 @@ return PhpCsFixer\Config::create()
 
         'header_comment' => [
             'header' => $header,
-            'commentType' => 'comment',
+            'comment_type' => 'comment',
             'separate' => 'both',
         ],
         'phpdoc_summary' => false,
         'yoda_style' => false,
-        'phpdoc_inline_tag' => false,
         'declare_strict_types' => false,
         'void_return' => false,
         'phpdoc_align' => [],

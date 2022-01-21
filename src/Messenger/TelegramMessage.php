@@ -15,14 +15,8 @@ use TelegramBot\Api\Types\Update;
 
 class TelegramMessage
 {
-    /**
-     * @var Update
-     */
-    private $update;
-
-    public function __construct(Update $update)
+    public function __construct(private Update $update)
     {
-        $this->update = $update;
     }
 
     public function getUpdate(): Update

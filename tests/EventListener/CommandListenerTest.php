@@ -37,9 +37,6 @@ class CommandListenerTest extends TestCase
      */
     private $listener;
 
-    /**
-     * {@inheritDoc}
-     */
     protected function setUp(): void
     {
         $this->api = $this->createMock(BotApi::class);
@@ -81,11 +78,11 @@ class CommandListenerTest extends TestCase
             ->method('getCommands')
             ->willReturn([
                 new class() implements CommandInterface {
-                    public function execute(BotApi $api, Update $update)
+                    public function execute(BotApi $api, Update $update): void
                     {
                     }
 
-                    public function isApplicable(Update $update)
+                    public function isApplicable(Update $update): bool
                     {
                         return false;
                     }
@@ -110,11 +107,11 @@ class CommandListenerTest extends TestCase
             ->method('getCommands')
             ->willReturn([
                 new class() implements CommandInterface {
-                    public function execute(BotApi $api, Update $update)
+                    public function execute(BotApi $api, Update $update): void
                     {
                     }
 
-                    public function isApplicable(Update $update)
+                    public function isApplicable(Update $update): bool
                     {
                         return true;
                     }

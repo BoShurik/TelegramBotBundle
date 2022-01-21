@@ -18,20 +18,8 @@ use TelegramBot\Api\Types\Update;
 
 /*final*/ class Telegram
 {
-    /**
-     * @var BotApi
-     */
-    private $api;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    public function __construct(BotApi $api, EventDispatcherInterface $eventDispatcher)
+    public function __construct(private BotApi $api, private EventDispatcherInterface $eventDispatcher)
     {
-        $this->api = $api;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function processUpdates(): void

@@ -2,7 +2,6 @@ services:
     TelegramBot\Api\BotApi:
         arguments:
             - '%boshurik_telegram_bot.api.token%'
-            - '%boshurik_telegram_bot.api.tracker_token%'
         calls:
             - ['setProxy', ['%boshurik_telegram_bot.api.proxy%']]
 

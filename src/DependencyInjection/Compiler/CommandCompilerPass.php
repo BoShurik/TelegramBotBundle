@@ -23,9 +23,6 @@ class CommandCompilerPass implements CompilerPassInterface
     use PriorityTaggedServiceTrait;
     public const TAG = 'boshurik_telegram_bot.command';
 
-    /**
-     * {@inheritDoc}
-     */
     public function process(ContainerBuilder $container)
     {
         $registry = $container->getDefinition(CommandRegistry::class);

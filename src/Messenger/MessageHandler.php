@@ -15,14 +15,8 @@ use BoShurik\TelegramBotBundle\Telegram\Telegram;
 
 class MessageHandler
 {
-    /**
-     * @var Telegram
-     */
-    private $telegram;
-
-    public function __construct(Telegram $telegram)
+    public function __construct(private Telegram $telegram)
     {
-        $this->telegram = $telegram;
     }
 
     public function __invoke(TelegramMessage $message)

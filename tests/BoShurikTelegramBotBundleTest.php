@@ -32,7 +32,7 @@ class BoShurikTelegramBotBundleTest extends TestCase
     {
         $bundle = new BoShurikTelegramBotBundle();
 
-        /** @var ContainerBuilder&MockObject $builder */
+        /** @var ContainerBuilder|MockObject $builder */
         $builder = $this->createMock(ContainerBuilder::class);
         $builder
             ->expects($this->exactly(1))

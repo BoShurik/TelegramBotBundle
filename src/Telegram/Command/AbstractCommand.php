@@ -24,23 +24,14 @@ abstract class AbstractCommand implements CommandInterface
      */
     public const REGEXP = '/^([^\s@]+)(@\S+)?\s?(.*)$/';
 
-    /**
-     * @return string
-     */
-    abstract public function getName();
+    abstract public function getName(): string;
 
-    /**
-     * @return array|string[]
-     */
-    public function getAliases()
+    public function getAliases(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isApplicable(Update $update)
+    public function isApplicable(Update $update): bool
     {
         if ($this->isTargetCallback() && $update->getCallbackQuery()) {
             $data = $update->getCallbackQuery()->getData();
@@ -74,13 +65,7 @@ abstract class AbstractCommand implements CommandInterface
         return self::TARGET_MESSAGE;
     }
 
-    /**
-     * @param string $text
-     * @param string $name
-     *
-     * @return bool
-     */
-    protected function matchCommandName($text, $name)
+    protected function matchCommandName(string $text, string $name): bool
     {
         preg_match(self::REGEXP, $text, $matches);
 

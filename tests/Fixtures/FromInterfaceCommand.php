@@ -17,17 +17,11 @@ use TelegramBot\Api\Types\Update;
 
 class FromInterfaceCommand implements CommandInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(BotApi $api, Update $update)
+    public function execute(BotApi $api, Update $update): void
     {
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isApplicable(Update $update)
+    public function isApplicable(Update $update): bool
     {
         return true;
     }

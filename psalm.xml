@@ -13,6 +13,16 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
-<plugins>
-    <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/></plugins>
+    <issueHandlers>
+        <!-- Workaround for https://github.com/vimeo/psalm/issues/7026 -->
+        <ReservedWord>
+            <errorLevel type="suppress">
+                <directory name="src"/>
+                <directory name="tests"/>
+            </errorLevel>
+        </ReservedWord>
+    </issueHandlers>
+    <plugins>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/>
+    </plugins>
 </psalm>

@@ -27,12 +27,12 @@ class ParametersCommand extends AbstractCommand
         $this->assert = $assert;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return '/foo';
     }
 
-    public function execute(BotApi $api, Update $update)
+    public function execute(BotApi $api, Update $update): void
     {
         \call_user_func($this->assert, $this->getCommandParameters($update));
     }

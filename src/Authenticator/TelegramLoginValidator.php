@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Guard;
+namespace BoShurik\TelegramBotBundle\Authenticator;
 
 use BoShurik\TelegramBotBundle\Exception\AuthenticationException;
 
@@ -23,10 +23,7 @@ class TelegramLoginValidator
         'hash',
     ];
 
-    /**
-     * @var string
-     */
-    private $secret;
+    private string $secret;
 
     public function __construct(string $telegramBotToken)
     {
