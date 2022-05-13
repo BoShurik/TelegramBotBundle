@@ -38,8 +38,8 @@ class UnsetCommand extends Command
 
         $this->api->deleteWebhook();
 
-        $io->success('Webhook has been unset');
+        $io->success('Webhook URL has been unset');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

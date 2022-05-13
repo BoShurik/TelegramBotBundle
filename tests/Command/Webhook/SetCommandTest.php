@@ -13,7 +13,10 @@ namespace BoShurik\TelegramBotBundle\Tests\Command\Webhook;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\RouterInterface;
 use TelegramBot\Api\BotApi;
 
 class SetCommandTest extends KernelTestCase
@@ -33,11 +36,63 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url' => 'https://google.com',
+            'url|hostname' => 'https://google.com',
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Webhook url "https://google.com" has been set', $output);
+        $this->assertStringContainsString('Webhook URL has been set to https://google.com', $output);
+        $commandTester->assertCommandIsSuccessful();
+    }
+
+    public function testExecuteWithHostname()
+    {
+        $kernel = static::bootKernel();
+
+        self::getContainer()->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
+        $botApi
+            ->expects($this->once())
+            ->method('setWebhook')
+            ->with('https://google.com/_telegram/secret:token/', null);
+
+        $application = new Application($kernel);
+
+        $command = $application->find('telegram:webhook:set');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'url|hostname' => 'google.com',
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Webhook URL has been set to https://google.com/_telegram/secret:token/', $output);
+        $commandTester->assertCommandIsSuccessful();
+    }
+
+    public function testExecuteWithHostnameRouteNotSet()
+    {
+        $kernel = static::bootKernel();
+
+        self::getContainer()->set('router', $router = $this->createMock(RouterInterface::class));
+        $router
+            ->expects($this->once())
+            ->method('generate')
+            ->willThrowException(new RouteNotFoundException());
+
+        self::getContainer()->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
+        $botApi
+            ->expects($this->never())
+            ->method('setWebhook');
+
+        $application = new Application($kernel);
+
+        $command = $application->find('telegram:webhook:set');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'url|hostname' => 'google.com',
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('We could not find the webhook route.', $output);
+        $this->assertEquals(Command::FAILURE, $commandTester->getStatusCode());
     }
 
     public function testExecuteWithCert()
@@ -61,12 +116,13 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url' => 'https://google.com',
+            'url|hostname' => 'https://google.com',
             'certificate' => __DIR__.'/../Fixtures/cert.crt',
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Webhook url "https://google.com" has been set', $output);
+        $this->assertStringContainsString('Webhook URL has been set to https://google.com', $output);
+        $commandTester->assertCommandIsSuccessful();
     }
 
     public function testExecuteWithBrokenCert()
@@ -80,8 +136,10 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url' => 'https://google.com',
+            'url|hostname' => 'https://google.com',
             'certificate' => __DIR__.'/../Fixtures/no.crt',
         ]);
+
+        $this->assertEquals(Command::SUCCESS, $commandTester->getStatusCode());
     }
 }

@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+5.1.0 (2022-xx-xx)
+------------------
+* Improve the webhook:set command so that it accepts the hostname. The webhook URL will be generated automatically. 
+
 5.0.0 (2022-01-21)
 ------------------
 

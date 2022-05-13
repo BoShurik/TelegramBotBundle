@@ -39,6 +39,7 @@ services:
         class: BoShurik\TelegramBotBundle\Command\Webhook\SetCommand
         arguments:
             - '@TelegramBot\Api\BotApi'
+            - '@router'
         tags:
             - { name: console.command }
 

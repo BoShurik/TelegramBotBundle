@@ -40,7 +40,7 @@ class InfoCommand extends Command
 
         $values = [];
         $values[] = [
-            'url',
+            'Webhook URL',
             $info->getUrl(),
         ];
         $values[] = [
@@ -73,6 +73,6 @@ class InfoCommand extends Command
             'value',
         ], $values);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

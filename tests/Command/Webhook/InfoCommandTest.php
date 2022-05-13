@@ -48,12 +48,13 @@ class InfoCommandTest extends KernelTestCase
 
         $output = $commandTester->getDisplay();
 
-        $this->assertStringContainsString('url                    https://google.com', $output);
+        $this->assertStringContainsString('Webhook URL            https://google.com', $output);
         $this->assertStringContainsString('custom certificate     yes', $output);
         $this->assertStringContainsString('pending update count   10', $output);
         $this->assertStringContainsString('last error date        2020-06-20 11:54:10', $output);
         $this->assertStringContainsString('last error message     Oops', $output);
         $this->assertStringContainsString('max connections        10', $output);
         $this->assertStringContainsString('allowed updates        foo, bar', $output);
+        $commandTester->assertCommandIsSuccessful();
     }
 }

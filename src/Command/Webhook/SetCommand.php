@@ -16,11 +16,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\RouterInterface;
 use TelegramBot\Api\BotApi;
 
 class SetCommand extends Command
 {
-    public function __construct(private BotApi $api)
+    public function __construct(private BotApi $api, private RouterInterface $router)
     {
         parent::__construct();
     }
@@ -29,7 +31,7 @@ class SetCommand extends Command
     {
         $this
             ->setName('telegram:webhook:set')
-            ->addArgument('url', InputArgument::REQUIRED, 'Webhook url')
+            ->addArgument('url|hostname', InputArgument::REQUIRED, 'Webhook URL or the host name of your site. if you specify only a host name (without https://), path will be generated for you.')
             ->addArgument('certificate', InputArgument::OPTIONAL, 'Path to public key certificate')
             ->setDescription('Set webhook')
         ;
@@ -48,10 +50,24 @@ class SetCommand extends Command
             $certificateFile = new \CURLFile($certificate);
         }
 
-        $this->api->setWebhook($url = $input->getArgument('url'), $certificateFile);
+        $url = $input->getArgument('url|hostname');
+        if (!str_starts_with($url, 'https://')) {
+            try {
+                $url = 'https://'.rtrim($url, '/').$this->router->generate('_telegram_bot_webhook');
+            } catch (RouteNotFoundException $e) {
+                $helpUrl = 'https://github.com/BoShurik/TelegramBotBundle#add-routing-for-webhook';
+                $message = "We could not find the webhook route. Read on\n<options=bold>%s</>\nhow to add the route or use symfony/flex.";
+                $io->block(sprintf($message, $helpUrl), 'ERROR', 'fg=white;bg=red', ' ', true, false);
 
-        $io->success(sprintf('Webhook url "%s" has been set', $url));
+                return Command::FAILURE;
+            }
+        }
 
-        return 0;
+        $this->api->setWebhook($url, $certificateFile);
+
+        $message = sprintf('Webhook URL has been set to <options=bold>%s</>', $url);
+        $io->block($message, 'OK', 'fg=black;bg=green', ' ', true, false);
+
+        return Command::SUCCESS;
     }
 }
