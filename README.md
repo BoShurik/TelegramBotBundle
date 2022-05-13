@@ -36,7 +36,7 @@ public function registerBundles()
 
 ``` yaml
 BoShurikTelegramBotBundle:
-    resource: "@BoShurikTelegramBotBundle/Resources/config/routing.yml"
+    resource: "@BoShurikTelegramBotBundle/Resources/config/routing.php"
     prefix: /_telegram/<some-secret>
 ```
 

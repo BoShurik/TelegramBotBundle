@@ -30,9 +30,9 @@ class BoShurikTelegramBotExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $loader->load('services.yaml');
+        $loader->load('services.php');
 
         $container->setParameter('boshurik_telegram_bot.api.token', $config['api']['token']);
         $container->setParameter('boshurik_telegram_bot.api.proxy', $config['api']['proxy']);
@@ -43,7 +43,7 @@ class BoShurikTelegramBotExtension extends Extension
         ;
 
         if ($config['authenticator']['enabled']) {
-            $loader->load('authenticator.yaml');
+            $loader->load('authenticator.php');
 
             $container->setParameter('boshurik_telegram_bot.guard.guard_route', $config['authenticator']['guard_route']);
             $container->setParameter('boshurik_telegram_bot.guard.default_target_route', $config['authenticator']['default_target_route']);
