@@ -14,7 +14,7 @@ Next enable the Telegram Authenticator:
 ```yaml
 boshurik_telegram_bot:
   # ...
-  authentication:
+  authenticator:
     default_target_route: user_profile  # redirect after login success
     guard_route: _telegram_login        # guard route
     login_route: your_login_route       # optional, if login fails user will be redirected there
