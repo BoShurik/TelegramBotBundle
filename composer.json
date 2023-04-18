@@ -38,8 +38,8 @@
         "symfony/security-http": "^5.4 || ^6.0",
         "symfony/messenger": "^5.4 || ^6.0",
         "symfony/yaml": "^5.4 || ^6.0",
-        "vimeo/psalm": "^3.10 || ^4.0",
-        "psalm/plugin-symfony": "^3.0"
+        "vimeo/psalm": "^4.0",
+        "psalm/plugin-symfony": "^4.0"
     },
     "suggest": {
         "symfony/security-guard": "Required to implement user authentication through Telegram",
@@ -51,6 +51,11 @@
         "cs-check": "vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --ansi --dry-run",
         "cs-fix": "vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --ansi",
         "psalm": "vendor/bin/psalm",
+        "dev": [
+            "@cs-fix",
+            "@psalm",
+            "@test"
+        ],
         "checks": [
             "@cs-check",
             "@psalm",

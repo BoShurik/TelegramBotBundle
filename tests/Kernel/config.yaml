@@ -5,6 +5,7 @@ boshurik_telegram_bot:
 framework:
     test: true
     secret: 'secret'
+    http_method_override: false
 
 services:
     _defaults:
