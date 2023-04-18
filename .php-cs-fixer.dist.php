@@ -56,5 +56,6 @@ return (new PhpCsFixer\Config())
         'void_return' => false,
         'phpdoc_align' => [],
         'phpdoc_to_comment' => false,
+        'single_line_comment_spacing' => false,
     ])
 ;
