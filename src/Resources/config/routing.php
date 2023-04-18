@@ -14,5 +14,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routes) {
     $routes->add('_telegram_bot_webhook', '/')
-        ->controller([WebhookController::class, 'indexAction']);
+        ->controller([WebhookController::class, 'indexAction'])
+        ->defaults(['bot' => 'default'])
+    ;
 };

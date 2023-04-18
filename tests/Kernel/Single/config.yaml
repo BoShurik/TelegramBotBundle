@@ -1,13 +1,13 @@
 parameters:
-    telegram_bot_token: 'secret:token'
+    telegram_bot_route_secret: 'secret:route'
 
 boshurik_telegram_bot:
     api:
-        token: '%telegram_bot_token%'
+        token: 'secret:token'
 
 framework:
     router:
-        resource: "%kernel.project_dir%/tests/Kernel/routes.yaml"
+        resource: "%kernel.project_dir%/tests/Kernel/Single/routes.yaml"
         utf8: true
     test: true
     secret: 'secret'
@@ -17,5 +17,5 @@ services:
     _defaults:
         public: true
 
-    test.TelegramBot\Api\BotApi: '@TelegramBot\Api\BotApi'
+    test.boshurik_telegram_bot.api.bot.default: '@boshurik_telegram_bot.api.bot.default'
     test.boshurik_telegram_bot.telegram : '@boshurik_telegram_bot.telegram'

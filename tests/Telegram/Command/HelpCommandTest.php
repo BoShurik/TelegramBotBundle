@@ -11,8 +11,8 @@
 
 namespace BoShurik\TelegramBotBundle\Tests\Telegram\Command;
 
-use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
 use BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand;
+use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistry;
 use BoShurik\TelegramBotBundle\Tests\Fixtures\FromAbstractCommand;
 use BoShurik\TelegramBotBundle\Tests\Fixtures\FromInterfaceCommand;
 use BoShurik\TelegramBotBundle\Tests\Fixtures\PublicCommand;
@@ -25,20 +25,11 @@ class HelpCommandTest extends TestCase
 {
     public function testHelpCommandOutput(): void
     {
-        /** @var CommandRegistry|MockObject $commandRegistry */
-        $commandRegistry = $this->createMock(CommandRegistry::class);
-        $helpCommand = new HelpCommand($commandRegistry);
-
-        $commandRegistry
-            ->expects($this->once())
-            ->method('getCommands')
-            ->willReturn([
-                new FromAbstractCommand(),
-                new FromInterfaceCommand(),
-                new PublicCommand(),
-                $helpCommand,
-            ])
-        ;
+        $commandRegistry = new CommandRegistry();
+        $commandRegistry->addCommand(new FromAbstractCommand());
+        $commandRegistry->addCommand(new FromInterfaceCommand());
+        $commandRegistry->addCommand(new PublicCommand());
+        $commandRegistry->addCommand($helpCommand = new HelpCommand($commandRegistry));
 
         /** @var BotApi|MockObject $api */
         $api = $this->createMock(BotApi::class);
@@ -72,9 +63,8 @@ class HelpCommandTest extends TestCase
 
     public function testHelpCommandAliases(): void
     {
-        /** @var CommandRegistry|MockObject $commandRegistry */
-        $commandRegistry = $this->createMock(CommandRegistry::class);
-        $helpCommand = new HelpCommand($commandRegistry, 'Help', ['alias']);
+        $commandRegistry = new CommandRegistry();
+        $commandRegistry->addCommand($helpCommand = new HelpCommand($commandRegistry, 'Help', ['alias']));
 
         $this->assertSame(['alias'], $helpCommand->getAliases());
     }

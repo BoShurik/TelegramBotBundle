@@ -13,33 +13,46 @@ namespace BoShurik\TelegramBotBundle\Telegram;
 
 use BoShurik\TelegramBotBundle\Event\UpdateEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
 
+/**
+ * @final
+ */
 /* final */ class Telegram
 {
-    public function __construct(private BotApi $api, private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private BotLocator $botLocator,
+        private EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
-    public function processUpdates(): void
+    public function processAllUpdates(): void
     {
-        $updates = $this->api->getUpdates();
+        foreach ($this->botLocator->all() as $name => $id) {
+            $this->processUpdates($name);
+        }
+    }
+
+    public function processUpdates(string $bot): void
+    {
+        $api = $this->botLocator->get($bot);
+
+        $updates = $api->getUpdates();
 
         $lastUpdateId = null;
         foreach ($updates as $update) {
             $lastUpdateId = $update->getUpdateId();
-            $this->processUpdate($update);
+            $this->processUpdate($bot, $update);
         }
 
         if ($lastUpdateId) {
-            $this->api->getUpdates($lastUpdateId + 1, 1);
+            $api->getUpdates($lastUpdateId + 1, 1);
         }
     }
 
-    public function processUpdate(Update $update)
+    public function processUpdate(string $bot, Update $update): void
     {
-        $event = new UpdateEvent($update);
+        $event = new UpdateEvent($bot, $update);
         $this->eventDispatcher->dispatch($event);
     }
 }

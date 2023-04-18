@@ -1,0 +1,25 @@
+parameters:
+    telegram_bot_route_secret: 'secret:route'
+
+boshurik_telegram_bot:
+    api:
+        default_bot: first
+        bots:
+            first: 'first:secret:token'
+            second: 'second:secret:token'
+
+framework:
+    router:
+        resource: "%kernel.project_dir%/tests/Kernel/Multiple/routes.yaml"
+        utf8: true
+    test: true
+    secret: 'secret'
+    http_method_override: false
+
+services:
+    _defaults:
+        public: true
+
+    test.boshurik_telegram_bot.api.bot.first: '@boshurik_telegram_bot.api.bot.first'
+    test.boshurik_telegram_bot.api.bot.second: '@boshurik_telegram_bot.api.bot.second'
+    test.boshurik_telegram_bot.telegram : '@boshurik_telegram_bot.telegram'

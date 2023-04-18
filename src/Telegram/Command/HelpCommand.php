@@ -11,6 +11,7 @@
 
 namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
+use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistry;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
 

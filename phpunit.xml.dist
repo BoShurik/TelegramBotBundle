@@ -18,7 +18,7 @@
 
   <php>
     <ini name="error_reporting" value="-1" />
-      <server name="KERNEL_CLASS" value="BoShurik\TelegramBotBundle\Tests\Kernel\TestKernel" />
+      <server name="KERNEL_CLASS" value="BoShurik\TelegramBotBundle\Tests\Kernel\Single\SingleTestKernel" />
       <server name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
   </php>
 

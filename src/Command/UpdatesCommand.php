@@ -13,10 +13,11 @@ namespace BoShurik\TelegramBotBundle\Command;
 
 use BoShurik\TelegramBotBundle\Telegram\Telegram;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdatesCommand extends Command
+final class UpdatesCommand extends Command
 {
     public function __construct(private Telegram $telegram)
     {
@@ -27,13 +28,20 @@ class UpdatesCommand extends Command
     {
         $this
             ->setName('telegram:updates')
+            ->addArgument('bot', InputArgument::OPTIONAL, 'Bot')
             ->setDescription('Get updates')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->telegram->processUpdates();
+        /** @var string|null $bot */
+        $bot = $input->getArgument('bot');
+        if ($bot) {
+            $this->telegram->processUpdates($bot);
+        } else {
+            $this->telegram->processAllUpdates();
+        }
 
         return Command::SUCCESS;
     }

@@ -33,6 +33,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(TelegramLoginValidator::class)
         ->args([
-            service('%boshurik_telegram_bot.api.token%'),
+            service('%boshurik_telegram_bot.authenticator.token%'),
         ]);
 };

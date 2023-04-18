@@ -18,9 +18,14 @@ final class UpdateEvent extends Event
 {
     private bool $processed;
 
-    public function __construct(private Update $update)
+    public function __construct(private string $bot, private Update $update)
     {
         $this->processed = false;
+    }
+
+    public function getBot(): string
+    {
+        return $this->bot;
     }
 
     public function getUpdate(): Update

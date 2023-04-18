@@ -25,14 +25,14 @@ class AbstractCommandTest extends TestCase
     /**
      * @dataProvider abstractCommandProvider
      */
-    public function testAbstractCommand(Update $update, bool $expected)
+    public function testAbstractCommand(Update $update, bool $expected): void
     {
         $command = new FromAbstractCommand();
 
         $this->assertSame($expected, $command->isApplicable($update));
     }
 
-    public function abstractCommandProvider()
+    public function abstractCommandProvider(): iterable
     {
         yield [$this->createMessageUpdate('/bar'), true];
         yield [$this->createMessageUpdate('/bar test'), true];
@@ -57,14 +57,14 @@ class AbstractCommandTest extends TestCase
     /**
      * @dataProvider targetCallbackAbstractCommandProvider
      */
-    public function testTargetCallbackAbstractCommand(Update $update, bool $expected)
+    public function testTargetCallbackAbstractCommand(Update $update, bool $expected): void
     {
         $command = new TargetCallbackCommand();
 
         $this->assertSame($expected, $command->isApplicable($update));
     }
 
-    public function targetCallbackAbstractCommandProvider()
+    public function targetCallbackAbstractCommandProvider(): iterable
     {
         yield [$this->createMessageUpdate('/bar'), false];
         yield [$this->createMessageUpdate('/foo'), false];
@@ -81,14 +81,14 @@ class AbstractCommandTest extends TestCase
     /**
      * @dataProvider targetAllAbstractCommandProvider
      */
-    public function testTargetAllAbstractCommand(Update $update, bool $expected)
+    public function testTargetAllAbstractCommand(Update $update, bool $expected): void
     {
         $command = new TargetAllCommand();
 
         $this->assertSame($expected, $command->isApplicable($update));
     }
 
-    public function targetAllAbstractCommandProvider()
+    public function targetAllAbstractCommandProvider(): iterable
     {
         yield [$this->createMessageUpdate('/bar'), true];
         yield [$this->createMessageUpdate('/bar test'), true];
@@ -107,7 +107,7 @@ class AbstractCommandTest extends TestCase
     /**
      * @dataProvider parametersProvider
      */
-    public function testParameters(Update $update, ?string $expected)
+    public function testParameters(Update $update, ?string $expected): void
     {
         $command = new ParametersCommand(function (?string $actual) use ($expected) {
             $this->assertSame($expected, $actual);
@@ -116,7 +116,7 @@ class AbstractCommandTest extends TestCase
         $command->execute(new BotApi('token'), $update);
     }
 
-    public function parametersProvider()
+    public function parametersProvider(): iterable
     {
         yield [$this->createEmptyUpdate(), null];
         yield [$this->createMessageUpdate('/foo'), null];
@@ -129,10 +129,7 @@ class AbstractCommandTest extends TestCase
         yield [$this->createCallbackUpdate('/foo 1'), '1'];
     }
 
-    /**
-     * @return bool|Update
-     */
-    private function createMessageUpdate(?string $text)
+    private function createMessageUpdate(?string $text): bool|Update
     {
         return Update::fromResponse([
             'update_id' => 1,
@@ -148,10 +145,7 @@ class AbstractCommandTest extends TestCase
         ]);
     }
 
-    /**
-     * @return bool|Update
-     */
-    private function createCallbackUpdate(?string $data)
+    private function createCallbackUpdate(?string $data): bool|Update
     {
         return Update::fromResponse([
             'update_id' => 1,
@@ -166,10 +160,7 @@ class AbstractCommandTest extends TestCase
         ]);
     }
 
-    /**
-     * @return bool|Update
-     */
-    private function createEmptyUpdate()
+    private function createEmptyUpdate(): bool|Update
     {
         return Update::fromResponse([
             'update_id' => 1,

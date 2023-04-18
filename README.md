@@ -37,7 +37,14 @@ public function registerBundles()
 ``` yaml
 BoShurikTelegramBotBundle:
     resource: "@BoShurikTelegramBotBundle/Resources/config/routing.php"
-    prefix: /_telegram/<some-secret>
+    prefix: /_telegram/%telegram_bot_route_secret%
+```
+
+or for multiple bots:
+``` yaml
+BoShurikTelegramBotBundle:
+    resource: "@BoShurikTelegramBotBundle/Resources/config/routing.php"
+    prefix: /_telegram/{bot}/%telegram_bot_route_secret%
 ```
 
 #### Configuration
@@ -49,12 +56,39 @@ boshurik_telegram_bot:
         proxy: "socks5://127.0.0.1:8888"
 ```
 
+or for multiple bots:
+``` yaml
+boshurik_telegram_bot:
+    api:
+        default_bot: first
+        bots:
+            first: "%first_telegram_bot_api_token%"
+            second: "%second_telegram_bot_api_token%"
+        proxy: "socks5://127.0.0.1:8888"
+```
+
 ## Usage
 
 #### API
 
+To get default bot api:
 ```php
-    $api = $this->container->get(TelegramBot\Api\BotApi::class);
+use TelegramBot\Api\BotApi;
+public function __construct(private BotApi $api)
+```
+
+For multiple bots:
+
+```php
+
+use BoShurik\TelegramBotBundle\Telegram\BotLocator;
+use TelegramBot\Api\BotApi;
+
+public function foo(BotLocator $botLocator)
+{
+    /** @var BotApi $api */
+    $api = $botLocator->get('first');
+}
 ```
 
 For more info see [Usage][2] section in [`telegram-bot/api`][1] library
@@ -63,6 +97,7 @@ For more info see [Usage][2] section in [`telegram-bot/api`][1] library
 
 ``` bash
 bin/console telegram:updates
+bin/console telegram:updates first
 ```
 
 For more information see [official documentation][3]
@@ -72,13 +107,15 @@ For more information see [official documentation][3]
 ##### Set
 
 ``` bash
-bin/console telegram:webhook:set <url> [<path-to-certificate>]
+bin/console telegram:webhook:set <url-or-hostname> [<path-to-certificate>]
+bin/console telegram:webhook:set <url-or-hostname> [<path-to-certificate>] --bot first
 ```
 
 ##### Unset
 
 ``` bash
 bin/console telegram:webhook:unset
+bin/console telegram:webhook:unset first
 ```
 
 For more information see [official documentation][4]
@@ -118,16 +155,43 @@ app.telegram.command:
 
 If you use `autoconfigure` tag will be added automatically
 
-There is predefined `\BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand`. You need to register it:
+For application with multiple bots you need to pass bot id:
+``` yaml
+app.telegram.command:
+    class: AppBundle\Telegram\Command\SomeCommand
+    tags:
+        - { name: boshurik_telegram_bot.command, bot: first }
+```
+If you need to use same command for multiple bots you must add multiple tags for each bot:
+``` yaml
+app.telegram.command:
+    class: AppBundle\Telegram\Command\SomeCommand
+    tags:
+        - { name: boshurik_telegram_bot.command, bot: first }
+        - { name: boshurik_telegram_bot.command, bot: second }
+```
+
+There is predefined `\BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand`.
+It displays commands which additionally implement `\BoShurik\TelegramBotBundle\Telegram\Command\PublicCommandInterface`
+
+You need to register it:
 ``` yaml
 app.telegram.command.help:
     class: BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand
     arguments:
-        - '@BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry'
+        - '@boshurik_telegram_bot.command.registry.default'
     tags:
         - { name: boshurik_telegram_bot.command }
 ```
-It displays commands which additionally implement `\BoShurik\TelegramBotBundle\Telegram\Command\PublicCommandInterface`
+or for multiple bots:
+``` yaml
+app.telegram.command.help:
+    class: BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand
+    arguments:
+        - '@boshurik_telegram_bot.command.registry.first'
+    tags:
+        - { name: boshurik_telegram_bot.command, bot: first }
+```
 
 #### Events
 
@@ -147,7 +211,7 @@ public function onUpdate(UpdateEvent $event)
 
 This bundle supports login through Telegram Api
 
-If you want allow your Bot's users to login without requiring them to register again
+If you want to allow your Bot's users to login without requiring them to register again
 follow these [instructions](LOGIN_WITH_TELEGRAM.md).
 
 [1]: https://github.com/TelegramBot/Api

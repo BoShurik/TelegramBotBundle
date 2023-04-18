@@ -14,37 +14,15 @@ namespace BoShurik\TelegramBotBundle\Tests\EventListener;
 use BoShurik\TelegramBotBundle\Event\UpdateEvent;
 use BoShurik\TelegramBotBundle\EventListener\CommandListener;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
-use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
-use PHPUnit\Framework\MockObject\MockObject;
+use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistry;
+use BoShurik\TelegramBotBundle\Tests\Telegram\BotLocatorTest;
+use BoShurik\TelegramBotBundle\Tests\Telegram\Command\Registry\CommandRegistryLocatorTest;
 use PHPUnit\Framework\TestCase;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
 
 class CommandListenerTest extends TestCase
 {
-    /**
-     * @var BotApi|MockObject
-     */
-    private $api;
-
-    /**
-     * @var CommandRegistry|MockObject
-     */
-    private $commandRegistry;
-
-    /**
-     * @var CommandListener
-     */
-    private $listener;
-
-    protected function setUp(): void
-    {
-        $this->api = $this->createMock(BotApi::class);
-        $this->commandRegistry = $this->createMock(CommandRegistry::class);
-
-        $this->listener = new CommandListener($this->api, $this->commandRegistry);
-    }
-
     public function testSubscribedEvents(): void
     {
         $this->assertTrue(isset(CommandListener::getSubscribedEvents()[UpdateEvent::class]));
@@ -52,77 +30,79 @@ class CommandListenerTest extends TestCase
 
     public function testNotProcessedWhenNoCommands(): void
     {
-        /** @var Update $update */
-        $update = $this->createMock(Update::class);
+        $update = Update::fromResponse(['update_id' => 0]);
+        $event = new UpdateEvent('default', $update);
 
-        $this->commandRegistry
-            ->expects($this->any())
-            ->method('getCommands')
-            ->willReturn([])
-        ;
-
-        $event = new UpdateEvent($update);
-
-        $this->listener->onUpdate($event);
+        $listener = $this->createListener([]);
+        $listener->onUpdate($event);
 
         $this->assertFalse($event->isProcessed());
     }
 
     public function testNotProcessedWhenCommandsIsNotApplicable(): void
     {
-        /** @var Update $update */
-        $update = $this->createMock(Update::class);
+        $update = Update::fromResponse(['update_id' => 0]);
+        $event = new UpdateEvent('default', $update);
 
-        $this->commandRegistry
-            ->expects($this->any())
-            ->method('getCommands')
-            ->willReturn([
-                new class() implements CommandInterface {
-                    public function execute(BotApi $api, Update $update): void
-                    {
-                    }
+        $listener = $this->createListener([
+            new class() implements CommandInterface {
+                public function execute(BotApi $api, Update $update): void
+                {
+                }
 
-                    public function isApplicable(Update $update): bool
-                    {
-                        return false;
-                    }
-                },
-            ])
-        ;
+                public function isApplicable(Update $update): bool
+                {
+                    return false;
+                }
+            },
+        ]);
 
-        $event = new UpdateEvent($update);
-
-        $this->listener->onUpdate($event);
+        $listener->onUpdate($event);
 
         $this->assertFalse($event->isProcessed());
     }
 
     public function testProcessed(): void
     {
-        /** @var Update $update */
-        $update = $this->createMock(Update::class);
+        $update = Update::fromResponse(['update_id' => 0]);
+        $event = new UpdateEvent('default', $update);
 
-        $this->commandRegistry
-            ->expects($this->any())
-            ->method('getCommands')
-            ->willReturn([
-                new class() implements CommandInterface {
-                    public function execute(BotApi $api, Update $update): void
-                    {
-                    }
+        $listener = $this->createListener([
+            new class() implements CommandInterface {
+                public function execute(BotApi $api, Update $update): void
+                {
+                }
 
-                    public function isApplicable(Update $update): bool
-                    {
-                        return true;
-                    }
-                },
-            ])
-        ;
+                public function isApplicable(Update $update): bool
+                {
+                    return true;
+                }
+            },
+        ]);
 
-        $event = new UpdateEvent($update);
-
-        $this->listener->onUpdate($event);
+        $listener->onUpdate($event);
 
         $this->assertTrue($event->isProcessed());
+    }
+
+    /**
+     * @param CommandInterface[] $commands
+     */
+    private function createListener(array $commands): CommandListener
+    {
+        $botLocator = BotLocatorTest::createLocator([
+            'default' => $this->createMock(BotApi::class),
+        ]);
+
+        $commandRegistry = new CommandRegistry();
+        foreach ($commands as $command) {
+            $commandRegistry->addCommand($command);
+        }
+
+        $registryLocator = CommandRegistryLocatorTest::createLocator([
+            'default' => $commandRegistry,
+        ]);
+
+        return new CommandListener($botLocator, $registryLocator);
     }
 }

@@ -11,6 +11,7 @@
 
 namespace BoShurik\TelegramBotBundle\Tests\Command\Webhook;
 
+use BoShurik\TelegramBotBundle\Tests\Kernel\Multiple\MultipleTestKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
@@ -19,13 +20,18 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use TelegramBot\Api\BotApi;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class SetCommandTest extends KernelTestCase
 {
-    public function testExecute()
+    public function testExecute(): void
     {
         $kernel = static::bootKernel();
 
-        self::getContainer()->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
+        $botApi = $this->createMock(BotApi::class);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.default', $botApi);
+
         $botApi
             ->expects($this->once())
             ->method('setWebhook')
@@ -40,20 +46,23 @@ class SetCommandTest extends KernelTestCase
         ]);
 
         $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Bot "default"', $output);
         $this->assertStringContainsString('Webhook URL has been set to', $output);
         $this->assertStringContainsString('https://google.com', $output);
         $commandTester->assertCommandIsSuccessful();
     }
 
-    public function testExecuteWithHostname()
+    public function testExecuteWithHostname(): void
     {
         $kernel = static::bootKernel();
 
-        self::getContainer()->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
+        $botApi = $this->createMock(BotApi::class);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.default', $botApi);
+
         $botApi
             ->expects($this->once())
             ->method('setWebhook')
-            ->with('https://google.com/_telegram/secret:token/', null);
+            ->with('https://google.com/_telegram/secret:route/', null);
 
         $application = new Application($kernel);
 
@@ -64,12 +73,13 @@ class SetCommandTest extends KernelTestCase
         ]);
 
         $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Bot "default"', $output);
         $this->assertStringContainsString('Webhook URL has been set to', $output);
-        $this->assertStringContainsString('https://google.com/_telegram/secret:token/', $output);
+        $this->assertStringContainsString('https://google.com/_telegram/secret:route/', $output);
         $commandTester->assertCommandIsSuccessful();
     }
 
-    public function testExecuteWithHostnameRouteNotSet()
+    public function testExecuteWithHostnameRouteNotSet(): void
     {
         $kernel = static::bootKernel();
 
@@ -79,7 +89,9 @@ class SetCommandTest extends KernelTestCase
             ->method('generate')
             ->willThrowException(new RouteNotFoundException());
 
-        self::getContainer()->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
+        $botApi = $this->createMock(BotApi::class);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.default', $botApi);
+
         $botApi
             ->expects($this->never())
             ->method('setWebhook');
@@ -93,15 +105,18 @@ class SetCommandTest extends KernelTestCase
         ]);
 
         $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Bot "default"', $output);
         $this->assertStringContainsString('We could not find the webhook route.', $output);
         $this->assertEquals(Command::FAILURE, $commandTester->getStatusCode());
     }
 
-    public function testExecuteWithCert()
+    public function testExecuteWithCert(): void
     {
         $kernel = static::bootKernel();
 
-        self::getContainer()->set('test.'.BotApi::class, $botApi = $this->createMock(BotApi::class));
+        $botApi = $this->createMock(BotApi::class);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.default', $botApi);
+
         $botApi
             ->expects($this->once())
             ->method('setWebhook')
@@ -123,12 +138,13 @@ class SetCommandTest extends KernelTestCase
         ]);
 
         $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Bot "default"', $output);
         $this->assertStringContainsString('Webhook URL has been set to', $output);
         $this->assertStringContainsString('https://google.com', $output);
         $commandTester->assertCommandIsSuccessful();
     }
 
-    public function testExecuteWithBrokenCert()
+    public function testExecuteWithBrokenCert(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -142,7 +158,110 @@ class SetCommandTest extends KernelTestCase
             'url|hostname' => 'https://google.com',
             'certificate' => __DIR__.'/../Fixtures/no.crt',
         ]);
+    }
 
-        $this->assertEquals(Command::SUCCESS, $commandTester->getStatusCode());
+    public function testExecuteWithUrlAndMultipleBots(): void
+    {
+        static::$class = MultipleTestKernel::class;
+        $kernel = static::bootKernel();
+
+        $firstBotApi = $this->createMock(BotApi::class);
+        $secondBotApi = $this->createMock(BotApi::class);
+
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.first', $firstBotApi);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.second', $secondBotApi);
+
+        $firstBotApi
+            ->expects($this->never())
+            ->method('setWebhook');
+        $secondBotApi
+            ->expects($this->never())
+            ->method('setWebhook');
+
+        $application = new Application($kernel);
+
+        $command = $application->find('telegram:webhook:set');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'url|hostname' => 'https://google.com',
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Can\'t set single url for multiple bots', $output);
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+    }
+
+    public function testExecuteWithHostnameAndMultipleBots(): void
+    {
+        static::$class = MultipleTestKernel::class;
+        $kernel = static::bootKernel();
+
+        $firstBotApi = $this->createMock(BotApi::class);
+        $secondBotApi = $this->createMock(BotApi::class);
+
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.first', $firstBotApi);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.second', $secondBotApi);
+
+        $firstBotApi
+            ->expects($this->once())
+            ->method('setWebhook')
+            ->with('https://google.com/_telegram/first/secret:route/', null);
+        $secondBotApi
+            ->expects($this->once())
+            ->method('setWebhook')
+            ->with('https://google.com/_telegram/second/secret:route/', null);
+
+        $application = new Application($kernel);
+
+        $command = $application->find('telegram:webhook:set');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'url|hostname' => 'google.com',
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Bot "first"', $output);
+        $this->assertStringContainsString('Bot "second"', $output);
+        $this->assertStringContainsString('Webhook URL has been set to', $output);
+        $this->assertStringContainsString('https://google.com/_telegram/first/secret:route/', $output);
+        $this->assertStringContainsString('https://google.com/_telegram/second/secret:route/', $output);
+        $commandTester->assertCommandIsSuccessful();
+    }
+
+    public function testExecuteWithHostnameAndMultipleBotsForSingleBot(): void
+    {
+        static::$class = MultipleTestKernel::class;
+        $kernel = static::bootKernel();
+
+        $firstBotApi = $this->createMock(BotApi::class);
+        $secondBotApi = $this->createMock(BotApi::class);
+
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.first', $firstBotApi);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.second', $secondBotApi);
+
+        $firstBotApi
+            ->expects($this->once())
+            ->method('setWebhook')
+            ->with('https://google.com/_telegram/first/secret:route/', null);
+        $secondBotApi
+            ->expects($this->never())
+            ->method('setWebhook');
+
+        $application = new Application($kernel);
+
+        $command = $application->find('telegram:webhook:set');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'url|hostname' => 'google.com',
+            '--bot' => 'first',
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Bot "first"', $output);
+        $this->assertStringNotContainsString('Bot "second"', $output);
+        $this->assertStringContainsString('Webhook URL has been set to', $output);
+        $this->assertStringContainsString('https://google.com/_telegram/first/secret:route/', $output);
+        $this->assertStringNotContainsString('https://google.com/_telegram/second/secret:route/', $output);
+        $commandTester->assertCommandIsSuccessful();
     }
 }

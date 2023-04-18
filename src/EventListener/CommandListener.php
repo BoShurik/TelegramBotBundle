@@ -12,9 +12,9 @@
 namespace BoShurik\TelegramBotBundle\EventListener;
 
 use BoShurik\TelegramBotBundle\Event\UpdateEvent;
-use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
+use BoShurik\TelegramBotBundle\Telegram\BotLocator;
+use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistryLocator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use TelegramBot\Api\BotApi;
 
 final class CommandListener implements EventSubscriberInterface
 {
@@ -25,18 +25,21 @@ final class CommandListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(private BotApi $api, private CommandRegistry $commandRegistry)
+    public function __construct(private BotLocator $botLocator, private CommandRegistryLocator $registryLocator)
     {
     }
 
     public function onUpdate(UpdateEvent $event): void
     {
-        foreach ($this->commandRegistry->getCommands() as $command) {
+        $api = $this->botLocator->get($event->getBot());
+        $registry = $this->registryLocator->get($event->getBot());
+
+        foreach ($registry->getCommands() as $command) {
             if (!$command->isApplicable($event->getUpdate())) {
                 continue;
             }
 
-            $command->execute($this->api, $event->getUpdate());
+            $command->execute($api, $event->getUpdate());
             $event->setProcessed();
 
             break;

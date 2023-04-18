@@ -13,8 +13,8 @@ namespace BoShurik\TelegramBotBundle\Tests\DependencyInjection\Compiler;
 
 use BoShurik\TelegramBotBundle\DependencyInjection\Compiler\CommandCompilerPass;
 use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
-use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
 use BoShurik\TelegramBotBundle\Telegram\Command\HelpCommand;
+use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistry;
 use BoShurik\TelegramBotBundle\Tests\Fixtures\FromAbstractCommand;
 use BoShurik\TelegramBotBundle\Tests\Fixtures\FromInterfaceCommand;
 use BoShurik\TelegramBotBundle\Tests\Fixtures\PublicCommand;
@@ -27,25 +27,25 @@ class CommandCompilerPassTest extends TestCase
 {
     public function testRegisterCommand(): void
     {
-        $container = $container = $this->buildContainer();
+        $container = $this->buildContainer();
 
         $container
             ->register(FromInterfaceCommand::class)
-            ->addTag(CommandCompilerPass::TAG)
+            ->addTag(CommandCompilerPass::COMMAND_TAG)
         ;
         $container
             ->register(FromAbstractCommand::class)
-            ->addTag(CommandCompilerPass::TAG)
+            ->addTag(CommandCompilerPass::COMMAND_TAG)
         ;
         $container
             ->register(PublicCommand::class)
-            ->addTag(CommandCompilerPass::TAG)
+            ->addTag(CommandCompilerPass::COMMAND_TAG)
         ;
 
         $container->compile();
 
         /** @var CommandRegistry $registry */
-        $registry = $container->get(CommandRegistry::class);
+        $registry = $container->get('boshurik_telegram_bot.command.registry.default');
         $this->assertCount(3, $registry->getCommands());
         $this->assertContainsOnlyInstancesOf(CommandInterface::class, $registry->getCommands());
     }
@@ -58,7 +58,7 @@ class CommandCompilerPassTest extends TestCase
 
         $container
             ->register('service', '\stdClass')
-            ->addTag(CommandCompilerPass::TAG)
+            ->addTag(CommandCompilerPass::COMMAND_TAG)
         ;
 
         $container->compile();
@@ -70,14 +70,14 @@ class CommandCompilerPassTest extends TestCase
 
         $container
             ->register(HelpCommand::class)
-            ->addArgument(new Reference(CommandRegistry::class))
-            ->addTag(CommandCompilerPass::TAG)
+            ->addArgument(new Reference('boshurik_telegram_bot.command.registry.default'))
+            ->addTag(CommandCompilerPass::COMMAND_TAG)
             ->setPublic(true)
         ;
 
         $container->compile();
 
-        $this->assertInstanceOf(CommandRegistry::class, $container->get(CommandRegistry::class));
+        $this->assertInstanceOf(CommandRegistry::class, $container->get('boshurik_telegram_bot.command.registry.default'));
         $this->assertInstanceOf(HelpCommand::class, $container->get(HelpCommand::class));
     }
 
@@ -85,14 +85,61 @@ class CommandCompilerPassTest extends TestCase
     {
         $this->expectException(LogicException::class);
 
-        $container = $container = $this->buildContainer();
+        $container = $this->buildContainer();
 
         $container
             ->register('foo')
-            ->addTag(CommandCompilerPass::TAG)
+            ->addTag(CommandCompilerPass::COMMAND_TAG)
         ;
 
         $container->compile();
+    }
+
+    public function testMultipleBotsContainer(): void
+    {
+        $container = $this->buildMultipleBotsContainer();
+
+        $container
+            ->register(FromInterfaceCommand::class)
+            ->addTag(CommandCompilerPass::COMMAND_TAG, [
+                'bot' => 'first',
+            ])
+            ->addTag(CommandCompilerPass::COMMAND_TAG, [
+                'bot' => 'second',
+            ])
+        ;
+        $container
+            ->register(FromAbstractCommand::class)
+            ->addTag(CommandCompilerPass::COMMAND_TAG, [
+                'bot' => 'first',
+            ])
+        ;
+        $container
+            ->register(PublicCommand::class)
+            ->addTag(CommandCompilerPass::COMMAND_TAG, [
+                'bot' => 'second',
+            ])
+        ;
+
+        $container->compile();
+
+        /** @var CommandRegistry $firstRegistry */
+        $firstRegistry = $container->get('boshurik_telegram_bot.command.registry.first');
+        $this->assertCount(2, $firstRegistry->getCommands());
+        $this->assertContainsOnlyInstancesOf(CommandInterface::class, $firstRegistry->getCommands());
+
+        [$firstCommand, $secondCommand] = $firstRegistry->getCommands();
+        $this->assertInstanceOf(FromInterfaceCommand::class, $firstCommand);
+        $this->assertInstanceOf(FromAbstractCommand::class, $secondCommand);
+
+        /** @var CommandRegistry $secondRegistry */
+        $secondRegistry = $container->get('boshurik_telegram_bot.command.registry.second');
+        $this->assertCount(2, $secondRegistry->getCommands());
+        $this->assertContainsOnlyInstancesOf(CommandInterface::class, $secondRegistry->getCommands());
+
+        [$firstCommand, $secondCommand] = $secondRegistry->getCommands();
+        $this->assertInstanceOf(FromInterfaceCommand::class, $firstCommand);
+        $this->assertInstanceOf(PublicCommand::class, $secondCommand);
     }
 
     private function buildContainer(): ContainerBuilder
@@ -101,8 +148,38 @@ class CommandCompilerPassTest extends TestCase
         $container->addCompilerPass(new CommandCompilerPass());
 
         $container
-            ->register(CommandRegistry::class)
+            ->register('boshurik_telegram_bot.command.registry.default', CommandRegistry::class)
             ->setPublic(true)
+            ->setArguments([[]])
+            ->addTag(CommandCompilerPass::REGISTRY_TAG, [
+                'bot' => 'default',
+            ])
+        ;
+
+        return $container;
+    }
+
+    private function buildMultipleBotsContainer(): ContainerBuilder
+    {
+        $container = new ContainerBuilder();
+        $container->addCompilerPass(new CommandCompilerPass());
+
+        $container
+            ->register('boshurik_telegram_bot.command.registry.first', CommandRegistry::class)
+            ->setPublic(true)
+            ->setArguments([[]])
+            ->addTag(CommandCompilerPass::REGISTRY_TAG, [
+                'bot' => 'first',
+            ])
+        ;
+
+        $container
+            ->register('boshurik_telegram_bot.command.registry.second', CommandRegistry::class)
+            ->setPublic(true)
+            ->setArguments([[]])
+            ->addTag(CommandCompilerPass::REGISTRY_TAG, [
+                'bot' => 'second',
+            ])
         ;
 
         return $container;

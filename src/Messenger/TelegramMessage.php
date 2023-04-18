@@ -13,10 +13,15 @@ namespace BoShurik\TelegramBotBundle\Messenger;
 
 use TelegramBot\Api\Types\Update;
 
-class TelegramMessage
+final class TelegramMessage
 {
-    public function __construct(private Update $update)
+    public function __construct(private string $bot, private Update $update)
     {
+    }
+
+    public function getBot(): string
+    {
+        return $this->bot;
     }
 
     public function getUpdate(): Update

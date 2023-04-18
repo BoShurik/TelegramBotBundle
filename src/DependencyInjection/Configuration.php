@@ -15,12 +15,7 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * This is the class that validates and merges configuration from your app/config files
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
- */
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
@@ -32,13 +27,63 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('api')->isRequired()
+                    ->beforeNormalization()
+                        ->ifTrue(static function ($v) {
+                            return \is_array($v) && !\array_key_exists('bots', $v) && !\array_key_exists('bot', $v);
+                        })
+                        ->then(static function ($v) {
+                            // Key that should not be rewritten to the connection config
+                            $excludedKeys = ['default_bot' => true, 'proxy' => true];
+                            $connection = [];
+                            foreach ($v as $key => $value) {
+                                if (isset($excludedKeys[$key])) {
+                                    continue;
+                                }
+
+                                $connection[$key] = $v[$key];
+                                unset($v[$key]);
+                            }
+
+                            $v['default_bot'] = isset($v['default_bot']) ? (string) $v['default_bot'] : 'default';
+                            $v['bots'] = [$v['default_bot'] => $connection];
+
+                            return $v;
+                        })
+                    ->end()
+                    ->validate()
+                        ->ifTrue(function ($v) {
+                            $defaultBot = $v['default_bot'] ?? null;
+
+                            return !isset($v['bots'][$defaultBot]);
+                        })
+                        ->thenInvalid('Default bot not found')
+                    ->end()
                     ->children()
-                        ->scalarNode('token')->isRequired()->end()
+                        ->scalarNode('default_bot')->isRequired()->end()
+                    ->end()
+                    ->children()
                         ->scalarNode('proxy')->defaultValue('')->end()
+                    ->end()
+                    ->children()
+                        ->arrayNode('bots')
+                            ->useAttributeAsKey('name')
+                            ->prototype('array')
+                                ->beforeNormalization()
+                                    ->ifString()
+                                    ->then(static function ($v) {
+                                        return ['token' => $v];
+                                    })
+                                ->end()
+                                ->children()
+                                    ->scalarNode('token')->isRequired()->end()
+                                ->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
                 ->arrayNode('authenticator')->canBeEnabled()
                     ->children()
+                        ->scalarNode('bot')->defaultNull()->end()
                         ->scalarNode('login_route')->defaultNull()->cannotBeEmpty()->end()
                         ->scalarNode('default_target_route')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('guard_route')->isRequired()->cannotBeEmpty()->end()
