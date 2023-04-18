@@ -34,6 +34,7 @@ class UnsetCommandTest extends KernelTestCase
         $commandTester->execute([]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Webhook has been unset', $output);
+        $this->assertStringContainsString('Webhook URL has been unset', $output);
+        $commandTester->assertCommandIsSuccessful();
     }
 }

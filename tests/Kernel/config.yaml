@@ -1,8 +1,13 @@
+parameters:
+    telegram_bot_token: 'secret:token'
+
 boshurik_telegram_bot:
     api:
-        token: token
+        token: '%telegram_bot_token%'
 
 framework:
+    router:
+        resource: "%kernel.project_dir%/tests/Kernel/routes.yaml"
     test: true
     secret: 'secret'
     http_method_override: false

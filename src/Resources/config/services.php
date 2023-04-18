@@ -63,6 +63,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set('boshurik_telegram_bot.command.webhook.set', SetCommand::class)
         ->args([
             service(BotApi::class),
+            service('router'),
         ])
         ->tag('console.command');
 

@@ -35,6 +35,6 @@ class UpdatesCommand extends Command
     {
         $this->telegram->processUpdates();
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

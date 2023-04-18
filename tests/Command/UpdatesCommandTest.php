@@ -32,5 +32,6 @@ class UpdatesCommandTest extends KernelTestCase
         $command = $application->find('telegram:updates');
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
+        $commandTester->assertCommandIsSuccessful();
     }
 }

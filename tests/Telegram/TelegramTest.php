@@ -81,7 +81,7 @@ class TelegramTest extends TestCase
         $this->api
             ->expects($this->exactly(2))
             ->method('getUpdates')
-            ->withConsecutive([0, 100, 0], [3 /*2 + 1*/ , 1, 0])
+            ->withConsecutive([0, 100, 0], [3 /* 2 + 1 */ , 1, 0])
             ->willReturnOnConsecutiveCalls([
                 Update::fromResponse(['update_id' => 1]),
                 Update::fromResponse(['update_id' => 2]),

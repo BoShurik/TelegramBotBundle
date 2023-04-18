@@ -1,8 +1,9 @@
 CHANGELOG
 =========
 
-5.1.0 (2022-xx-xx)
+5.1.0 (2023-xx-xx)
 ------------------
+* Improve the webhook:set command so that it accepts the hostname. The webhook URL will be generated automatically. 
 * Moved config yaml files to php.
 
 5.0.0 (2022-01-21)

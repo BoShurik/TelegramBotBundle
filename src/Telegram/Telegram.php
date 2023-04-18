@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
 
-/*final*/ class Telegram
+/* final */ class Telegram
 {
     public function __construct(private BotApi $api, private EventDispatcherInterface $eventDispatcher)
     {
