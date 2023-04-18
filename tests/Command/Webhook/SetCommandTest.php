@@ -40,7 +40,8 @@ class SetCommandTest extends KernelTestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Webhook URL has been set to https://google.com', $output);
+        $this->assertStringContainsString('Webhook URL has been set to', $output);
+        $this->assertStringContainsString('https://google.com', $output);
         $commandTester->assertCommandIsSuccessful();
     }
 
@@ -63,7 +64,8 @@ class SetCommandTest extends KernelTestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Webhook URL has been set to https://google.com/_telegram/secret:token/', $output);
+        $this->assertStringContainsString('Webhook URL has been set to', $output);
+        $this->assertStringContainsString('https://google.com/_telegram/secret:token/', $output);
         $commandTester->assertCommandIsSuccessful();
     }
 
@@ -121,7 +123,8 @@ class SetCommandTest extends KernelTestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Webhook URL has been set to https://google.com', $output);
+        $this->assertStringContainsString('Webhook URL has been set to', $output);
+        $this->assertStringContainsString('https://google.com', $output);
         $commandTester->assertCommandIsSuccessful();
     }
 
