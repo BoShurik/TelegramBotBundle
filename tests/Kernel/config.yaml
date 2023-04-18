@@ -8,6 +8,7 @@ boshurik_telegram_bot:
 framework:
     router:
         resource: "%kernel.project_dir%/tests/Kernel/routes.yaml"
+        utf8: true
     test: true
     secret: 'secret'
     http_method_override: false
