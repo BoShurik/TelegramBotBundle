@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class TelegramAuthenticator extends AbstractAuthenticator
+final class TelegramAuthenticator extends AbstractAuthenticator
 {
     use TargetPathTrait;
 

@@ -21,8 +21,9 @@ class WebhookEventTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $event = new WebhookEvent($request = new Request(), $update = Update::fromResponse(['update_id' => 1]));
+        $event = new WebhookEvent('default', $request = new Request(), $update = Update::fromResponse(['update_id' => 1]));
 
+        $this->assertSame('default', $event->getBot());
         $this->assertSame($request, $event->getRequest());
         $this->assertSame($update, $event->getUpdate());
         $this->assertNull($event->getResponse());
@@ -30,7 +31,7 @@ class WebhookEventTest extends TestCase
 
     public function testRequest(): void
     {
-        $event = new WebhookEvent($request = new Request(), $update = Update::fromResponse(['update_id' => 1]));
+        $event = new WebhookEvent('default', new Request(), Update::fromResponse(['update_id' => 1]));
         $event->setResponse($response = new Response());
 
         $this->assertSame($response, $event->getResponse());

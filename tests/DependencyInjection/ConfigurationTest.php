@@ -21,7 +21,7 @@ class ConfigurationTest extends TestCase
     /**
      * @dataProvider configurationDataProvider
      */
-    public function testConfiguration(array $configs, ?array $expected)
+    public function testConfiguration(array $configs, ?array $expected): void
     {
         if ($expected === null) {
             $this->expectException(InvalidConfigurationException::class);
@@ -31,43 +31,58 @@ class ConfigurationTest extends TestCase
         $result = $processor->processConfiguration(new Configuration(), [$configs]);
 
         if ($expected !== null) {
-            $this->assertSame($expected, $result);
+            $this->assertEqualsCanonicalizing($expected, $result);
         }
     }
 
-    public function configurationDataProvider()
+    public function configurationDataProvider(): iterable
     {
-        yield [[], null];
-        yield [[
+        yield 'Empty configuration' => [[], null];
+
+        yield 'Simple configuration' => [[
             'api' => [
                 'token' => 'your secret token',
             ],
         ], [
             'api' => [
-                'token' => 'your secret token',
+                'default_bot' => 'default',
+                'bots' => [
+                    'default' => [
+                        'token' => 'your secret token',
+                    ],
+                ],
                 'proxy' => '',
             ],
             'authenticator' => [
                 'enabled' => false,
+                'bot' => null,
                 'login_route' => null,
             ],
         ]];
-        yield [[
+
+        yield 'Simple configuration with proxy' => [[
             'api' => [
                 'token' => 'your secret token',
                 'proxy' => 'proxy',
             ],
         ], [
             'api' => [
-                'token' => 'your secret token',
                 'proxy' => 'proxy',
+                'default_bot' => 'default',
+                'bots' => [
+                    'default' => [
+                        'token' => 'your secret token',
+                    ],
+                ],
             ],
             'authenticator' => [
                 'enabled' => false,
+                'bot' => null,
                 'login_route' => null,
             ],
         ]];
-        yield [[
+
+        yield 'Simple configuration with authenticator #1' => [[
             'api' => [
                 'token' => 'your secret token',
             ],
@@ -77,17 +92,24 @@ class ConfigurationTest extends TestCase
             ],
         ], [
             'api' => [
-                'token' => 'your secret token',
+                'default_bot' => 'default',
+                'bots' => [
+                    'default' => [
+                        'token' => 'your secret token',
+                    ],
+                ],
                 'proxy' => '',
             ],
             'authenticator' => [
+                'bot' => null,
                 'guard_route' => 'guard_route',
                 'default_target_route' => 'default_target_route',
                 'enabled' => true,
                 'login_route' => null,
             ],
         ]];
-        yield [[
+
+        yield 'Simple configuration with authenticator #2' => [[
             'api' => [
                 'token' => 'your secret token',
             ],
@@ -98,15 +120,68 @@ class ConfigurationTest extends TestCase
             ],
         ], [
             'api' => [
-                'token' => 'your secret token',
+                'default_bot' => 'default',
+                'bots' => [
+                    'default' => [
+                        'token' => 'your secret token',
+                    ],
+                ],
                 'proxy' => '',
             ],
             'authenticator' => [
+                'bot' => null,
                 'login_route' => 'login_route',
                 'default_target_route' => 'default_target_route',
                 'guard_route' => 'guard_route',
                 'enabled' => true,
             ],
         ]];
+
+        yield 'Multiple bots configuration' => [[
+            'api' => [
+                'default_bot' => 'first',
+                'bots' => [
+                    'first' => 'first secret token',
+                    'second' => 'second secret token',
+                ],
+            ],
+        ], [
+            'api' => [
+                'default_bot' => 'first',
+                'bots' => [
+                    'first' => [
+                        'token' => 'first secret token',
+                    ],
+                    'second' => [
+                        'token' => 'second secret token',
+                    ],
+                ],
+                'proxy' => '',
+            ],
+            'authenticator' => [
+                'enabled' => false,
+                'bot' => null,
+                'login_route' => null,
+            ],
+        ]];
+
+        yield 'Multiple bots configuration without default bot property' => [[
+            'api' => [
+                'bots' => [
+                    'first' => 'first secret token',
+                    'second' => 'second secret token',
+                ],
+            ],
+        ], null];
+
+        yield 'Multiple bots configuration with wrong default bot property' => [[
+            'api' => [
+                'default_bot' => 'default',
+                'bots' => [
+                    'first' => 'first secret token',
+                    'second' => 'second secret token',
+                ],
+            ],
+        ], null];
     }
 }

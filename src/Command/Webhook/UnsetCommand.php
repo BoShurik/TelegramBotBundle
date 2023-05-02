@@ -11,15 +11,17 @@
 
 namespace BoShurik\TelegramBotBundle\Command\Webhook;
 
+use BoShurik\TelegramBotBundle\Telegram\BotLocator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TelegramBot\Api\BotApi;
 
-class UnsetCommand extends Command
+final class UnsetCommand extends Command
 {
-    public function __construct(private BotApi $api)
+    public function __construct(private BotLocator $botLocator)
     {
         parent::__construct();
     }
@@ -28,6 +30,7 @@ class UnsetCommand extends Command
     {
         $this
             ->setName('telegram:webhook:unset')
+            ->addArgument('bot', InputArgument::OPTIONAL, 'Bot')
             ->setDescription('Unset webhook')
         ;
     }
@@ -36,10 +39,26 @@ class UnsetCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $this->api->deleteWebhook();
-
-        $io->success('Webhook URL has been unset');
+        /** @var string|null $bot */
+        $bot = $input->getArgument('bot');
+        if ($bot) {
+            $api = $this->botLocator->get($bot);
+            $this->deleteWebhook($io, $bot, $api);
+        } else {
+            foreach ($this->botLocator->all() as $name => $api) {
+                $this->deleteWebhook($io, $name, $api);
+            }
+        }
 
         return Command::SUCCESS;
+    }
+
+    private function deleteWebhook(SymfonyStyle $io, string $name, BotApi $api): void
+    {
+        $io->block(sprintf('Bot "%s"', $name));
+
+        $api->deleteWebhook();
+
+        $io->success('Webhook URL has been unset');
     }
 }

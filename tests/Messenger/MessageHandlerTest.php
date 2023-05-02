@@ -36,12 +36,12 @@ class MessageHandlerTest extends TestCase
         $this->handler = new MessageHandler($this->telegram);
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $this->telegram
             ->expects($this->once())
             ->method('processUpdate')
-            ->with($this->callback(function ($update) {
+            ->with('default', $this->callback(function ($update) {
                 if (!$update instanceof Update) {
                     return false;
                 }
@@ -50,7 +50,7 @@ class MessageHandlerTest extends TestCase
             }))
         ;
 
-        $this->handler->__invoke(new TelegramMessage(Update::fromResponse([
+        $this->handler->__invoke(new TelegramMessage('default', Update::fromResponse([
             'update_id' => 0,
         ])));
     }

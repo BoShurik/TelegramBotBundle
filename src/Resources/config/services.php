@@ -18,31 +18,57 @@ use BoShurik\TelegramBotBundle\Command\Webhook\UnsetCommand;
 use BoShurik\TelegramBotBundle\Controller\WebhookController;
 use BoShurik\TelegramBotBundle\EventListener\CommandListener;
 use BoShurik\TelegramBotBundle\Messenger\MessageHandler;
-use BoShurik\TelegramBotBundle\Telegram\Command\CommandRegistry;
+use BoShurik\TelegramBotBundle\Telegram\BotLocator;
+use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistry;
+use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistryLocator;
 use BoShurik\TelegramBotBundle\Telegram\Telegram;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use TelegramBot\Api\BotApi;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->set(BotApi::class)
-        ->args([
-            '%boshurik_telegram_bot.api.token%',
-        ])
+    $services->set('boshurik_telegram_bot.api.abstract_bot', BotApi::class)
+        ->abstract()
         ->call('setProxy', ['%boshurik_telegram_bot.api.proxy%']);
+
+    $services->set('boshurik_telegram_bot.api.bot_locator', ServiceLocator::class)
+        ->args([[]])
+        ->tag('container.service_locator')
+    ;
+
+    $services->set(BotLocator::class)
+        ->args([
+            service('boshurik_telegram_bot.api.bot_locator'),
+        ])
+    ;
 
     $services->set('boshurik_telegram_bot.telegram', Telegram::class)
         ->args([
-            service(BotApi::class),
+            service(BotLocator::class),
             service('event_dispatcher'),
         ]);
 
-    $services->set(CommandRegistry::class);
+    $services
+        ->set('boshurik_telegram_bot.command.abstract_registry', CommandRegistry::class)
+        ->abstract()
+    ;
+
+    $services->set('boshurik_telegram_bot.command.registry_locator', ServiceLocator::class)
+        ->args([[]])
+        ->tag('container.service_locator')
+    ;
+
+    $services->set('boshurik_telegram_bot.command.registries', CommandRegistryLocator::class)
+        ->args([
+            service('boshurik_telegram_bot.command.registry_locator'),
+        ])
+    ;
 
     $services->set('boshurik_telegram_bot.command.listener', CommandListener::class)
         ->args([
-            service(BotApi::class),
-            service(CommandRegistry::class),
+            service(BotLocator::class),
+            service('boshurik_telegram_bot.command.registries'),
         ])
         ->tag('kernel.event_subscriber');
 
@@ -62,20 +88,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set('boshurik_telegram_bot.command.webhook.set', SetCommand::class)
         ->args([
-            service(BotApi::class),
+            service(BotLocator::class),
             service('router'),
         ])
         ->tag('console.command');
 
     $services->set('boshurik_telegram_bot.command.webhook.unset', UnsetCommand::class)
         ->args([
-            service(BotApi::class),
+            service(BotLocator::class),
         ])
         ->tag('console.command');
 
     $services->set('boshurik_telegram_bot.command.webhook.info', InfoCommand::class)
         ->args([
-            service(BotApi::class),
+            service(BotLocator::class),
         ])
         ->tag('console.command');
 

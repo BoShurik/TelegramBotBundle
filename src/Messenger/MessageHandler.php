@@ -13,7 +13,7 @@ namespace BoShurik\TelegramBotBundle\Messenger;
 
 use BoShurik\TelegramBotBundle\Telegram\Telegram;
 
-class MessageHandler
+final class MessageHandler
 {
     public function __construct(private Telegram $telegram)
     {
@@ -21,6 +21,6 @@ class MessageHandler
 
     public function __invoke(TelegramMessage $message)
     {
-        $this->telegram->processUpdate($message->getUpdate());
+        $this->telegram->processUpdate($message->getBot(), $message->getUpdate());
     }
 }

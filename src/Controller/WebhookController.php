@@ -22,7 +22,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
 
-class WebhookController
+final class WebhookController
 {
     public function __construct(
         private Telegram $telegram,
@@ -31,15 +31,15 @@ class WebhookController
     ) {
     }
 
-    public function indexAction(Request $request): Response
+    public function indexAction(string $bot, Request $request): Response
     {
         if ($content = $request->getContent()) {
             if ($data = BotApi::jsonValidate($content, true)) {
                 $update = Update::fromResponse($data);
                 if ($this->bus === null) {
-                    $this->telegram->processUpdate($update);
+                    $this->telegram->processUpdate($bot, $update);
                 } else {
-                    $this->bus->dispatch(new TelegramMessage($update));
+                    $this->bus->dispatch(new TelegramMessage($bot, $update));
                 }
             }
         }
@@ -48,7 +48,7 @@ class WebhookController
             throw new BadRequestHttpException('Empty data');
         }
 
-        $event = $this->eventDispatcher->dispatch(new WebhookEvent($request, $update));
+        $event = $this->eventDispatcher->dispatch(new WebhookEvent($bot, $request, $update));
 
         return $event->getResponse() ? $event->getResponse() : new Response();
     }

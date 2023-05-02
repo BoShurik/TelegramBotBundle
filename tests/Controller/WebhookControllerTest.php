@@ -65,7 +65,7 @@ class WebhookControllerTest extends TestCase
     {
         $this->expectException(BadRequestHttpException::class);
 
-        $this->controller->indexAction(new Request());
+        $this->controller->indexAction('default', new Request());
     }
 
     public function testDefaultResponse(): void
@@ -77,7 +77,7 @@ class WebhookControllerTest extends TestCase
         $this->telegram
             ->expects($this->once())
             ->method('processUpdate')
-            ->with($this->callback(function ($update) {
+            ->with('default', $this->callback(function ($update) {
                 return $update instanceof Update;
             }))
         ;
@@ -95,6 +95,9 @@ class WebhookControllerTest extends TestCase
                 if (!$event->getUpdate() instanceof Update) {
                     return false;
                 }
+                if ($event->getBot() !== 'default') {
+                    return false;
+                }
 
                 return $event->getUpdate()->getUpdateId() === 0;
             }))
@@ -103,7 +106,7 @@ class WebhookControllerTest extends TestCase
             })
         ;
 
-        $response = $this->controller->indexAction($request);
+        $response = $this->controller->indexAction('default', $request);
 
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('', $response->getContent());
@@ -130,6 +133,9 @@ class WebhookControllerTest extends TestCase
                 if (!$event->getUpdate() instanceof Update) {
                     return false;
                 }
+                if ($event->getBot() !== 'default') {
+                    return false;
+                }
 
                 return $event->getUpdate()->getUpdateId() === 0;
             }))
@@ -140,12 +146,12 @@ class WebhookControllerTest extends TestCase
             })
         ;
 
-        $response = $this->controller->indexAction($request);
+        $response = $this->controller->indexAction('default', $request);
 
         $this->assertSame($expectedResponse, $response);
     }
 
-    public function testBus()
+    public function testBus(): void
     {
         $request = $this->createRequest(json_encode([
             'update_id' => 0,
@@ -160,6 +166,9 @@ class WebhookControllerTest extends TestCase
             ->method('dispatch')
             ->with($this->callback(function ($message) {
                 if (!$message instanceof TelegramMessage) {
+                    return false;
+                }
+                if ($message->getBot() !== 'default') {
                     return false;
                 }
 
@@ -180,6 +189,9 @@ class WebhookControllerTest extends TestCase
                 if (!$event->getUpdate() instanceof Update) {
                     return false;
                 }
+                if ($event->getBot() !== 'default') {
+                    return false;
+                }
 
                 return $event->getUpdate()->getUpdateId() === 0;
             }))
@@ -187,7 +199,7 @@ class WebhookControllerTest extends TestCase
                 return $event;
             });
 
-        $this->controllerWithBus->indexAction($request);
+        $this->controllerWithBus->indexAction('default', $request);
     }
 
     private function createRequest(string $content): Request

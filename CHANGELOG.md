@@ -1,8 +1,10 @@
 CHANGELOG
 =========
 
-5.1.0 (2023-xx-xx)
+6.0.0 (2023-xx-xx)
 ------------------
+
+* Allow multiple bots
 * Improve the webhook:set command so that it accepts the hostname. The webhook URL will be generated automatically. 
 * Moved config yaml files to php.
 

@@ -39,9 +39,13 @@ class TelegramTest extends TestCase
     protected function setUp(): void
     {
         $this->api = $this->createMock(BotApi::class);
+        $botLocator = BotLocatorTest::createLocator([
+            'default' => $this->api,
+        ]);
+
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $this->telegram = new Telegram($this->api, $this->eventDispatcher);
+        $this->telegram = new Telegram($botLocator, $this->eventDispatcher);
     }
 
     public function testProcessUpdate(): void
@@ -56,13 +60,16 @@ class TelegramTest extends TestCase
                 if (!$event instanceof UpdateEvent) {
                     return false;
                 }
+                if ($event->getBot() !== 'default') {
+                    return false;
+                }
 
                 return $event->getUpdate() === $update;
             }))
             ->willReturnArgument(0)
         ;
 
-        $this->telegram->processUpdate($update);
+        $this->telegram->processUpdate('default', $update);
     }
 
     public function testProcessNoUpdates(): void
@@ -73,7 +80,7 @@ class TelegramTest extends TestCase
             ->willReturn([])
         ;
 
-        $this->telegram->processUpdates();
+        $this->telegram->processUpdates('default');
     }
 
     public function testProcessUpdates(): void
@@ -88,6 +95,21 @@ class TelegramTest extends TestCase
             ], [])
         ;
 
-        $this->telegram->processUpdates();
+        $this->telegram->processUpdates('default');
+    }
+
+    public function testProcessAllUpdates(): void
+    {
+        $this->api
+            ->expects($this->exactly(2))
+            ->method('getUpdates')
+            ->withConsecutive([0, 100, 0], [3 /* 2 + 1 */ , 1, 0])
+            ->willReturnOnConsecutiveCalls([
+                Update::fromResponse(['update_id' => 1]),
+                Update::fromResponse(['update_id' => 2]),
+            ], [])
+        ;
+
+        $this->telegram->processAllUpdates();
     }
 }

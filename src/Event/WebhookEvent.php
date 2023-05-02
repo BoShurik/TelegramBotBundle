@@ -20,9 +20,14 @@ final class WebhookEvent extends Event
 {
     private ?Response $response;
 
-    public function __construct(private Request $request, private Update $update)
+    public function __construct(private string $bot, private Request $request, private Update $update)
     {
         $this->response = null;
+    }
+
+    public function getBot(): string
+    {
+        return $this->bot;
     }
 
     public function getRequest(): Request

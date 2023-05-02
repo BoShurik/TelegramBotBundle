@@ -11,15 +11,17 @@
 
 namespace BoShurik\TelegramBotBundle\Command\Webhook;
 
+use BoShurik\TelegramBotBundle\Telegram\BotLocator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TelegramBot\Api\BotApi;
 
-class InfoCommand extends Command
+final class InfoCommand extends Command
 {
-    public function __construct(private BotApi $api)
+    public function __construct(private BotLocator $botLocator)
     {
         parent::__construct();
     }
@@ -28,6 +30,7 @@ class InfoCommand extends Command
     {
         $this
             ->setName('telegram:webhook:info')
+            ->addArgument('bot', InputArgument::OPTIONAL, 'Bot')
             ->setDescription('Webhook info')
         ;
     }
@@ -36,7 +39,26 @@ class InfoCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $info = $this->api->getWebhookInfo();
+        /** @var string|null $bot */
+        $bot = $input->getArgument('bot');
+        if ($bot) {
+            $api = $this->botLocator->get($bot);
+
+            $this->printWebhookInfo($io, $bot, $api);
+        } else {
+            foreach ($this->botLocator->all() as $name => $api) {
+                $this->printWebhookInfo($io, $name, $api);
+            }
+        }
+
+        return Command::SUCCESS;
+    }
+
+    private function printWebhookInfo(SymfonyStyle $io, string $name, BotApi $api): void
+    {
+        $io->block(sprintf('Bot "%s"', $name));
+
+        $info = $api->getWebhookInfo();
 
         $values = [];
         $values[] = [
@@ -44,35 +66,33 @@ class InfoCommand extends Command
             $info->getUrl(),
         ];
         $values[] = [
-            'custom certificate',
+            'Custom Certificate',
             $info->hasCustomCertificate() ? 'yes' : 'no',
         ];
         $values[] = [
-            'pending update count',
+            'Pending Update Count',
             $info->getPendingUpdateCount(),
         ];
         $values[] = [
-            'last error date',
+            'Last Error Date',
             $info->getLastErrorDate() ? date('Y-m-d H:i:s', $info->getLastErrorDate()) : '-',
         ];
         $values[] = [
-            'last error message',
+            'Last Error Message',
             $info->getLastErrorMessage() ?? '-',
         ];
         $values[] = [
-            'max connections',
+            'Max Connections',
             $info->getMaxConnections(),
         ];
         $values[] = [
-            'allowed updates',
+            'Allowed Updates',
             \is_array($info->getAllowedUpdates()) ? implode(', ', $info->getAllowedUpdates()) : '-',
         ];
 
         $io->table([
-            'name',
-            'value',
+            'Name',
+            'Value',
         ], $values);
-
-        return Command::SUCCESS;
     }
 }

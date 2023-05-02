@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace BoShurik\TelegramBotBundle\Telegram\Command;
+namespace BoShurik\TelegramBotBundle\Telegram\Command\Registry;
 
-class CommandRegistry
+use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
+
+final class CommandRegistry
 {
     /**
      * @var CommandInterface[]
@@ -23,7 +25,7 @@ class CommandRegistry
         $this->commands = [];
     }
 
-    public function addCommand(CommandInterface $command)
+    public function addCommand(CommandInterface $command): void
     {
         $this->commands[] = $command;
     }
