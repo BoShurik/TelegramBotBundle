@@ -90,6 +90,11 @@ public function foo(BotLocator $botLocator)
     $api = $botLocator->get('first');
 }
 ```
+or use argument with type `TelegramBot\Api\BotApi` and name pattern `/\${name}(Bot|BotApi|Api)?$/`
+```php
+use TelegramBot\Api\BotApi;
+public function __construct(private BotApi $firstBotApi)
+```
 
 For more info see [Usage][2] section in [`telegram-bot/api`][1] library
 

@@ -69,6 +69,10 @@ final class BoShurikTelegramBotExtension extends Extension
             if ($name === $defaultBot) {
                 $container->setAlias(BotApi::class, $botId);
             }
+            $container->registerAliasForArgument($botId, BotApi::class, $name);
+            $container->registerAliasForArgument($botId, BotApi::class, $name.'Bot');
+            $container->registerAliasForArgument($botId, BotApi::class, $name.'BotApi');
+            $container->registerAliasForArgument($botId, BotApi::class, $name.'Api');
         }
 
         $container

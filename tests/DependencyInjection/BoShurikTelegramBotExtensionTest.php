@@ -44,6 +44,11 @@ class BoShurikTelegramBotExtensionTest extends TestCase
         ], $container);
 
         $this->assertTrue($container->hasAlias(BotApi::class));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $default'));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $defaultBot'));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $defaultBotApi'));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $defaultApi'));
+
         $this->assertTrue($container->has('boshurik_telegram_bot.api.bot.default'));
 
         $this->assertTrue($container->has(BotLocator::class));
@@ -110,6 +115,16 @@ class BoShurikTelegramBotExtensionTest extends TestCase
         ], $container);
 
         $this->assertTrue($container->hasAlias(BotApi::class));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $first'));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $firstBot'));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $firstBotApi'));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $firstApi'));
+
+        $this->assertTrue($container->hasAlias(BotApi::class.' $second'));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $secondBot'));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $secondBotApi'));
+        $this->assertTrue($container->hasAlias(BotApi::class.' $secondApi'));
+
         $this->assertTrue($container->has('boshurik_telegram_bot.api.bot.first'));
         $this->assertTrue($container->has('boshurik_telegram_bot.api.bot.second'));
 
