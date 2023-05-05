@@ -19,3 +19,4 @@ services:
 
     test.boshurik_telegram_bot.api.bot.default: '@boshurik_telegram_bot.api.bot.default'
     test.boshurik_telegram_bot.telegram : '@boshurik_telegram_bot.telegram'
+    test.router.request_context: '@router.request_context'

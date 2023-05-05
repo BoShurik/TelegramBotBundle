@@ -112,9 +112,11 @@ For more information see [official documentation][3]
 ##### Set
 
 ``` bash
-bin/console telegram:webhook:set <url-or-hostname> [<path-to-certificate>]
-bin/console telegram:webhook:set <url-or-hostname> [<path-to-certificate>] --bot first
+bin/console telegram:webhook:set [url-or-hostname] [<path-to-certificate>]
+bin/console telegram:webhook:set [url-or-hostname] [<path-to-certificate>] --bot first
 ```
+
+If `url-or-hostname` is not set command will generate url based on [request context](https://symfony.com/doc/current/routing.html#generating-urls-in-commands)
 
 ##### Unset
 
