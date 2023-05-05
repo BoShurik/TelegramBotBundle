@@ -23,6 +23,7 @@ use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistry;
 use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistryLocator;
 use BoShurik\TelegramBotBundle\Telegram\Telegram;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use TelegramBot\Api\BotApi;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -89,7 +90,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set('boshurik_telegram_bot.command.webhook.set', SetCommand::class)
         ->args([
             service(BotLocator::class),
-            service('router'),
+            service(UrlGeneratorInterface::class),
         ])
         ->tag('console.command');
 

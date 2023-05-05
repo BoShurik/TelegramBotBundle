@@ -5,7 +5,7 @@ CHANGELOG
 ------------------
 
 * Allow multiple bots
-* Improve the webhook:set command so that it accepts the hostname. The webhook URL will be generated automatically. 
+* Improve the webhook:set command so that it accepts the hostname. The webhook URL will be generated automatically. If url or hostname is not passed then command tries to generate url based on [request context](https://symfony.com/doc/current/routing.html#generating-urls-in-commands)
 * Moved config yaml files to php.
 
 5.0.0 (2022-01-21)

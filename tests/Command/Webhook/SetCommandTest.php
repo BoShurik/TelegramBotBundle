@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 use TelegramBot\Api\BotApi;
 
@@ -42,7 +43,7 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url|hostname' => 'https://google.com',
+            'urlOrHostname' => 'https://google.com',
         ]);
 
         $output = $commandTester->getDisplay();
@@ -69,7 +70,7 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url|hostname' => 'google.com',
+            'urlOrHostname' => 'google.com',
         ]);
 
         $output = $commandTester->getDisplay();
@@ -101,7 +102,7 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url|hostname' => 'google.com',
+            'urlOrHostname' => 'google.com',
         ]);
 
         $output = $commandTester->getDisplay();
@@ -133,7 +134,7 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url|hostname' => 'https://google.com',
+            'urlOrHostname' => 'https://google.com',
             'certificate' => __DIR__.'/../Fixtures/cert.crt',
         ]);
 
@@ -155,7 +156,7 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url|hostname' => 'https://google.com',
+            'urlOrHostname' => 'https://google.com',
             'certificate' => __DIR__.'/../Fixtures/no.crt',
         ]);
     }
@@ -183,7 +184,7 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url|hostname' => 'https://google.com',
+            'urlOrHostname' => 'https://google.com',
         ]);
 
         $output = $commandTester->getDisplay();
@@ -216,7 +217,7 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url|hostname' => 'google.com',
+            'urlOrHostname' => 'google.com',
         ]);
 
         $output = $commandTester->getDisplay();
@@ -252,7 +253,7 @@ class SetCommandTest extends KernelTestCase
         $command = $application->find('telegram:webhook:set');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'url|hostname' => 'google.com',
+            'urlOrHostname' => 'google.com',
             '--bot' => 'first',
         ]);
 
@@ -263,5 +264,54 @@ class SetCommandTest extends KernelTestCase
         $this->assertStringContainsString('https://google.com/_telegram/first/secret:route/', $output);
         $this->assertStringNotContainsString('https://google.com/_telegram/second/secret:route/', $output);
         $commandTester->assertCommandIsSuccessful();
+    }
+
+    public function testExecuteWithEmptyUrlOrHostname(): void
+    {
+        $kernel = static::bootKernel();
+
+        $botApi = $this->createMock(BotApi::class);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.default', $botApi);
+        self::getContainer()->set('test.router.request_context', RequestContext::fromUri('https://google.com'));
+
+        $botApi
+            ->expects($this->once())
+            ->method('setWebhook')
+            ->with('https://google.com/_telegram/secret:route/', null);
+
+        $application = new Application($kernel);
+
+        $command = $application->find('telegram:webhook:set');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Bot "default"', $output);
+        $this->assertStringContainsString('Webhook URL has been set to', $output);
+        $this->assertStringContainsString('https://google.com/_telegram/secret:route/', $output);
+        $commandTester->assertCommandIsSuccessful();
+    }
+
+    public function testExecuteWithEmptyUrlOrHostnameAndEmptyRequestContext(): void
+    {
+        $kernel = static::bootKernel();
+
+        $botApi = $this->createMock(BotApi::class);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.default', $botApi);
+
+        $botApi
+            ->expects($this->never())
+            ->method('setWebhook')
+        ;
+
+        $application = new Application($kernel);
+
+        $command = $application->find('telegram:webhook:set');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Can\'t generate url: request context is not set', $output);
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
     }
 }

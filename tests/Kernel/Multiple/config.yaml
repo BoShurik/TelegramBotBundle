@@ -23,3 +23,4 @@ services:
     test.boshurik_telegram_bot.api.bot.first: '@boshurik_telegram_bot.api.bot.first'
     test.boshurik_telegram_bot.api.bot.second: '@boshurik_telegram_bot.api.bot.second'
     test.boshurik_telegram_bot.telegram : '@boshurik_telegram_bot.telegram'
+    test.router.request_context: '@router.request_context'

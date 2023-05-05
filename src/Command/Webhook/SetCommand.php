@@ -19,12 +19,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use TelegramBot\Api\BotApi;
 
 final class SetCommand extends Command
 {
-    public function __construct(private BotLocator $botLocator, private RouterInterface $router)
+    public function __construct(private BotLocator $botLocator, private UrlGeneratorInterface $urlGenerator)
     {
         parent::__construct();
     }
@@ -33,7 +33,7 @@ final class SetCommand extends Command
     {
         $this
             ->setName('telegram:webhook:set')
-            ->addArgument('url|hostname', InputArgument::REQUIRED, 'Webhook URL or the host name of your site. if you specify only a host name (without https://), path will be generated for you.')
+            ->addArgument('urlOrHostname', InputArgument::OPTIONAL, 'Webhook URL or the host name of your site. if you specify only a host name (without https://), path will be generated for you.')
             ->addArgument('certificate', InputArgument::OPTIONAL, 'Path to public key certificate')
             ->addOption('bot', null, InputOption::VALUE_REQUIRED, 'Bot')
             ->setDescription('Set webhook')
@@ -53,24 +53,25 @@ final class SetCommand extends Command
             $certificateFile = new \CURLFile($certificate);
         }
 
-        $url = $input->getArgument('url|hostname');
-
+        /** @var string|null $urlOrHostname */
+        $urlOrHostname = $input->getArgument('urlOrHostname');
         /** @var string|null $bot */
         $bot = $input->getOption('bot');
+
         if ($bot) {
             $api = $this->botLocator->get($bot);
-            if (!$this->setWebhook($io, $bot, $api, $url, $certificateFile)) {
+            if (!$this->setWebhook($io, $bot, $api, $urlOrHostname, $certificateFile)) {
                 return self::FAILURE;
             }
         } else {
-            if (str_starts_with($url, 'https://') && !$this->botLocator->isSingle()) {
+            if ($urlOrHostname && str_starts_with($urlOrHostname, 'https://') && !$this->botLocator->isSingle()) {
                 $io->error('Can\'t set single url for multiple bots. Pass hostname to generate urls automatically');
 
                 return self::FAILURE;
             }
 
             foreach ($this->botLocator->all() as $name => $api) {
-                if (!$this->setWebhook($io, $name, $api, $url, $certificateFile)) {
+                if (!$this->setWebhook($io, $name, $api, $urlOrHostname, $certificateFile)) {
                     return self::FAILURE;
                 }
             }
@@ -83,14 +84,23 @@ final class SetCommand extends Command
         SymfonyStyle $io,
         string $name,
         BotApi $api,
-        string $url,
+        ?string $urlOrHostname,
         ?\CURLFile $certificateFile
     ): bool {
         $io->block(sprintf('Bot "%s"', $name));
 
-        if (!str_starts_with($url, 'https://')) {
+        if (!$urlOrHostname) {
+            $url = $this->urlGenerator->generate('_telegram_bot_webhook', [
+                'bot' => $name,
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+            if (str_contains($url, '://localhost')) {
+                $io->error('Can\'t generate url: request context is not set');
+
+                return false;
+            }
+        } elseif (!str_starts_with($urlOrHostname, 'https://')) {
             try {
-                $url = 'https://'.rtrim($url, '/').$this->router->generate('_telegram_bot_webhook', [
+                $url = 'https://'.rtrim($urlOrHostname, '/').$this->urlGenerator->generate('_telegram_bot_webhook', [
                     'bot' => $name,
                 ]);
             } catch (RouteNotFoundException $e) {
@@ -100,6 +110,8 @@ final class SetCommand extends Command
 
                 return false;
             }
+        } else {
+            $url = $urlOrHostname;
         }
 
         $api->setWebhook($url, $certificateFile);
