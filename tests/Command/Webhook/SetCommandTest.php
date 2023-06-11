@@ -314,4 +314,61 @@ class SetCommandTest extends KernelTestCase
         $this->assertStringContainsString('Can\'t generate url: request context is not set', $output);
         $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
     }
+
+    public function testExecuteWithAllowedUpdates(): void
+    {
+        $kernel = static::bootKernel();
+
+        $botApi = $this->createMock(BotApi::class);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.default', $botApi);
+
+        $botApi
+            ->expects($this->once())
+            ->method('setWebhook')
+            ->with(
+                'https://google.com/_telegram/secret:route/',
+                null,
+                null,
+                40,
+                '["message","edited_message","callback_query"]',
+            )
+        ;
+
+        $application = new Application($kernel);
+
+        $command = $application->find('telegram:webhook:set');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'urlOrHostname' => 'google.com',
+            '--allowedUpdateType' => ['message', 'edited_message', 'callback_query'],
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Bot "default"', $output);
+        $this->assertStringContainsString('Webhook URL has been set to', $output);
+        $this->assertStringContainsString('https://google.com/_telegram/secret:route/', $output);
+        $commandTester->assertCommandIsSuccessful();
+    }
+
+    public function testExecuteWithAllowedUpdatesWrongUpdateType(): void
+    {
+        $kernel = static::bootKernel();
+
+        $botApi = $this->createMock(BotApi::class);
+        self::getContainer()->set('test.boshurik_telegram_bot.api.bot.default', $botApi);
+
+        $application = new Application($kernel);
+
+        $command = $application->find('telegram:webhook:set');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'urlOrHostname' => 'google.com',
+            '--allowedUpdateType' => ['message', 'callback'],
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Incorrect update type: callback', $output);
+        $this->assertStringNotContainsString('Webhook URL has been set to', $output);
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+    }
 }

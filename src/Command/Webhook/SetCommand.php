@@ -24,6 +24,11 @@ use TelegramBot\Api\BotApi;
 
 final class SetCommand extends Command
 {
+    private const MAX_CONNECTIONS = 40;
+    private const ALLOWED_UPDATE_TYPES = ['message', 'edited_message', 'channel_post', 'edited_channel_post',
+        'inline_query', 'chosen_inline_result', 'callback_query', 'shipping_query', 'pre_checkout_query', 'poll',
+        'poll_answer', 'my_chat_member', 'chat_member', 'chat_join_request'];
+
     public function __construct(private BotLocator $botLocator, private UrlGeneratorInterface $urlGenerator)
     {
         parent::__construct();
@@ -35,6 +40,12 @@ final class SetCommand extends Command
             ->setName('telegram:webhook:set')
             ->addArgument('urlOrHostname', InputArgument::OPTIONAL, 'Webhook URL or the host name of your site. if you specify only a host name (without https://), path will be generated for you.')
             ->addArgument('certificate', InputArgument::OPTIONAL, 'Path to public key certificate')
+            ->addOption(
+                'allowedUpdateType',
+                null,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Allowed update type. Add option multiple times to add several values.'
+            )
             ->addOption('bot', null, InputOption::VALUE_REQUIRED, 'Bot')
             ->setDescription('Set webhook')
         ;
@@ -58,9 +69,18 @@ final class SetCommand extends Command
         /** @var string|null $bot */
         $bot = $input->getOption('bot');
 
+        $allowedUpdates = $input->getOption('allowedUpdateType');
+        foreach ($allowedUpdates as $update) {
+            if (!in_array($update, self::ALLOWED_UPDATE_TYPES)) {
+                $io->error('Incorrect update type: '.$update);
+
+                return self::FAILURE;
+            }
+        }
+
         if ($bot) {
             $api = $this->botLocator->get($bot);
-            if (!$this->setWebhook($io, $bot, $api, $urlOrHostname, $certificateFile)) {
+            if (!$this->setWebhook($io, $bot, $api, $urlOrHostname, $certificateFile, $allowedUpdates)) {
                 return self::FAILURE;
             }
         } else {
@@ -71,7 +91,7 @@ final class SetCommand extends Command
             }
 
             foreach ($this->botLocator->all() as $name => $api) {
-                if (!$this->setWebhook($io, $name, $api, $urlOrHostname, $certificateFile)) {
+                if (!$this->setWebhook($io, $name, $api, $urlOrHostname, $certificateFile, $allowedUpdates)) {
                     return self::FAILURE;
                 }
             }
@@ -84,8 +104,9 @@ final class SetCommand extends Command
         SymfonyStyle $io,
         string $name,
         BotApi $api,
-        ?string $urlOrHostname,
-        ?\CURLFile $certificateFile
+        string $urlOrHostname = null,
+        \CURLFile $certificateFile = null,
+        array $allowedUpdates = null
     ): bool {
         $io->block(sprintf('Bot "%s"', $name));
 
@@ -114,7 +135,7 @@ final class SetCommand extends Command
             $url = $urlOrHostname;
         }
 
-        $api->setWebhook($url, $certificateFile);
+        $api->setWebhook($url, $certificateFile, null, self::MAX_CONNECTIONS, json_encode($allowedUpdates));
 
         $message = sprintf('Webhook URL has been set to <options=bold>%s</>', $url);
         $io->block($message, 'OK', 'fg=black;bg=green', ' ', true, false);
