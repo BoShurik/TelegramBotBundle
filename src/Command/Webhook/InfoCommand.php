@@ -73,9 +73,10 @@ final class InfoCommand extends Command
             'Pending Update Count',
             $info->getPendingUpdateCount(),
         ];
+        $lastErrorDate = $info->getLastErrorDate();
         $values[] = [
             'Last Error Date',
-            $info->getLastErrorDate() ? date('Y-m-d H:i:s', $info->getLastErrorDate()) : '-',
+            $lastErrorDate ? date('Y-m-d H:i:s', $lastErrorDate) : '-',
         ];
         $values[] = [
             'Last Error Message',
@@ -85,9 +86,10 @@ final class InfoCommand extends Command
             'Max Connections',
             $info->getMaxConnections(),
         ];
+        $allowedUpdates = $info->getAllowedUpdates();
         $values[] = [
             'Allowed Updates',
-            \is_array($info->getAllowedUpdates()) ? implode(', ', $info->getAllowedUpdates()) : '-',
+            \is_array($allowedUpdates) ? implode(', ', $allowedUpdates) : '-',
         ];
 
         $io->table([

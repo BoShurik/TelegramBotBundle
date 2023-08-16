@@ -71,7 +71,7 @@ final class SetCommand extends Command
 
         $allowedUpdates = $input->getOption('allowedUpdateType');
         foreach ($allowedUpdates as $update) {
-            if (!in_array($update, self::ALLOWED_UPDATE_TYPES)) {
+            if (!\in_array($update, self::ALLOWED_UPDATE_TYPES)) {
                 $io->error('Incorrect update type: '.$update);
 
                 return self::FAILURE;

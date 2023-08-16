@@ -13,6 +13,7 @@ namespace BoShurik\TelegramBotBundle\Telegram\Command;
 
 use BoShurik\TelegramBotBundle\Telegram\Command\Registry\CommandRegistry;
 use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Types\Message;
 use TelegramBot\Api\Types\Update;
 
 class HelpCommand extends AbstractCommand implements PublicCommandInterface
@@ -27,6 +28,8 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
     public function execute(BotApi $api, Update $update): void
     {
         $commands = $this->commandRegistry->getCommands();
+        /** @var Message $message */
+        $message = $update->getMessage();
 
         $reply = '';
         foreach ($commands as $command) {
@@ -37,7 +40,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
             $reply .= sprintf("%s - %s\n", $command->getName(), $command->getDescription());
         }
 
-        $api->sendMessage($update->getMessage()->getChat()->getId(), $reply);
+        $api->sendMessage($message->getChat()->getId(), $reply);
     }
 
     public function getName(): string

@@ -24,7 +24,7 @@ final class BotLocator
     {
         $api = $this->locator->get($bot);
         if (!$api instanceof BotApi) {
-            throw new \RuntimeException(sprintf('Expect "%s", instance of "%s" given', BotApi::class, \get_class($api)));
+            throw new \RuntimeException(sprintf('Expect "%s", instance of "%s" given', BotApi::class, $api::class));
         }
 
         return $api;

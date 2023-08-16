@@ -35,6 +35,7 @@ final class WebhookController
     {
         if ($content = $request->getContent()) {
             if ($data = BotApi::jsonValidate($content, true)) {
+                /** @var array $data */
                 $update = Update::fromResponse($data);
                 if ($this->bus === null) {
                     $this->telegram->processUpdate($bot, $update);

@@ -33,23 +33,23 @@ abstract class AbstractCommand implements CommandInterface
 
     public function isApplicable(Update $update): bool
     {
-        if ($this->isTargetCallback() && $update->getCallbackQuery()) {
-            $data = $update->getCallbackQuery()->getData();
+        $callbackQuery = $update->getCallbackQuery();
+        if ($this->isTargetCallback() && $callbackQuery) {
+            $data = $callbackQuery->getData();
             if ($this->matchCommandName((string) $data, $this->getName())) {
                 return true;
             }
 
             return false;
         }
-        if ($this->isTargetMessage() && $update->getMessage()) {
-            $message = $update->getMessage();
-
+        $message = $update->getMessage();
+        if ($this->isTargetMessage() && $message) {
             if ($this->matchCommandName((string) $message->getText(), $this->getName())) {
                 return true;
             }
 
             foreach ($this->getAliases() as $alias) {
-                if ($this->matchCommandName($message->getText(), $alias)) {
+                if ($this->matchCommandName((string) $message->getText(), $alias)) {
                     return true;
                 }
             }
@@ -75,11 +75,13 @@ abstract class AbstractCommand implements CommandInterface
     protected function getCommandParameters(Update $update): ?string
     {
         $matches = [];
-        if ($this->isTargetCallback() && $update->getCallbackQuery()) {
-            preg_match(self::REGEXP, (string) $update->getCallbackQuery()->getData(), $matches);
+        $callbackQuery = $update->getCallbackQuery();
+        if ($this->isTargetCallback() && $callbackQuery) {
+            preg_match(self::REGEXP, (string) $callbackQuery->getData(), $matches);
         }
-        if ($this->isTargetMessage() && $update->getMessage()) {
-            preg_match(self::REGEXP, (string) $update->getMessage()->getText(), $matches);
+        $message = $update->getMessage();
+        if ($this->isTargetMessage() && $message) {
+            preg_match(self::REGEXP, (string) $message->getText(), $matches);
         }
 
         if (empty($matches)) {
