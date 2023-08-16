@@ -31,7 +31,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set('boshurik_telegram_bot.api.abstract_bot', BotApi::class)
         ->abstract()
-        ->call('setProxy', ['%boshurik_telegram_bot.api.proxy%']);
+        ->call('setProxy', ['%boshurik_telegram_bot.api.proxy%'])
+        ->call('setCurlOption', [\CURLOPT_TIMEOUT, '%boshurik_telegram_bot.api.timeout%'])
+    ;
 
     $services->set('boshurik_telegram_bot.api.bot_locator', ServiceLocator::class)
         ->args([[]])

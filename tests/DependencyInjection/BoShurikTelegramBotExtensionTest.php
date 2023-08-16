@@ -35,6 +35,8 @@ class BoShurikTelegramBotExtensionTest extends TestCase
             'boshurik_telegram_bot' => [
                 'api' => [
                     'token' => 'secret',
+                    'proxy' => 'proxy',
+                    'timeout' => 30,
                 ],
                 'authenticator' => [
                     'guard_route' => 'guard_route',
@@ -106,6 +108,8 @@ class BoShurikTelegramBotExtensionTest extends TestCase
                         'first' => 'secret',
                         'second' => 'secret',
                     ],
+                    'proxy' => 'proxy',
+                    'timeout' => 30,
                 ],
                 'authenticator' => [
                     'guard_route' => 'guard_route',

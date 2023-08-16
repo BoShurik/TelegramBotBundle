@@ -35,6 +35,7 @@ final class BoShurikTelegramBotExtension extends Extension
         $loader->load('services.php');
 
         $container->setParameter('boshurik_telegram_bot.api.proxy', $config['api']['proxy']);
+        $container->setParameter('boshurik_telegram_bot.api.timeout', $config['api']['timeout']);
 
         $defaultBot = $config['api']['default_bot'];
 

@@ -38,7 +38,7 @@ class BotLocatorTest extends TestCase
 
         $locator = self::createLocator($apis);
 
-        $this->assertCount(2, $locator->all());
+        $this->assertCount(2, iterator_to_array($locator->all()));
         $this->assertFalse($locator->isSingle());
 
         foreach ($locator->all() as $name => $api) {

@@ -52,6 +52,7 @@ class ConfigurationTest extends TestCase
                     ],
                 ],
                 'proxy' => '',
+                'timeout' => 10,
             ],
             'authenticator' => [
                 'enabled' => false,
@@ -68,6 +69,30 @@ class ConfigurationTest extends TestCase
         ], [
             'api' => [
                 'proxy' => 'proxy',
+                'timeout' => 10,
+                'default_bot' => 'default',
+                'bots' => [
+                    'default' => [
+                        'token' => 'your secret token',
+                    ],
+                ],
+            ],
+            'authenticator' => [
+                'enabled' => false,
+                'bot' => null,
+                'login_route' => null,
+            ],
+        ]];
+
+        yield 'Simple configuration with timeout' => [[
+            'api' => [
+                'token' => 'your secret token',
+                'timeout' => 30,
+            ],
+        ], [
+            'api' => [
+                'proxy' => '',
+                'timeout' => 30,
                 'default_bot' => 'default',
                 'bots' => [
                     'default' => [
@@ -99,6 +124,7 @@ class ConfigurationTest extends TestCase
                     ],
                 ],
                 'proxy' => '',
+                'timeout' => 10,
             ],
             'authenticator' => [
                 'bot' => null,
@@ -127,6 +153,7 @@ class ConfigurationTest extends TestCase
                     ],
                 ],
                 'proxy' => '',
+                'timeout' => 10,
             ],
             'authenticator' => [
                 'bot' => null,
@@ -157,6 +184,7 @@ class ConfigurationTest extends TestCase
                     ],
                 ],
                 'proxy' => '',
+                'timeout' => 10,
             ],
             'authenticator' => [
                 'enabled' => false,

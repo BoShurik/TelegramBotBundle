@@ -33,7 +33,7 @@ final class Configuration implements ConfigurationInterface
                         })
                         ->then(static function ($v) {
                             // Key that should not be rewritten to the connection config
-                            $excludedKeys = ['default_bot' => true, 'proxy' => true];
+                            $excludedKeys = ['default_bot' => true, 'proxy' => true, 'timeout' => true];
                             $connection = [];
                             foreach ($v as $key => $value) {
                                 if (isset($excludedKeys[$key])) {
@@ -63,6 +63,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->children()
                         ->scalarNode('proxy')->defaultValue('')->end()
+                        ->scalarNode('timeout')->defaultValue(10)->end()
                     ->end()
                     ->children()
                         ->arrayNode('bots')
