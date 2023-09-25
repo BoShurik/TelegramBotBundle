@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.0.1 (2023-09-25)
+------------------
+
+* Respect empty `Message::$text` in `AbstractCommand`
+
 5.0.0 (2022-01-21)
 ------------------
 
