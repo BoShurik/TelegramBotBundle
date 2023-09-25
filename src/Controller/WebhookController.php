@@ -34,7 +34,9 @@ class WebhookController
     public function indexAction(Request $request): Response
     {
         if ($content = $request->getContent()) {
-            if ($data = BotApi::jsonValidate($content, true)) {
+            /** @var array $data */
+            $data = BotApi::jsonValidate($content, true);
+            if ($data) {
                 $update = Update::fromResponse($data);
                 if ($this->bus === null) {
                     $this->telegram->processUpdate($update);

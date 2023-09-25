@@ -53,7 +53,7 @@ class InfoCommand extends Command
         ];
         $values[] = [
             'last error date',
-            $info->getLastErrorDate() ? date('Y-m-d H:i:s', $info->getLastErrorDate()) : '-',
+            $info->getLastErrorDate() ? date('Y-m-d H:i:s', (int) $info->getLastErrorDate()) : '-',
         ];
         $values[] = [
             'last error message',
@@ -65,7 +65,7 @@ class InfoCommand extends Command
         ];
         $values[] = [
             'allowed updates',
-            \is_array($info->getAllowedUpdates()) ? implode(', ', $info->getAllowedUpdates()) : '-',
+            \is_array($info->getAllowedUpdates()) ? implode(', ', (array) $info->getAllowedUpdates()) : '-',
         ];
 
         $io->table([
