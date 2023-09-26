@@ -46,7 +46,7 @@ final class BoShurikTelegramBotExtension extends Extension
         $defaultBot = $config['api']['default_bot'];
 
         if (interface_exists(HttpClientInterface::class)) {
-            if ($container->has(SymfonyHttpClientInterface::class)) {
+            if (interface_exists(SymfonyHttpClientInterface::class)) {
                 $httpClient = new Definition(SymfonyHttpClient::class, [
                     new Reference(SymfonyHttpClientInterface::class),
                 ]);
