@@ -51,7 +51,7 @@ final class Configuration implements ConfigurationInterface
                         })
                     ->end()
                     ->validate()
-                        ->ifTrue(function ($v) {
+                        ->ifTrue(static function ($v) {
                             $defaultBot = $v['default_bot'] ?? null;
 
                             return !isset($v['bots'][$defaultBot]);

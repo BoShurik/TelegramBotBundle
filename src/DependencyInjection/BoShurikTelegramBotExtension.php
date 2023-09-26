@@ -16,10 +16,16 @@ use BoShurik\TelegramBotBundle\Telegram\Command\CommandInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Contracts\HttpClient\HttpClientInterface as SymfonyHttpClientInterface;
 use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Http\CurlHttpClient;
+use TelegramBot\Api\Http\HttpClientInterface;
+use TelegramBot\Api\Http\SymfonyHttpClient;
 
 final class BoShurikTelegramBotExtension extends Extension
 {
@@ -38,6 +44,20 @@ final class BoShurikTelegramBotExtension extends Extension
         $container->setParameter('boshurik_telegram_bot.api.timeout', $config['api']['timeout']);
 
         $defaultBot = $config['api']['default_bot'];
+
+        if (interface_exists(HttpClientInterface::class)) {
+            if ($container->has(SymfonyHttpClientInterface::class)) {
+                $httpClient = new Definition(SymfonyHttpClient::class, [
+                    new Reference(SymfonyHttpClientInterface::class),
+                ]);
+            } else {
+                $httpClient = new Definition(CurlHttpClient::class);
+                $httpClient->addMethodCall('setProxy', [new Parameter('boshurik_telegram_bot.api.proxy')]);
+                $httpClient->addMethodCall('setOption', [\CURLOPT_TIMEOUT, new Parameter('boshurik_telegram_bot.api.timeout')]);
+            }
+
+            $container->setDefinition(HttpClientInterface::class, $httpClient);
+        }
 
         $bots = [];
         $registries = [];

@@ -9,6 +9,7 @@ CHANGELOG
 * Move config from yaml to php files
 * Allow to set update type for webhook command
 * Allow to set timeout for api instances
+* Use symfony/http-client if available
 
 5.0.0 (2022-01-21)
 ------------------

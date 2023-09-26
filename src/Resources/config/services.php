@@ -25,15 +25,23 @@ use BoShurik\TelegramBotBundle\Telegram\Telegram;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Http\HttpClientInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->set('boshurik_telegram_bot.api.abstract_bot', BotApi::class)
+    $abstractBot = $services->set('boshurik_telegram_bot.api.abstract_bot', BotApi::class)
         ->abstract()
-        ->call('setProxy', ['%boshurik_telegram_bot.api.proxy%'])
-        ->call('setCurlOption', [\CURLOPT_TIMEOUT, '%boshurik_telegram_bot.api.timeout%'])
     ;
+
+    if (interface_exists(HttpClientInterface::class)) {
+        $abstractBot->arg('$httpClient', service(HttpClientInterface::class));
+    } else {
+        $abstractBot
+            ->call('setProxy', ['%boshurik_telegram_bot.api.proxy%'])
+            ->call('setCurlOption', [\CURLOPT_TIMEOUT, '%boshurik_telegram_bot.api.timeout%'])
+        ;
+    }
 
     $services->set('boshurik_telegram_bot.api.bot_locator', ServiceLocator::class)
         ->args([[]])
