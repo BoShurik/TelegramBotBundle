@@ -10,6 +10,7 @@ CHANGELOG
 * Allow to set update type for webhook command
 * Allow to set timeout for api instances
 * Use symfony/http-client if available
+* Add Symfony 7 support
 
 5.0.0 (2022-01-21)
 ------------------
