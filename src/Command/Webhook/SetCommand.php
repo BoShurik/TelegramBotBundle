@@ -106,7 +106,7 @@ final class SetCommand extends Command
         BotApi $api,
         string $urlOrHostname = null,
         \CURLFile $certificateFile = null,
-        array $allowedUpdates = null
+        ?array $allowedUpdates = null
     ): bool {
         $io->block(sprintf('Bot "%s"', $name));
 
