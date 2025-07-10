@@ -104,9 +104,9 @@ final class SetCommand extends Command
         SymfonyStyle $io,
         string $name,
         BotApi $api,
-        string $urlOrHostname = null,
-        \CURLFile $certificateFile = null,
-        array $allowedUpdates = null
+        ?string $urlOrHostname = null,
+        ?\CURLFile $certificateFile = null,
+        ?array $allowedUpdates = null
     ): bool {
         $io->block(sprintf('Bot "%s"', $name));
 
