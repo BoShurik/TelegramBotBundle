@@ -57,5 +57,6 @@ return (new PhpCsFixer\Config())
         'phpdoc_align' => [],
         'phpdoc_to_comment' => false,
         'single_line_comment_spacing' => false,
+        'nullable_type_declaration_for_default_null_value' => true,
     ])
 ;
