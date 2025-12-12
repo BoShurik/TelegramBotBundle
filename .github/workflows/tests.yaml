@@ -18,6 +18,7 @@ jobs:
                     - "8.2"
                     - "8.3"
                     - "8.4"
+                    - "8.5"
                 deps:
                     - latest
                     - lowest
@@ -48,6 +49,10 @@ jobs:
             -
                 name: Update composer
                 run: composer self-update
+
+            -
+                name: Remote tools
+                run: composer remove psalm/plugin-symfony vimeo/psalm friendsofphp/php-cs-fixer --dev
 
             -
                 name: Install dependencies with composer

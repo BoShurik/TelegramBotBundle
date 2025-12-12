@@ -35,7 +35,7 @@ class MultipleTestKernel extends Kernel
 
     protected function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new class() implements CompilerPassInterface {
+        $container->addCompilerPass(new class implements CompilerPassInterface {
             public function process(ContainerBuilder $container): void
             {
                 $router = $container->getDefinition('router.default');

@@ -23,7 +23,7 @@ final class CommandRegistryLocator
     {
         $registry = $this->locator->get($bot);
         if (!$registry instanceof CommandRegistry) {
-            throw new \RuntimeException(sprintf('Expect "%s", instance of "%s" given', CommandRegistry::class, $registry::class));
+            throw new \RuntimeException(\sprintf('Expect "%s", instance of "%s" given', CommandRegistry::class, $registry::class));
         }
 
         return $registry;

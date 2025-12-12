@@ -39,6 +39,7 @@ final class TelegramAuthenticator extends AbstractAuthenticator
     ) {
     }
 
+    #[\Override]
     public function supports(Request $request): ?bool
     {
         $route = $request->attributes->get('_route');
@@ -46,6 +47,7 @@ final class TelegramAuthenticator extends AbstractAuthenticator
         return $route === $this->guardRoute;
     }
 
+    #[\Override]
     public function authenticate(Request $request): Passport
     {
         $credentials = $request->query->all();
@@ -66,6 +68,7 @@ final class TelegramAuthenticator extends AbstractAuthenticator
         }));
     }
 
+    #[\Override]
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
@@ -75,6 +78,7 @@ final class TelegramAuthenticator extends AbstractAuthenticator
         return new RedirectResponse($this->urlGenerator->generate($this->defaultTargetRoute));
     }
 
+    #[\Override]
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         if ($this->loginRoute) {
