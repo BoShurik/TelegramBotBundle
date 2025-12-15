@@ -26,6 +26,9 @@ use TelegramBot\Api\Types\Update;
     ) {
     }
 
+    /**
+     * @psalm-suppress UnusedForeachValue
+     */
     public function processAllUpdates(): void
     {
         foreach ($this->botLocator->all() as $name => $id) {

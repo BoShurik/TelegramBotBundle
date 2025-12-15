@@ -13,14 +13,10 @@
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
-        <!-- Workaround for https://github.com/vimeo/psalm/issues/7026 -->
-        <ReservedWord>
-            <errorLevel type="suppress">
-                <directory name="src"/>
-                <directory name="tests"/>
-            </errorLevel>
-        </ReservedWord>
+        <UnusedClass errorLevel="suppress" />
+        <PossiblyUnusedMethod errorLevel="suppress" />
     </issueHandlers>
+
     <plugins>
         <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/>
     </plugins>

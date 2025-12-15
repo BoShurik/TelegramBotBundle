@@ -45,7 +45,7 @@ class CommandListenerTest extends TestCase
         $event = new UpdateEvent('default', $update);
 
         $listener = $this->createListener([
-            new class() implements CommandInterface {
+            new class implements CommandInterface {
                 public function execute(BotApi $api, Update $update): void
                 {
                 }
@@ -68,7 +68,7 @@ class CommandListenerTest extends TestCase
         $event = new UpdateEvent('default', $update);
 
         $listener = $this->createListener([
-            new class() implements CommandInterface {
+            new class implements CommandInterface {
                 public function execute(BotApi $api, Update $update): void
                 {
                 }

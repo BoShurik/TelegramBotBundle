@@ -34,6 +34,7 @@ final class SetCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -51,6 +52,7 @@ final class SetCommand extends Command
         ;
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -58,15 +60,13 @@ final class SetCommand extends Command
         $certificateFile = null;
         if ($certificate = $input->getArgument('certificate')) {
             if (!is_file($certificate) || !is_readable($certificate)) {
-                throw new \RuntimeException(sprintf('Can\'t read certificate file "%s"', $certificate));
+                throw new \RuntimeException(\sprintf('Can\'t read certificate file "%s"', $certificate));
             }
 
             $certificateFile = new \CURLFile($certificate);
         }
 
-        /** @var string|null $urlOrHostname */
         $urlOrHostname = $input->getArgument('urlOrHostname');
-        /** @var string|null $bot */
         $bot = $input->getOption('bot');
 
         $allowedUpdates = $input->getOption('allowedUpdateType');
@@ -108,7 +108,7 @@ final class SetCommand extends Command
         ?\CURLFile $certificateFile = null,
         ?array $allowedUpdates = null
     ): bool {
-        $io->block(sprintf('Bot "%s"', $name));
+        $io->block(\sprintf('Bot "%s"', $name));
 
         if (!$urlOrHostname) {
             $url = $this->urlGenerator->generate('_telegram_bot_webhook', [
@@ -127,7 +127,7 @@ final class SetCommand extends Command
             } catch (RouteNotFoundException $e) {
                 $helpUrl = 'https://github.com/BoShurik/TelegramBotBundle#add-routing-for-webhook';
                 $message = "We could not find the webhook route. Read on\n<options=bold>%s</>\nhow to add the route or use symfony/flex.";
-                $io->block(messages: sprintf($message, $helpUrl), escape: false);
+                $io->block(messages: \sprintf($message, $helpUrl), escape: false);
 
                 return false;
             }
@@ -135,9 +135,9 @@ final class SetCommand extends Command
             $url = $urlOrHostname;
         }
 
-        $api->setWebhook($url, $certificateFile, null, self::MAX_CONNECTIONS, json_encode($allowedUpdates));
+        $api->setWebhook($url, $certificateFile, null, self::MAX_CONNECTIONS, (string) json_encode($allowedUpdates));
 
-        $message = sprintf('Webhook URL has been set to <options=bold>%s</>', $url);
+        $message = \sprintf('Webhook URL has been set to <options=bold>%s</>', $url);
         $io->block($message, 'OK', 'fg=black;bg=green', ' ', true, false);
 
         return true;

@@ -24,6 +24,7 @@ final class UpdatesCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -33,9 +34,9 @@ final class UpdatesCommand extends Command
         ;
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var string|null $bot */
         $bot = $input->getArgument('bot');
         if ($bot) {
             $this->telegram->processUpdates($bot);

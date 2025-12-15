@@ -26,6 +26,7 @@ final class InfoCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -35,11 +36,11 @@ final class InfoCommand extends Command
         ;
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        /** @var string|null $bot */
         $bot = $input->getArgument('bot');
         if ($bot) {
             $api = $this->botLocator->get($bot);
@@ -56,7 +57,7 @@ final class InfoCommand extends Command
 
     private function printWebhookInfo(SymfonyStyle $io, string $name, BotApi $api): void
     {
-        $io->block(sprintf('Bot "%s"', $name));
+        $io->block(\sprintf('Bot "%s"', $name));
 
         $info = $api->getWebhookInfo();
 

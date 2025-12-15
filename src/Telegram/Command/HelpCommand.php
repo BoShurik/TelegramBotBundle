@@ -25,6 +25,7 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
     ) {
     }
 
+    #[\Override]
     public function execute(BotApi $api, Update $update): void
     {
         $commands = $this->commandRegistry->getCommands();
@@ -37,22 +38,25 @@ class HelpCommand extends AbstractCommand implements PublicCommandInterface
                 continue;
             }
 
-            $reply .= sprintf("%s - %s\n", $command->getName(), $command->getDescription());
+            $reply .= \sprintf("%s - %s\n", $command->getName(), $command->getDescription());
         }
 
         $api->sendMessage($message->getChat()->getId(), $reply);
     }
 
+    #[\Override]
     public function getName(): string
     {
         return '/help';
     }
 
+    #[\Override]
     public function getAliases(): array
     {
         return $this->aliases;
     }
 
+    #[\Override]
     public function getDescription(): string
     {
         return $this->description;

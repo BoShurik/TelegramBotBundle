@@ -54,7 +54,9 @@ return (new PhpCsFixer\Config())
         'yoda_style' => false,
         'declare_strict_types' => false,
         'void_return' => false,
-        'phpdoc_align' => [],
+        'phpdoc_align' => [
+            'align' => 'left',
+        ],
         'phpdoc_to_comment' => false,
         'single_line_comment_spacing' => false,
         'nullable_type_declaration_for_default_null_value' => true,

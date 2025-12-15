@@ -17,20 +17,24 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Contracts\HttpClient\HttpClientInterface as SymfonyHttpClientInterface;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Http\CurlHttpClient;
 use TelegramBot\Api\Http\HttpClientInterface;
 use TelegramBot\Api\Http\SymfonyHttpClient;
 
+/**
+ * @psalm-suppress InternalClass
+ */
 final class BoShurikTelegramBotExtension extends Extension
 {
     private const BOT_API_ID_TEMPLATE = 'boshurik_telegram_bot.api.bot.%s';
 
+    #[\Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -45,25 +49,30 @@ final class BoShurikTelegramBotExtension extends Extension
 
         $defaultBot = $config['api']['default_bot'];
 
+        /** @psalm-suppress UndefinedClass */
         if (interface_exists(HttpClientInterface::class)) {
+            /** @psalm-suppress UndefinedClass */
             if (interface_exists(SymfonyHttpClientInterface::class)) {
+                /** @psalm-suppress UndefinedClass */
                 $httpClient = new Definition(SymfonyHttpClient::class, [
                     new Reference(SymfonyHttpClientInterface::class),
                 ]);
             } else {
+                /** @psalm-suppress UndefinedClass */
                 $httpClient = new Definition(CurlHttpClient::class);
                 $httpClient->addMethodCall('setProxy', [new Parameter('boshurik_telegram_bot.api.proxy')]);
                 $httpClient->addMethodCall('setOption', [\CURLOPT_TIMEOUT, new Parameter('boshurik_telegram_bot.api.timeout')]);
             }
 
+            /** @psalm-suppress UndefinedClass */
             $container->setDefinition(HttpClientInterface::class, $httpClient);
         }
 
         $bots = [];
         $registries = [];
         foreach ($config['api']['bots'] as $name => $bot) {
-            $botId = sprintf(self::BOT_API_ID_TEMPLATE, $name);
-            $registryId = sprintf(CommandCompilerPass::REGISTRY_ID_TEMPLATE, $name);
+            $botId = \sprintf(self::BOT_API_ID_TEMPLATE, $name);
+            $registryId = \sprintf(CommandCompilerPass::REGISTRY_ID_TEMPLATE, $name);
 
             $container
                 ->setDefinition(
@@ -123,6 +132,7 @@ final class BoShurikTelegramBotExtension extends Extension
         ;
     }
 
+    #[\Override]
     public function getAlias(): string
     {
         return 'boshurik_telegram_bot';

@@ -17,13 +17,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
+    #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('boshurik_telegram_bot');
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
-        /** @psalm-suppress all */
+        /** @psalm-suppress PossiblyNullReference,UnusedForeachValue,PossiblyNullArrayOffset,UndefinedInterfaceMethod */
         $rootNode
             ->children()
                 ->arrayNode('api')->isRequired()

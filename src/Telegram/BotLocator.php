@@ -24,13 +24,15 @@ final class BotLocator
     {
         $api = $this->locator->get($bot);
         if (!$api instanceof BotApi) {
-            throw new \RuntimeException(sprintf('Expect "%s", instance of "%s" given', BotApi::class, $api::class));
+            throw new \RuntimeException(\sprintf('Expect "%s", instance of "%s" given', BotApi::class, $api::class));
         }
 
         return $api;
     }
 
     /**
+     * @psalm-suppress UnusedForeachValue
+     *
      * @return \Generator<string, BotApi>
      */
     public function all(): \Generator

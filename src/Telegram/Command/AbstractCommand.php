@@ -31,6 +31,7 @@ abstract class AbstractCommand implements CommandInterface
         return [];
     }
 
+    #[\Override]
     public function isApplicable(Update $update): bool
     {
         $callbackQuery = $update->getCallbackQuery();

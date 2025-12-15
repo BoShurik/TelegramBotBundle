@@ -26,6 +26,7 @@ final class CommandCompilerPass implements CompilerPassInterface
 
     public const REGISTRY_ID_TEMPLATE = 'boshurik_telegram_bot.command.registry.%s';
 
+    #[\Override]
     public function process(ContainerBuilder $container): void
     {
         $commands = [];
@@ -33,11 +34,11 @@ final class CommandCompilerPass implements CompilerPassInterface
         foreach ($this->findAndSortTaggedServices(new TaggedIteratorArgument(self::COMMAND_TAG), $container) as $command) {
             $definition = $container->getDefinition((string) $command);
             if (!$class = $definition->getClass()) {
-                throw new LogicException(sprintf('Unknown class for service "%s"', (string) $command));
+                throw new LogicException(\sprintf('Unknown class for service "%s"', (string) $command));
             }
             $interfaces = class_implements($class);
             if (!isset($interfaces[CommandInterface::class])) {
-                throw new LogicException(sprintf('Can\'t apply tag "%s" to %s class. It must implement %s interface', self::COMMAND_TAG, $class, CommandInterface::class));
+                throw new LogicException(\sprintf('Can\'t apply tag "%s" to %s class. It must implement %s interface', self::COMMAND_TAG, $class, CommandInterface::class));
             }
 
             $tags = $definition->getTag(self::COMMAND_TAG);

@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class BoShurikTelegramBotBundle extends Bundle
 {
+    #[\Override]
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
@@ -26,12 +27,13 @@ final class BoShurikTelegramBotBundle extends Bundle
         $container->addCompilerPass(new CommandCompilerPass());
     }
 
+    #[\Override]
     public function getContainerExtension(): ?ExtensionInterface
     {
         if (null === $this->extension) {
             $this->extension = new BoShurikTelegramBotExtension();
         }
 
-        return $this->extension;
+        return $this->extension ?: null;
     }
 }
